@@ -21,7 +21,6 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 	public boolean developerAuthor;
 	public boolean elevatedAuthor;
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public MessageEventWrapper(MessageReceivedEvent messageReceivedEvent) {
 		super(messageReceivedEvent.getMessage());
 		message = messageReceivedEvent.getMessage().getContent();
@@ -31,7 +30,11 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		longTokens = TokenUtilities.parseLongs(message);	
 		
 		adminAuthor = messageReceivedEvent.getAuthor().getPermissionsForGuild(messageReceivedEvent.getGuild()).contains(Permissions.ADMINISTRATOR);
-		developerAuthor = Arrays.asList(Constants.ADMIN_IDS).contains(messageReceivedEvent.getAuthor().getLongID());
+		for( Long id : Constants.ADMIN_IDS ) {
+			if( messageReceivedEvent.getAuthor().getLongID() == id ) {
+				developerAuthor = true;
+			}
+		}
 		elevatedAuthor = adminAuthor || developerAuthor;
 	}
 	
