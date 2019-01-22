@@ -53,7 +53,7 @@ public abstract class MessageHandler extends Handler {
 					Logger.debug("Event from a bot. Aborting.", 1, true);
 					return null;
 				} else if( isTriggered(messageEventWrapper) && accessGranted(messageEventWrapper) ) {
-					Logger.debug("Conditions satisfied. Processing.", 1);
+					Logger.debug("Conditions satisfied for " + name + ".Processing.", 1);
 					Reaction result = process(messageEventWrapper);
 					if( result == null ) {
 						Logger.debug("No Reaction produced. Aborting.", 1, true);
