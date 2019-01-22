@@ -44,7 +44,7 @@ public abstract class MessageHandler extends Handler {
 	
 	@Override
 	public Reaction handle(Event event) {
-		Logger.debug("Checking " + name, 0);
+		Logger.debug("Checking " + name, 0, true);
 		if( event instanceof MessageReceivedEvent ) {
 			MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) event;
 			if( !messageReceivedEvent.getChannel().isPrivate() ) {
