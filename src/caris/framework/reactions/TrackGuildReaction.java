@@ -6,15 +6,15 @@ import caris.framework.library.Variables;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.obj.IGuild;
 
-public class ReactionGuildTrack extends Reaction {
+public class TrackGuildReaction extends Reaction {
 
 	public IGuild guild;
 	
-	public ReactionGuildTrack(IGuild guild) {
+	public TrackGuildReaction(IGuild guild) {
 		this(guild, -1);
 	}
 	
-	public ReactionGuildTrack(IGuild guild, int priority) {
+	public TrackGuildReaction(IGuild guild, int priority) {
 		super(-1);
 		this.guild = guild;
 	}

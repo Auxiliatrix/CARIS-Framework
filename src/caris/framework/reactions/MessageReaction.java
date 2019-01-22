@@ -5,16 +5,16 @@ import caris.framework.utilities.BotUtils;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.obj.IChannel;
 
-public class ReactionMessage extends Reaction {
+public class MessageReaction extends Reaction {
 	
 	public String message;
 	public IChannel channel;
 	
-	public ReactionMessage( String message, IChannel channel ) {
+	public MessageReaction( String message, IChannel channel ) {
 		this(message, channel, 1);
 	}
 	
-	public ReactionMessage( String message, IChannel channel, int priority ) {
+	public MessageReaction( String message, IChannel channel, int priority ) {
 		super(priority);
 		this.message = message;
 		this.channel = channel;

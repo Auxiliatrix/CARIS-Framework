@@ -10,7 +10,7 @@ import caris.framework.embedbuilders.HelpBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.library.Constants;
 import caris.framework.main.Brain;
-import caris.framework.reactions.ReactionEmbed;
+import caris.framework.reactions.EmbedReaction;
 import caris.framework.utilities.StringUtilities;
 
 public class HelpHandler extends MessageHandler {
@@ -39,9 +39,9 @@ public class HelpHandler extends MessageHandler {
 			}
 		}
 		if( handler == null ) {
-			return new ReactionEmbed(new HelpBuilder().getEmbeds(), messageEventWrapper.getChannel());
+			return new EmbedReaction(new HelpBuilder().getEmbeds(), messageEventWrapper.getChannel());
 		} else {
-			return new ReactionEmbed(new HelpBuilder(handler).getEmbeds(), messageEventWrapper.getChannel());
+			return new EmbedReaction(new HelpBuilder(handler).getEmbeds(), messageEventWrapper.getChannel());
 		}
 	}
 

@@ -7,7 +7,7 @@ import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.library.Constants;
-import caris.framework.reactions.ReactionMessage;
+import caris.framework.reactions.MessageReaction;
 
 public class GreetingHandler extends MessageHandler {
 	
@@ -60,7 +60,7 @@ public class GreetingHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction returnGreeting = new MultiReaction(0);
-		returnGreeting.reactions.add(new ReactionMessage(getRandomGreeting() + ", " + messageEventWrapper.getAuthor().getDisplayName(messageEventWrapper.getGuild()) + "!", messageEventWrapper.getChannel(), 0));
+		returnGreeting.reactions.add(new MessageReaction(getRandomGreeting() + ", " + messageEventWrapper.getAuthor().getDisplayName(messageEventWrapper.getGuild()) + "!", messageEventWrapper.getChannel(), 0));
 		return returnGreeting;
 	}
 	

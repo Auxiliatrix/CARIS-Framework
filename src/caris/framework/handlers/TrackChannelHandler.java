@@ -3,14 +3,14 @@ package caris.framework.handlers;
 import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.Reaction;
 import caris.framework.library.Constants;
-import caris.framework.reactions.ReactionChannelTrack;
+import caris.framework.reactions.TrackChannelReaction;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.ChannelCreateEvent;
 
-public class ChannelCreateHandler extends GeneralHandler {
+public class TrackChannelHandler extends GeneralHandler {
 
-	public ChannelCreateHandler() {
-		super("ChannelCreate");
+	public TrackChannelHandler() {
+		super("TrackChannel");
 	}
 	
 	@Override
@@ -21,7 +21,7 @@ public class ChannelCreateHandler extends GeneralHandler {
 	@Override
 	protected Reaction process(Event event) {
 		ChannelCreateEvent channelCreateEvent = (ChannelCreateEvent) event;
-		return new ReactionChannelTrack(channelCreateEvent.getGuild(), channelCreateEvent.getChannel(), -1);
+		return new TrackChannelReaction(channelCreateEvent.getGuild(), channelCreateEvent.getChannel(), -1);
 	}
 
 	@Override

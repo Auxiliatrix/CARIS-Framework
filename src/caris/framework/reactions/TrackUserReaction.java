@@ -6,16 +6,16 @@ import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
-public class ReactionUserJoin extends Reaction {
+public class TrackUserReaction extends Reaction {
 
 	public IGuild guild;
 	public IUser user;
 	
-	public ReactionUserJoin(IGuild guild, IUser user) {
+	public TrackUserReaction(IGuild guild, IUser user) {
 		this(guild, user, -1);
 	}
 	
-	public ReactionUserJoin(IGuild guild, IUser user, int priority) {
+	public TrackUserReaction(IGuild guild, IUser user, int priority) {
 		super(priority);
 		this.guild = guild;
 		this.user = user;

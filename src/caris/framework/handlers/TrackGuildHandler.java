@@ -3,14 +3,14 @@ package caris.framework.handlers;
 import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.Reaction;
 import caris.framework.library.Constants;
-import caris.framework.reactions.ReactionGuildTrack;
+import caris.framework.reactions.TrackGuildReaction;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.GuildCreateEvent;
 
-public class GuildCreateHandler extends GeneralHandler {
+public class TrackGuildHandler extends GeneralHandler {
 
-	public GuildCreateHandler() {
-		super("GuildCreate", false);
+	public TrackGuildHandler() {
+		super("TrackGuild", false);
 	}
 	
 	@Override
@@ -21,7 +21,7 @@ public class GuildCreateHandler extends GeneralHandler {
 	@Override
 	protected Reaction process(Event event) {
 		GuildCreateEvent guildCreateEvent = (GuildCreateEvent) event;
-		return new ReactionGuildTrack(guildCreateEvent.getGuild(), -1);
+		return new TrackGuildReaction(guildCreateEvent.getGuild(), -1);
 	}
 
 	@Override
