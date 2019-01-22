@@ -44,7 +44,7 @@ public abstract class MessageHandler extends Handler {
 	
 	@Override
 	public Reaction handle(Event event) {
-		Logger.debug("Checking " + name, 0, true);
+		Logger.debug("Checking " + name, 0);
 		if( event instanceof MessageReceivedEvent ) {
 			MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) event;
 			if( !messageReceivedEvent.getChannel().isPrivate() ) {
@@ -53,7 +53,7 @@ public abstract class MessageHandler extends Handler {
 					Logger.debug("Event from a bot. Aborting.", 1, true);
 					return null;
 				} else if( isTriggered(messageEventWrapper) && accessGranted(messageEventWrapper) ) {
-					Logger.debug("Conditions satisfied. Processing.", 1, true);
+					Logger.debug("Conditions satisfied. Processing.", 1);
 					Reaction result = process(messageEventWrapper);
 					if( result == null ) {
 						Logger.debug("No Reaction produced. Aborting.", 1, true);

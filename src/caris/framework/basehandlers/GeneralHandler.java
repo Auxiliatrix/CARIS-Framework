@@ -16,12 +16,12 @@ public abstract class GeneralHandler extends Handler {
 	
 	@Override
 	public Reaction handle(Event event) {
-		Logger.debug("Checking " + name, 0, true);
+		Logger.debug("Checking " + name, 0);
 		if( botFilter(event) ) {
 			Logger.debug("Event from a bot. Aborting.", 1, true);
 			return null;
 		} if( isTriggered(event) ) {
-			Logger.debug("Conditions satisfied. Processing.", 1, true);
+			Logger.debug("Conditions satisfied. Processing.", 1);
 			Reaction result = process(event);
 			if( result == null ) {
 				Logger.debug("No Reaction produced. Aborting", 1, true);
