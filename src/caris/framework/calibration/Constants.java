@@ -1,4 +1,4 @@
-package caris.framework.library;
+package caris.framework.calibration;
 
 public class Constants {
 	public static final String INVOCATION_PREFIX = "c";	

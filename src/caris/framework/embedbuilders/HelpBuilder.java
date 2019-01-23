@@ -2,7 +2,7 @@ package caris.framework.embedbuilders;
 
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
-import caris.framework.library.Constants;
+import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
 import sx.blah.discord.util.EmbedBuilder;
 

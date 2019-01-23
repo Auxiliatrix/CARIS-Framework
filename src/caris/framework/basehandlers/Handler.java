@@ -1,7 +1,7 @@
 package caris.framework.basehandlers;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Constants;
+import caris.framework.calibration.Constants;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;

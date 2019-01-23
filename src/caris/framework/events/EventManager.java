@@ -25,9 +25,12 @@ public class EventManager extends SuperEvent {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
+				ArrayList<Handler> handlerList = new ArrayList<Handler>();
+				handlerList.addAll(Brain.handlers.values());
+				handlerList.addAll(Brain.interactives);
 				ArrayList<Reaction> reactions = new ArrayList<Reaction>();
 				ArrayList<Reaction> passiveQueue = new ArrayList<Reaction>();
-				for( Handler h : Brain.handlers.values() ) {
+				for( Handler h : handlerList ) {
 					Reaction r = h.handle(event);
 					if( r != null ) {
 						if( r.priority == -1 ) {

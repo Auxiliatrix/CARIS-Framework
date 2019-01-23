@@ -1,6 +1,6 @@
 package caris.framework.utilities;
 
-import caris.framework.library.Constants;
+import caris.framework.calibration.Constants;
 import caris.framework.library.Variables;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;

@@ -3,7 +3,7 @@ package caris.framework.handlers;
 import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Constants;
+import caris.framework.calibration.Constants;
 import caris.framework.library.Variables;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.TrackUserReaction;

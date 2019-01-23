@@ -3,8 +3,8 @@ package caris.framework.basehandlers;
 import java.util.HashMap;
 
 import caris.framework.basereactions.Reaction;
+import caris.framework.calibration.Constants;
 import caris.framework.events.MessageEventWrapper;
-import caris.framework.library.Constants;
 import caris.framework.library.Variables;
 import caris.framework.tokens.RedirectedMessage;
 import caris.framework.utilities.Logger;
@@ -53,7 +53,7 @@ public abstract class MessageHandler extends Handler {
 					Logger.debug("Event from a bot. Aborting.", 1, true);
 					return null;
 				} else if( isTriggered(messageEventWrapper) && accessGranted(messageEventWrapper) ) {
-					Logger.debug("Conditions satisfied for " + name + ".Processing.", 1);
+					Logger.debug("Conditions satisfied for " + name + ". Processing.", 1);
 					Reaction result = process(messageEventWrapper);
 					if( result == null ) {
 						Logger.debug("No Reaction produced. Aborting.", 1, true);
