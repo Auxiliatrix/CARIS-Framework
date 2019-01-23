@@ -1,6 +1,7 @@
 package caris.framework.basehandlers;
 
 import caris.framework.basereactions.Reaction;
+import caris.framework.main.Brain;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionAddEvent;
@@ -9,6 +10,14 @@ import sx.blah.discord.handle.obj.IMessage;
 public abstract class InteractiveHandler extends Handler {
 
 	public IMessage source;
+	
+	public InteractiveHandler(String name) {
+		this(name, false, null);
+	}
+	
+	public InteractiveHandler(String name, boolean allowBots) {
+		this(name, allowBots, null);
+	}
 	
 	public InteractiveHandler(String name, IMessage source) {
 		this(name, false, source);
@@ -24,7 +33,7 @@ public abstract class InteractiveHandler extends Handler {
 		Logger.debug("Checking interactive " + name, 0, true);
 		if( event instanceof ReactionAddEvent ) {
 			ReactionAddEvent reactionAddEvent = (ReactionAddEvent) event;
-			if( reactionAddEvent.getMessage() == source ) {
+			if( source != null && reactionAddEvent.getMessage() == source ) {
 				Logger.debug("Interaction with interactive " + name + ". Processing.", 1);
 				if( botFilter(event) ) {
 					Reaction result = process(reactionAddEvent);
@@ -53,4 +62,7 @@ public abstract class InteractiveHandler extends Handler {
 	@Override
 	public abstract String getDescription();
 	
+	public void deactivate() {
+		Brain.interactives.remove(this);
+	}
 }

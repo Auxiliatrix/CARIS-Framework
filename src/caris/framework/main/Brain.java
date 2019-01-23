@@ -8,6 +8,7 @@ import java.util.Map;
 import org.reflections.Reflections;
 
 import caris.framework.basehandlers.Handler;
+import caris.framework.basehandlers.InteractiveHandler;
 import caris.framework.events.EventManager;
 import caris.framework.library.Constants;
 import caris.framework.utilities.BotUtils;
@@ -22,13 +23,15 @@ public class Brain {
 	/* Event Handlers */
 	public static EventManager eventManager = new EventManager();
 
-	/* Gigantic Variable Library */	
 	public static Calendar current = Calendar.getInstance();
 
 	public static IDiscordClient cli = null;
 
 	public static boolean emptyReported = true;
 	public static ArrayList<Thread> threadQueue = new ArrayList<Thread>();
+	
+	/* Interactives */
+	public static ArrayList<InteractiveHandler> interactives = new ArrayList<InteractiveHandler>();
 	
 	public static void main(String[] args) {
 
