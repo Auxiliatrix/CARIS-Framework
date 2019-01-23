@@ -1,7 +1,7 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IUser;
 
 public class UpdateGlobalUserReaction extends Reaction {
@@ -33,8 +33,8 @@ public class UpdateGlobalUserReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		if( override || !Variables.globalUserInfo.get(user).userData.containsKey(key) ) {
-			Variables.globalUserInfo.get(user).userData.put(key, value);
+		if( override || !Brain.variables.globalUserIndex.get(user.getLongID()).userData.containsKey(key) ) {
+			Brain.variables.globalUserIndex.get(user.getLongID()).userData.put(key, value);
 		}
 	}
 

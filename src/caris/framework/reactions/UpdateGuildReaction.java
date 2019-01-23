@@ -1,7 +1,7 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IGuild;
 
 public class UpdateGuildReaction extends Reaction {
@@ -33,8 +33,8 @@ public class UpdateGuildReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		if( override || !Variables.guildIndex.get(guild).guildData.containsKey(key) ) {
-			Variables.guildIndex.get(guild).guildData.put(key, value);
+		if( override || !Brain.variables.guildIndex.get(guild.getLongID()).guildData.containsKey(key) ) {
+			Brain.variables.guildIndex.get(guild.getLongID()).guildData.put(key, value);
 		}
 	}
 

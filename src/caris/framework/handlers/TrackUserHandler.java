@@ -4,7 +4,7 @@ import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.TrackUserReaction;
 import caris.framework.utilities.Logger;
@@ -32,9 +32,9 @@ public class TrackUserHandler extends GeneralHandler {
 		if( !welcome.reactions.isEmpty() && addedRoles.length() > 2) {
 			addedRoles = addedRoles.substring(0, addedRoles.length()-2);
 			welcome.reactions.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!" +  
-					"\nYou have been given the following roles: "+ addedRoles + "!"), Variables.guildIndex.get(userJoinEvent.getGuild()).getDefaultChannel()));
+					"\nYou have been given the following roles: "+ addedRoles + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
 		} else {
-			welcome.reactions.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!"), Variables.guildIndex.get(userJoinEvent.getGuild()).getDefaultChannel()));
+			welcome.reactions.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
 		}
 		return welcome;
 	}

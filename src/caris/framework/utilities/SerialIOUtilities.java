@@ -7,16 +7,15 @@ import org.json.JSONObject;
 
 public class SerialIOUtilities {
 	
-	public static void JSONOut(String filename, Object object) {
+	public static String JSONOut(String filename, JSONObject object) {
 		try {
 			FileWriter file = new FileWriter(filename);
-			JSONObject jsonObject = new JSONObject(object);
-			System.out.println(jsonObject.toString());
-			file.write(new JSONObject(object).toString());
+			file.write(object.toString());
 			file.close();
 		} catch (IOException i) {
 			i.printStackTrace();
 		}
+		return object.toString();
 	}
 	
 }

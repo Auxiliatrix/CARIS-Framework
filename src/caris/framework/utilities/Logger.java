@@ -1,9 +1,8 @@
 package caris.framework.utilities;
 
 import caris.framework.calibration.Constants;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
 public class Logger {
@@ -115,8 +114,8 @@ public class Logger {
 	
 	public static void consolePrint(String s) {
 		System.out.println(s);
-		for( IGuild guild : Variables.guildIndex.keySet() ) {
-			BotUtils.sendLog(guild, s);
+		for( Long guildID : Brain.variables.guildIndex.keySet() ) {
+			BotUtils.sendLog(guildID, s);
 		}
 	}
 }

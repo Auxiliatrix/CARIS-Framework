@@ -11,6 +11,7 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.InteractiveHandler;
 import caris.framework.calibration.Constants;
 import caris.framework.events.EventManager;
+import caris.framework.library.Variables;
 import caris.framework.utilities.BotUtils;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.IDiscordClient;
@@ -18,9 +19,13 @@ import sx.blah.discord.api.IDiscordClient;
 
 public class Brain {
 
+	/* Variable Library */
+	public static Variables variables = new Variables();
+	
+	/* Handlers */
 	public static Map<String, Handler> handlers = new HashMap<String, Handler>();
 
-	/* Event Handlers */
+	/* Event Managers */
 	public static EventManager eventManager = new EventManager();
 
 	public static Calendar current = Calendar.getInstance();

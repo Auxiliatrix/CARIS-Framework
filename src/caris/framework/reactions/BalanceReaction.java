@@ -1,7 +1,7 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IUser;
 
 public class BalanceReaction extends Reaction {
@@ -21,7 +21,7 @@ public class BalanceReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		Variables.globalUserInfo.get(user).balance += balance;
+		Brain.variables.globalUserIndex.get(user.getLongID()).balance += balance;
 	}
 
 }

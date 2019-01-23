@@ -1,7 +1,7 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import caris.framework.utilities.SerialIOUtilities;
 
 public class SaveDataReaction extends Reaction {
@@ -12,9 +12,8 @@ public class SaveDataReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		SerialIOUtilities.JSONOut("tmp/variableData.json", Variables.variableData);
-		SerialIOUtilities.JSONOut("tmp/guildIndex.json", Variables.guildIndex);
-		SerialIOUtilities.JSONOut("tmp/globalUserInfo.json", Variables.globalUserInfo);
+		String result = SerialIOUtilities.JSONOut("tmp/variables.json", Brain.variables.getJSONData());
+		System.out.println(result);
 	}
 	
 }

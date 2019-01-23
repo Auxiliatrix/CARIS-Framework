@@ -1,7 +1,7 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IChannel;
 
 public class UpdateChannelReaction extends Reaction {
@@ -33,8 +33,8 @@ public class UpdateChannelReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		if( override || !Variables.guildIndex.get(channel.getGuild()).channelIndex.get(channel).channelData.containsKey(key) ) {
-			Variables.guildIndex.get(channel.getGuild()).channelIndex.get(channel).channelData.put(key, value);
+		if( override || !Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getGuild().getLongID()).channelData.containsKey(key) ) {
+			Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.put(key, value);
 		}
 	}
 

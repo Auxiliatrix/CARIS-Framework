@@ -5,13 +5,11 @@ import java.util.HashMap;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
 import caris.framework.events.MessageEventWrapper;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import caris.framework.tokens.RedirectedMessage;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IGuild;
 
 public abstract class MessageHandler extends Handler {
 		
@@ -83,12 +81,12 @@ public abstract class MessageHandler extends Handler {
 				String tokenContent = token.substring(1, token.length()-1);
 				try {
 					Long channelID = Long.parseLong(tokenContent);
-					for( IGuild guild : Variables.guildIndex.keySet() ) {
-						for( IChannel channel : Variables.guildIndex.get(guild).channelIndex.keySet() ) {
-							if( channel.getLongID() == channelID ) {
+					for( Long guildID : Brain.variables.guildIndex.keySet() ) {
+						for( Long id : Brain.variables.guildIndex.get(guildID).channelIndex.keySet() ) {
+							if( id == channelID ) {
 								messageEventWrapper = new MessageEventWrapper(
 														new MessageReceivedEvent(
-															new RedirectedMessage(messageReceivedEvent.getMessage(), channel, messageEventWrapper.message.substring(messageEventWrapper.message.indexOf("}"+2)))
+															new RedirectedMessage(messageReceivedEvent.getMessage(), Brain.cli.getGuildByID(guildID).getChannelByID(id), messageEventWrapper.message.substring(messageEventWrapper.message.indexOf("}"+2)))
 														));
 							}
 						}

@@ -1,7 +1,7 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
@@ -23,7 +23,7 @@ public class TrackUserReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		Variables.guildIndex.get(guild).addUser(user);
+		Brain.variables.guildIndex.get(guild.getLongID()).addUser(user);
 		Logger.print("User <" + user.getName() + "#" + user.getDiscriminator() + "> (" + user.getLongID() + ") joined Guild <" + guild.getName() + "> (" + guild.getLongID() + ")", 0);
 	}
 	

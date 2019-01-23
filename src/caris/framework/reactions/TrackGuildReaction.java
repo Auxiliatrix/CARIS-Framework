@@ -2,7 +2,7 @@ package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
 import caris.framework.library.GuildInfo;
-import caris.framework.library.Variables;
+import caris.framework.main.Brain;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.obj.IGuild;
 
@@ -21,9 +21,9 @@ public class TrackGuildReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		if( !Variables.guildIndex.containsKey(guild) ) {
+		if( !Brain.variables.guildIndex.containsKey(guild.getLongID()) ) {
 			GuildInfo guildInfo = new GuildInfo( guild.getName(), guild );
-			Variables.guildIndex.put( guild, guildInfo );
+			Brain.variables.guildIndex.put( guild.getLongID(), guildInfo );
 		}
 		Logger.print("Guild (" + guild.getLongID() + ") <" + guild.getName() + "> loaded");
 	}
