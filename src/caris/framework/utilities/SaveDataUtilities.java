@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
-public class SerialIOUtilities {
+public class SaveDataUtilities {
 	
 	public static String JSONOut(String filename, JSONObject object) {
 		try {
