@@ -2,6 +2,7 @@ package caris.framework.library;
 
 import java.util.HashMap;
 
+import caris.framework.calibration.Constants;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
@@ -23,9 +24,6 @@ public class GuildInfo {
 	public HashMap<IChannel, ChannelInfo> channelIndex;
 	public HashMap<SpecialChannel, IChannel> specialChannels;
 	
-	/* References */
-	public EmojiSet emojiSet;
-	
 	/* Modular Info */
 	public HashMap<String, Object> guildData;
 	
@@ -36,9 +34,7 @@ public class GuildInfo {
 		userIndex = new HashMap<IUser, UserInfo>();
 		channelIndex = new HashMap<IChannel, ChannelInfo>();
 		specialChannels = new HashMap<SpecialChannel, IChannel>();
-		
-		emojiSet = new EmojiSet(guild);
-		
+				
 		this.guildData = new HashMap<String, Object>();
 		init();
 	}

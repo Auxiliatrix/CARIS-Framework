@@ -9,8 +9,8 @@ import org.reflections.Reflections;
 
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.InteractiveHandler;
+import caris.framework.calibration.Constants;
 import caris.framework.events.EventManager;
-import caris.framework.library.Constants;
 import caris.framework.utilities.BotUtils;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.IDiscordClient;

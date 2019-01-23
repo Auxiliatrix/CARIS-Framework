@@ -1,7 +1,7 @@
 package caris.framework.basehandlers;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.library.Constants;
+import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;

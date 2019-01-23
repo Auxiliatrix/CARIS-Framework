@@ -3,8 +3,8 @@ package caris.framework.basehandlers;
 import java.util.HashMap;
 
 import caris.framework.basereactions.Reaction;
+import caris.framework.calibration.Constants;
 import caris.framework.events.MessageEventWrapper;
-import caris.framework.library.Constants;
 import caris.framework.library.Variables;
 import caris.framework.tokens.RedirectedMessage;
 import caris.framework.utilities.Logger;
