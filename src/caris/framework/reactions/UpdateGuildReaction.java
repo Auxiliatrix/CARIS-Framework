@@ -33,7 +33,7 @@ public class UpdateGuildReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		if( override || !Brain.variables.guildIndex.get(guild.getLongID()).guildData.containsKey(key) ) {
+		if( override || !Brain.variables.guildIndex.get(guild.getLongID()).guildData.has(key) ) {
 			Brain.variables.guildIndex.get(guild.getLongID()).guildData.put(key, value);
 		}
 	}

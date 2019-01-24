@@ -6,31 +6,36 @@ import org.json.JSONObject;
 
 public class Variables implements JSONable {
 	
-	public Variables() {}
-	
+
 	// Dynamic global variables
-	public HashMap<String, Object> variableData = new HashMap<String, Object>();
+	public JSONObject variableData;
 	
 	/* Gigantic Variable Library */
-	public HashMap<Long, GuildInfo> guildIndex = new HashMap<Long, GuildInfo>();
+	public HashMap<Long, GuildInfo> guildIndex;
 	
 	/* Global UserData */
-	public HashMap<Long, GlobalUserInfo> globalUserIndex = new HashMap<Long, GlobalUserInfo>();
+	public HashMap<Long, GlobalUserInfo> globalUserIndex;
+	
+	public Variables() {
+		variableData = new JSONObject();
+		guildIndex = new HashMap<Long, GuildInfo>();
+		globalUserIndex = new HashMap<Long, GlobalUserInfo>();
+	}
 
 	@Override
 	public JSONObject getJSONData() {
-		HashMap<String, JSONObject> JSONData = new HashMap<String, JSONObject>();
-		HashMap<String, JSONObject> JSONguildIndex = new HashMap<String, JSONObject>();
+		JSONObject JSONData = new JSONObject();
+		JSONObject JSONguildIndex = new JSONObject();
+		JSONObject JSONglobalUserIndex = new JSONObject();
 		for( Long key : guildIndex.keySet() ) {
 			JSONguildIndex.put(key.toString(), guildIndex.get(key).getJSONData());
 		}
-		HashMap<String, JSONObject> JSONglobalUserIndex = new HashMap<String, JSONObject>();
 		for( Long key : globalUserIndex.keySet() ) {
 			JSONglobalUserIndex.put(key.toString(), globalUserIndex.get(key).getJSONData());
 		}
-		JSONData.put("guildIndex", new JSONObject(JSONguildIndex));
-		JSONData.put("globalUserIndex", new JSONObject(JSONglobalUserIndex));
-		JSONData.put("variableData", JSONify(variableData));
-		return new JSONObject(JSONData);
+		JSONData.put("guildIndex", JSONguildIndex);
+		JSONData.put("globalUserIndex", JSONglobalUserIndex);
+		JSONData.put("variableData", variableData);
+		return JSONData;
 	}
 }

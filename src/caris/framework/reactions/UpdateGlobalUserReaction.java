@@ -33,7 +33,7 @@ public class UpdateGlobalUserReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		if( override || !Brain.variables.globalUserIndex.get(user.getLongID()).userData.containsKey(key) ) {
+		if( override || !Brain.variables.globalUserIndex.get(user.getLongID()).userData.has(key) ) {
 			Brain.variables.globalUserIndex.get(user.getLongID()).userData.put(key, value);
 		}
 	}

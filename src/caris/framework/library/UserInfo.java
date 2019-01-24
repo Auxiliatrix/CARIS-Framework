@@ -1,7 +1,5 @@
 package caris.framework.library;
 
-import java.util.HashMap;
-
 import org.json.JSONObject;
 
 import sx.blah.discord.handle.obj.IUser;
@@ -12,19 +10,19 @@ public class UserInfo implements JSONable {
 	public IUser user;
 	
 	/* Modular Information */
-	public HashMap<String, Object> userData;
+	public JSONObject userData;
 	
 	public UserInfo( IUser user ) {
 		this.user = user;
 		
-		userData = new HashMap<String, Object>();
+		userData = new JSONObject();
 	}
 
 	@Override
 	public JSONObject getJSONData() {
-		HashMap<String, JSONObject> JSONData = new HashMap<String, JSONObject>();
-		JSONData.put("userData", JSONify(userData));
-		return JSONify(userData);
+		JSONObject JSONData = new JSONObject();
+		JSONData.put("userData", userData);
+		return JSONData;
 	}
 
 }

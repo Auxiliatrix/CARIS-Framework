@@ -38,7 +38,7 @@ public class GuildInfo implements JSONable {
 	public HashMap<SpecialChannel, Long> specialChannels;
 	
 	/* Modular Info */
-	public HashMap<String, Object> guildData;
+	public JSONObject guildData;
 	
 	public GuildInfo(String name, IGuild guild) {	
 		this.name = name;
@@ -48,7 +48,7 @@ public class GuildInfo implements JSONable {
 		channelIndex = new HashMap<Long, ChannelInfo>();
 		specialChannels = new HashMap<SpecialChannel, Long>();
 				
-		this.guildData = new HashMap<String, Object>();
+		this.guildData = new JSONObject();
 		init();
 	}
 	
@@ -91,23 +91,23 @@ public class GuildInfo implements JSONable {
 
 	@Override
 	public JSONObject getJSONData() {
-		HashMap<String, JSONObject> JSONData = new HashMap<String, JSONObject>();
-		HashMap<String, JSONObject> JSONuserIndex = new HashMap<String, JSONObject>();
+		JSONObject JSONData = new JSONObject();
+		JSONObject JSONuserIndex = new JSONObject();
+		JSONObject JSONchannelIndex = new JSONObject();
+		JSONObject JSONspecialChannels = new JSONObject();
 		for( Long key : userIndex.keySet() ) {
 			JSONuserIndex.put(key.toString(), userIndex.get(key).getJSONData());
 		}
-		HashMap<String, JSONObject> JSONchannelIndex = new HashMap<String, JSONObject>();
 		for( Long key : channelIndex.keySet() ) {
 			JSONchannelIndex.put(key.toString(), channelIndex.get(key).getJSONData());
 		}
-		HashMap<String, JSONObject> JSONspecialChannels = new HashMap<String, JSONObject>();
 		for( SpecialChannel key : specialChannels.keySet() ) {
-			JSONspecialChannels.put(key.toString(), new JSONObject(specialChannels.get(key)));
+			JSONspecialChannels.put(key.toString(), specialChannels.get(key));
 		}
-		JSONData.put("userIndex", new JSONObject(JSONuserIndex));
-		JSONData.put("channelIndex", new JSONObject(JSONchannelIndex));
-		JSONData.put("specialChannels", new JSONObject(JSONspecialChannels));
-		JSONData.put("guildData", JSONify(guildData));
-		return new JSONObject(JSONData);
+		JSONData.put("userIndex", JSONuserIndex);
+		JSONData.put("channelIndex", JSONchannelIndex);
+		JSONData.put("specialChannels", JSONspecialChannels);
+		JSONData.put("guildData", guildData);
+		return JSONData;
 	}
 }

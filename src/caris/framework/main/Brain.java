@@ -81,8 +81,8 @@ public class Brain {
 			Logger.debug("Threads in queue: " + threadQueue.size(), true);
 			try {
 				threadQueue.remove(0).run();
-			} catch (NullPointerException e) {
-				Logger.error("Null pointer in main iteration.");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		else if( !emptyReported ) {
