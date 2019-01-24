@@ -3,6 +3,8 @@
 
 # Save file
 #.save
+.json
+tmp/
 
 # Log file
 *.log
