@@ -5,6 +5,7 @@
 #.save
 .json
 tmp/
+tmp/variables.json
 
 # Log file
 *.log
