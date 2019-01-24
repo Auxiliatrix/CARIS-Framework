@@ -22,8 +22,10 @@ public class TrackGuildReaction extends Reaction {
 	@Override
 	public void run() {
 		if( !Brain.variables.guildIndex.containsKey(guild.getLongID()) ) {
-			GuildInfo guildInfo = new GuildInfo( guild.getName(), guild );
+			GuildInfo guildInfo = new GuildInfo(guild);
 			Brain.variables.guildIndex.put( guild.getLongID(), guildInfo );
+		} else {
+			Brain.variables.guildIndex.get(guild.getLongID()).reload();
 		}
 		Logger.print("Guild (" + guild.getLongID() + ") <" + guild.getName() + "> loaded");
 	}

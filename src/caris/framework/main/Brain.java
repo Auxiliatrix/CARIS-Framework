@@ -11,16 +11,18 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.InteractiveHandler;
 import caris.framework.calibration.Constants;
 import caris.framework.events.EventManager;
+import caris.framework.library.JSONable.JSONReloadException;
 import caris.framework.library.Variables;
 import caris.framework.utilities.BotUtils;
 import caris.framework.utilities.Logger;
+import caris.framework.utilities.SaveDataUtilities;
 import sx.blah.discord.api.IDiscordClient;
 
 
 public class Brain {
 
 	/* Variable Library */
-	public static Variables variables = new Variables();
+	public static Variables variables;
 	
 	/* Handlers */
 	public static Map<String, Handler> handlers = new HashMap<String, Handler>();
@@ -92,8 +94,15 @@ public class Brain {
 	}
 	
 	public static void init() { // add handlers to their appropriate categories here
+		try {
+			variables = new Variables(SaveDataUtilities.JSONIn("tmp/variables.json"));
+		} catch (JSONReloadException e) {
+			e.printStackTrace();
+			variables = new Variables();
+		}
+		
 		Logger.print("Initializing.");
-
+		
 		// Load modules
 		Logger.print("Loading Handlers...", 1);
 		// Load default handlers

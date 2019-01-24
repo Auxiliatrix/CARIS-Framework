@@ -2,6 +2,7 @@ package caris.framework.library;
 
 import java.util.HashMap;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import caris.framework.calibration.Constants;
@@ -29,8 +30,7 @@ public class GuildInfo implements JSONable {
 	}
 	
 	/* Basic Information */
-	public String name;
-	public IGuild guild;
+	public Long guildID;
 	
 	/* Indices */
 	public HashMap<Long, UserInfo> userIndex;
@@ -40,36 +40,106 @@ public class GuildInfo implements JSONable {
 	/* Modular Info */
 	public JSONObject guildData;
 	
-	public GuildInfo(String name, IGuild guild) {	
-		this.name = name;
-		this.guild = guild;
-				
+	public GuildInfo(JSONObject json) throws JSONReloadException {
+		this();
+		if( json != null ) {
+			try {
+				guildID = json.getLong("guildID");
+			} catch (JSONException e){
+				e.printStackTrace();
+				throw new JSONReloadException();
+			}
+			try {
+				guildData = json.getJSONObject("guildData");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			try {
+				JSONObject JSONuserIndex = json.getJSONObject("userIndex");
+				for( Object key : JSONuserIndex.keySet() ) {
+					try {
+						userIndex.put(Long.parseLong(key.toString()), new UserInfo(JSONuserIndex.getJSONObject(key.toString())));
+					} catch (JSONReloadException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (JSONException e){
+				e.printStackTrace();
+			}
+			try {
+				JSONObject JSONchannelIndex = json.getJSONObject("channelIndex");
+				for( Object key : JSONchannelIndex.keySet() ) {
+					try {
+						channelIndex.put(Long.parseLong(key.toString()), new ChannelInfo(JSONchannelIndex.getJSONObject(key.toString())));
+					} catch (JSONReloadException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (JSONException e){
+				e.printStackTrace();
+			}
+			try {
+				JSONObject JSONspecialChannels = json.getJSONObject("specialChannels");
+				for( Object key : specialChannels.keySet() ) {
+					for( SpecialChannel sc : SpecialChannel.values() ) {
+						if( key.toString().equals(sc.toString()) ) {
+							specialChannels.put(sc, JSONspecialChannels.getLong(key.toString()));
+						}
+					}
+				}
+			} catch (JSONException e){
+				e.printStackTrace();
+			}
+		} else {
+			throw new JSONReloadException();
+		}
+	}
+	
+	public GuildInfo(IGuild guild) {	
+		this();
+		this.guildID = guild.getLongID();
+		loadUsers();
+		loadChannels();
+	}
+	
+	private GuildInfo() {
 		userIndex = new HashMap<Long, UserInfo>();
 		channelIndex = new HashMap<Long, ChannelInfo>();
 		specialChannels = new HashMap<SpecialChannel, Long>();
-				
+		
 		this.guildData = new JSONObject();
-		init();
 	}
 	
-	private void init() {
-		for( IUser u : guild.getUsers() ) {
+	public void reload() {
+		loadUsers();
+		loadChannels();
+	}
+	
+	private void loadUsers() {
+		for( IUser u : Brain.cli.getGuildByID(guildID).getUsers() ) {
 			addUser(u);
 		}
-		for( IChannel c : guild.getChannels() ) {
+	}
+	
+	private void loadChannels() {
+		for( IChannel c : Brain.cli.getGuildByID(guildID).getChannels() ) {
 			addChannel(c);
 		}
 	}
 	
 	public void addUser( IUser u ) {
-		userIndex.put( u.getLongID(), new UserInfo(u) );
+		if( !userIndex.containsKey(u.getLongID()) ) {
+			userIndex.put( u.getLongID(), new UserInfo(u) );
+		}
 		if( !Brain.variables.globalUserIndex.containsKey(u.getLongID()) ) {
 			Brain.variables.globalUserIndex.put(u.getLongID(), new GlobalUserInfo(u));
 		}
 	}
 	
 	public void addChannel( IChannel c ) {
-		channelIndex.put( c.getLongID(), new ChannelInfo(c));
+		if( !channelIndex.containsKey(c.getLongID()) ) {
+			channelIndex.put( c.getLongID(), new ChannelInfo(c));
+		}
 	}
 	
 	public boolean checkDisabled(String module) {
@@ -83,9 +153,9 @@ public class GuildInfo implements JSONable {
 	
 	public IChannel getDefaultChannel() {
 		if( specialChannels.containsKey(SpecialChannel.DEFAULT) ) {
-			return guild.getChannelByID(specialChannels.get(SpecialChannel.DEFAULT));
+			return Brain.cli.getChannelByID(specialChannels.get(SpecialChannel.DEFAULT));
 		} else {
-			return guild.getDefaultChannel();
+			return Brain.cli.getGuildByID(guildID).getDefaultChannel();
 		}
 	}
 
@@ -108,6 +178,7 @@ public class GuildInfo implements JSONable {
 		JSONData.put("channelIndex", JSONchannelIndex);
 		JSONData.put("specialChannels", JSONspecialChannels);
 		JSONData.put("guildData", guildData);
+		JSONData.put("guildID", guildID);
 		return JSONData;
 	}
 }
