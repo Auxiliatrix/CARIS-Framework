@@ -1,6 +1,6 @@
 package caris.modular.handlers;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
@@ -83,9 +83,9 @@ public class GreetingHandler extends MessageHandler {
 	}
 	
 	@Override
-	public HashMap<String, String> getUsage() {
-		HashMap<String, String> usage = new HashMap<String, String>();
-		usage.put("Hello " + Constants.NAME + "!", "Produces a random greeting");
+	public ArrayList<String> getUsage() {
+		ArrayList<String> usage = new ArrayList<String>();
+		usage.add("Hello " + Constants.NAME + "!");
 		return usage;
 	}
 	

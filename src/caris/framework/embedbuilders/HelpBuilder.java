@@ -1,5 +1,7 @@
 package caris.framework.embedbuilders;
 
+import java.awt.Color;
+
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.calibration.Constants;
@@ -10,11 +12,13 @@ import sx.blah.discord.util.EmbedBuilder;
 public class HelpBuilder {
 	
 	public static EmbedBuilder helpBuilder = new EmbedBuilder()
+													.withColor(Color.CYAN)
 													.withAuthorIcon(Brain.cli.getApplicationIconURL())
 													.withAuthorName(Constants.NAME + " Help")
 													.withDescription(Constants.NAME + " employs modules that are controlled by both commands and conversational context.")
-													.withFooterIcon("Type `" + Constants.INVOCATION_PREFIX + "Help` <module> for information on how to use that module.");
+													.withFooterText("Type `" + Constants.INVOCATION_PREFIX + "Help` <module> for information on how to use that module.");
 	public static EmbedBuilder commandBuilder = new EmbedBuilder()
+													.withColor(Color.CYAN)
 													.withAuthorIcon(Brain.cli.getApplicationIconURL())
 													.withAuthorName(Constants.NAME + " Help");
 	
@@ -28,12 +32,15 @@ public class HelpBuilder {
 	
 	public static EmbedObject getHelpEmbed(Handler h) {
 		commandBuilder.clearFields();
-		commandBuilder.withDescription(h.getDescription());
 		if( h instanceof MessageHandler ) {
 			MessageHandler mh = (MessageHandler) h;
-			for( String example : mh.getUsage().keySet() ) {
-				commandBuilder.appendField("`" + example + "`", mh.getUsage().get(example), false);
+			commandBuilder.appendField("`" + mh.invocation + "`", h.getDescription(), false);
+			String usage = "```css\n";
+			for( String example : mh.getUsage() ) {
+				usage += example + "\n";
 			}
+			usage += "```";
+			commandBuilder.appendField("Usage", usage, false);
 			switch (mh.accessLevel) {
 				case DEFAULT:
 					commandBuilder.withFooterText("Active | Default");
@@ -46,6 +53,7 @@ public class HelpBuilder {
 					break;
 			}
 		} else {
+			commandBuilder.appendField(h.name, h.getDescription(), false);
 			commandBuilder.withFooterText("Passive | " + Constants.NAME + " Only");
 		}
 		return commandBuilder.build();

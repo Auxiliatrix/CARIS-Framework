@@ -1,7 +1,6 @@
 package caris.framework.handlers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
@@ -54,10 +53,9 @@ public class HelpHandler extends MessageHandler {
 	}
 	
 	@Override
-	public HashMap<String, String> getUsage() {
-		HashMap<String, String> usage = new HashMap<String, String>();
-		usage.put(invocation, "Displays basic information on how to use " + Constants.NAME);
-		usage.put(invocation + " <Module>", "Displays information on a module");
+	public ArrayList<String> getUsage() {
+		ArrayList<String> usage = new ArrayList<String>();
+		usage.add(invocation + " [module]");
 		return usage;
 	}
 }
