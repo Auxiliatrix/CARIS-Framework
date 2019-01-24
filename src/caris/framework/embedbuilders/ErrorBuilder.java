@@ -14,10 +14,16 @@ public class ErrorBuilder {
 				return "Syntax Error!";
 			}
 		},
-		CONTEXT {
+		KEYWORD {
 			@Override
 			public String toString() {
-				return "Context Error!";
+				return "Keyword Error!";
+			}
+		},
+		USAGE {
+			@Override
+			public String toString() {
+				return "Usage Error!";
 			}
 		},
 		DEFAULT {
@@ -31,17 +37,17 @@ public class ErrorBuilder {
 	public static EmbedBuilder errorBuilder = new EmbedBuilder().withColor(Color.RED);
 	public static final String ERROR_SYMBOL = ":no_entry_sign:";
 	
-	public EmbedObject getErrorEmbed(String errorMessage) {
+	public static EmbedObject getErrorEmbed(String errorMessage) {
 		return getErrorEmbed(ErrorType.DEFAULT, errorMessage);
 	}
 	
-	public EmbedObject getErrorEmbed(ErrorType errorType, String errorMessage) {
+	public static EmbedObject getErrorEmbed(ErrorType errorType, String errorMessage) {
 		errorBuilder.withAuthorName(ERROR_SYMBOL + errorType.toString());
 		errorBuilder.withDescription(errorMessage);
 		return errorBuilder.build();
 	}
 	
-	public EmbedObject getErrorEmbed(String errorType, String errorMessage) {
+	public static EmbedObject getErrorEmbed(String errorType, String errorMessage) {
 		errorBuilder.withAuthorName(ERROR_SYMBOL + errorType.toString());
 		errorBuilder.withDescription(errorMessage);
 		return errorBuilder.build();

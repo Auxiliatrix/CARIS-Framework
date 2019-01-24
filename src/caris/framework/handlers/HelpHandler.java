@@ -7,6 +7,7 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
+import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.HelpBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
@@ -37,11 +38,13 @@ public class HelpHandler extends MessageHandler {
 					}
 				}
 			}
-		}
-		if( handler == null ) {
-			return new EmbedReaction(HelpBuilder.getHelpEmbed(), messageEventWrapper.getChannel());
+			if( handler != null ) {
+				return new EmbedReaction(HelpBuilder.getHelpEmbed(handler), messageEventWrapper.getChannel());
+			} else {
+				return new EmbedReaction(ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "That module does not exist!"), messageEventWrapper.getChannel());
+			}
 		} else {
-			return new EmbedReaction(HelpBuilder.getHelpEmbed(handler), messageEventWrapper.getChannel());
+			return new EmbedReaction(HelpBuilder.getHelpEmbed(), messageEventWrapper.getChannel());
 		}
 	}
 
