@@ -4,73 +4,51 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
+import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.util.EmbedBuilder;
 
-public class HelpBuilder extends Builder {
+public class HelpBuilder {
 	
-	public MessageHandler handler;
+	public static EmbedBuilder helpBuilder = new EmbedBuilder()
+													.withAuthorIcon(Brain.cli.getApplicationIconURL())
+													.withAuthorName(Constants.NAME + " Help")
+													.withDescription(Constants.NAME + " employs modules that are controlled by both commands and conversational context.")
+													.withFooterIcon("Type `" + Constants.INVOCATION_PREFIX + "Help` <module> for information on how to use that module.");
+	public static EmbedBuilder commandBuilder = new EmbedBuilder()
+													.withAuthorIcon(Brain.cli.getApplicationIconURL())
+													.withAuthorName(Constants.NAME + " Help");
 	
-	public HelpBuilder() {
-		super();
-		handler = null;
-	}
-	
-	public HelpBuilder(MessageHandler handler) {
-		super();
-		this.handler = handler;
-	}
-	
-	@Override
-	public void buildEmbeds() {
-		if( handler == null ) {
-			buildDefault();
-		} else {
-			buildSpecific();
-		}
-	}
-	
-	public void buildDefault() {
-		embeds.add(new EmbedBuilder());
-		embeds.get(0).withAuthorName("Caris Help");
-		embeds.get(0).withDescription("Caris employs a variety of modules."
-				+ "\nSome of them require a specific prefix to use, but most of them can be activated simply by speaking to Caris in a conversational manner."
-				+ "**\n\nType `" + Constants.INVOCATION_PREFIX + "Help <module>` for more information on a specific function.**");
+	public static EmbedObject getHelpEmbed() {
+		helpBuilder.clearFields();
 		for( String name : Brain.handlers.keySet() ) {
-			Handler h = Brain.handlers.get(name);
-			if( !h.getDescription().isEmpty() ) {
-				if( h instanceof MessageHandler ) {
-					embeds.get(0).appendField(name, h.getDescription(), false);
-				}
-			}
+			helpBuilder.appendField(name, Brain.handlers.get(name).getDescription(), false);
 		}
+		return helpBuilder.build();
 	}
 	
-	public void buildSpecific() {
-		embeds.add(new EmbedBuilder());
-		embeds.get(0).withAuthorName(handler.name);
-		embeds.get(0).withTitle("Status: *" + ((handler.enabled) ? "ENABLED" : "DISABLED") + "*");
-		embeds.get(0).withDescription(handler.getDescription());
-		for( String usage : handler.getUsage().keySet() ) {
-			embeds.get(0).appendField("`" + usage + "`", "*" + handler.getUsage().get(usage) + "*", false);
-		}
-		String info = "";
-		if( handler instanceof MessageHandler ) {
-			MessageHandler messageHandler = (MessageHandler) handler;
-			switch (messageHandler.accessLevel) {
-			case DEFAULT:
-				info = "Active | Default";
-				break;
-			case ADMIN:
-				info = "Active | Admin Only";
-				break;
-			case DEVELOPER:
-				info = "Active | Developer Onlyv";
-				break;
+	public static EmbedObject getHelpEmbed(Handler h) {
+		commandBuilder.clearFields();
+		commandBuilder.withDescription(h.getDescription());
+		if( h instanceof MessageHandler ) {
+			MessageHandler mh = (MessageHandler) h;
+			for( String example : mh.getUsage().keySet() ) {
+				commandBuilder.appendField("`" + example + "`", mh.getUsage().get(example), false);
+			}
+			switch (mh.accessLevel) {
+				case DEFAULT:
+					commandBuilder.withFooterText("Active | Default");
+					break;
+				case ADMIN:
+					commandBuilder.withFooterText("Active | Admin Only");
+					break;
+				case DEVELOPER:
+					commandBuilder.withFooterText("Active | Developer Only");
+					break;
 			}
 		} else {
-			info = "Passive";
+			commandBuilder.withFooterText("Passive | " + Constants.NAME + " Only");
 		}
-		embeds.get(0).withFooterText(info);
+		return commandBuilder.build();
 	}
-	
+		
 }

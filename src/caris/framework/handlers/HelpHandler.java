@@ -39,9 +39,9 @@ public class HelpHandler extends MessageHandler {
 			}
 		}
 		if( handler == null ) {
-			return new EmbedReaction(new HelpBuilder().getEmbeds(), messageEventWrapper.getChannel());
+			return new EmbedReaction(HelpBuilder.getHelpEmbed(), messageEventWrapper.getChannel());
 		} else {
-			return new EmbedReaction(new HelpBuilder(handler).getEmbeds(), messageEventWrapper.getChannel());
+			return new EmbedReaction(HelpBuilder.getHelpEmbed(handler), messageEventWrapper.getChannel());
 		}
 	}
 

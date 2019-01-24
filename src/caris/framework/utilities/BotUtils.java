@@ -10,7 +10,6 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
 
 public class BotUtils {
@@ -42,26 +41,6 @@ public class BotUtils {
 		}).get();
 	}
 
-	public static void sendMessage( IChannel[] channel, EmbedBuilder embed ) {
-		for( IChannel c : channel ) {
-			sendMessage( c, embed );
-		}
-	}
-
-	public static void sendMessage( List<IChannel> channel, EmbedBuilder embed ) {
-		for( IChannel c : channel ) {
-			sendMessage( c, embed );
-		}
-	}
-	
-	public static void sendMessage( List<IChannel> channel, List<EmbedBuilder> embed ) {
-		for( IChannel c : channel ) {
-			for( EmbedBuilder e : embed ) {
-				sendMessage( c, e );
-			}
-		}
-	}
-
 	public static void sendMessage( IChannel[] channel, EmbedObject embed ) {
 		for( IChannel c : channel ) {
 			sendMessage( c, embed );
@@ -78,19 +57,6 @@ public class BotUtils {
 		for( IChannel c : channels ) {
 			sendMessage(c, message);
 		}
-	}
-
-	public static IMessage sendMessage( IChannel channel, EmbedBuilder embed ) {
-		return RequestBuffer.request(() -> {
-			try {
-				return channel.sendMessage( embed.build() );
-			}
-			catch (DiscordException e) {
-				Logger.error("Message could not be sent with error: ");
-				e.printStackTrace();
-				return null;
-			}
-		}).get();
 	}
 
 	public static IMessage sendMessage( IChannel channel, EmbedObject embed ) {
