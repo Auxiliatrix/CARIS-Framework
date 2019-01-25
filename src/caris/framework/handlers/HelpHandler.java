@@ -30,6 +30,9 @@ public class HelpHandler extends MessageHandler {
 		if( tokens.size() > 1 ) {
 			for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
 				if( accessLevel.toString().equalsIgnoreCase(tokens.get(1)) ) {
+					if( accessLevel == MessageHandler.Access.PASSIVE && !messageEventWrapper.developerAuthor ) {
+						return new EmbedReaction(ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You must be a developer to see these modules!"), messageEventWrapper.getChannel());
+					}
 					return new EmbedReaction(HelpBuilder.getHelpEmbed(accessLevel), messageEventWrapper.getChannel());
 				}
 			}
