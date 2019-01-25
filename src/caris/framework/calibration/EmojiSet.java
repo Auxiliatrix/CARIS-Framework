@@ -5,7 +5,7 @@ import com.vdurmont.emoji.EmojiManager;
 
 public class EmojiSet {
 			
-	public static Emoji[] numbers = new Emoji[] {
+	public static final Emoji[] NUMBERS = new Emoji[] {
 			EmojiManager.getForAlias("zero"),
 			EmojiManager.getForAlias("one"),
 			EmojiManager.getForAlias("two"),
@@ -19,11 +19,9 @@ public class EmojiSet {
 			EmojiManager.getForAlias("ten"),
 		};
 	
-	public static Emoji[] affirmative = new Emoji[] {
-			EmojiManager.getForAlias("thumbsup"),
-		};
+	public static final Emoji AFFIRMATIVE = EmojiManager.getForAlias("thumbsup");
+	public static final Emoji NEGATIVE = EmojiManager.getForAlias("thumbsdown");
 	
-	public static Emoji[] negative = new Emoji[] {
-			EmojiManager.getForAlias("thumbsdown"),
-		};
+	public static final Emoji LEFT = EmojiManager.getForAlias("arrow_left");
+	public static final Emoji RIGHT = EmojiManager.getForAlias("arrow_right");
 }

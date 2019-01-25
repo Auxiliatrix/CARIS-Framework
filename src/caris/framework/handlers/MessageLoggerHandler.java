@@ -24,8 +24,8 @@ public class MessageLoggerHandler extends GeneralHandler {
 	protected Reaction process(Event event) {
 		MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) event;
 		MultiReaction logMessage = new MultiReaction(-1);
-		logMessage.reactions.add(new HearReaction(messageReceivedEvent.getMessage().getFormattedContent(), messageReceivedEvent.getAuthor(), messageReceivedEvent.getChannel()));
-		logMessage.reactions.add(new MessageLogReaction(messageReceivedEvent.getChannel(), messageReceivedEvent.getMessage()));
+		logMessage.add(new HearReaction(messageReceivedEvent.getMessage().getFormattedContent(), messageReceivedEvent.getAuthor(), messageReceivedEvent.getChannel()));
+		logMessage.add(new MessageLogReaction(messageReceivedEvent.getChannel(), messageReceivedEvent.getMessage()));
 		return logMessage;
 	}
 	

@@ -60,7 +60,7 @@ public class GreetingHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction returnGreeting = new MultiReaction(0);
-		returnGreeting.reactions.add(new MessageReaction(getRandomGreeting() + ", " + messageEventWrapper.getAuthor().getDisplayName(messageEventWrapper.getGuild()) + "!", messageEventWrapper.getChannel(), 0));
+		returnGreeting.add(new MessageReaction(getRandomGreeting() + ", " + messageEventWrapper.getAuthor().getDisplayName(messageEventWrapper.getGuild()) + "!", messageEventWrapper.getChannel(), 0));
 		return returnGreeting;
 	}
 	

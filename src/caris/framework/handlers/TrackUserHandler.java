@@ -27,14 +27,14 @@ public class TrackUserHandler extends GeneralHandler {
 		UserJoinEvent userJoinEvent = (UserJoinEvent) event;
 		Logger.print("New user " + userJoinEvent.getUser().getLongID() + " joined (" + userJoinEvent.getGuild().getLongID() + ") <" + userJoinEvent.getGuild().getName() + ">", 0);
 		MultiReaction welcome = new MultiReaction(-1);
-		welcome.reactions.add(new TrackUserReaction(userJoinEvent.getGuild(), userJoinEvent.getUser()));
+		welcome.add(new TrackUserReaction(userJoinEvent.getGuild(), userJoinEvent.getUser()));
 		String addedRoles = "";
-		if( !welcome.reactions.isEmpty() && addedRoles.length() > 2) {
+		if( addedRoles.length() > 2) {
 			addedRoles = addedRoles.substring(0, addedRoles.length()-2);
-			welcome.reactions.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!" +  
+			welcome.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!" +  
 					"\nYou have been given the following roles: "+ addedRoles + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
 		} else {
-			welcome.reactions.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
+			welcome.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
 		}
 		return welcome;
 	}

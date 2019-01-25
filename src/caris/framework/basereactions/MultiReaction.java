@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MultiReaction extends Reaction {
 
-	public ArrayList<Reaction> reactions;
+	protected ArrayList<Reaction> reactions;
 	
 	public MultiReaction() {
 		this(1);
@@ -22,6 +22,10 @@ public class MultiReaction extends Reaction {
 	public MultiReaction(ArrayList<Reaction> reactions, int priority) {
 		super(priority);
 		this.reactions = reactions;
+	}
+	
+	public boolean add(Reaction reaction) {
+		return reactions.add(reaction);
 	}
 	
 	@Override

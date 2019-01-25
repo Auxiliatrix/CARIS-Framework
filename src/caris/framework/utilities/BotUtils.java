@@ -1,7 +1,5 @@
 package caris.framework.utilities;
 
-import java.util.List;
-
 import caris.framework.library.GuildInfo;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.ClientBuilder;
@@ -28,6 +26,19 @@ public class BotUtils {
 				.build();
 	}
 
+	public static IMessage sendMessage(IChannel channel, String message, EmbedObject embed) {
+		return RequestBuffer.request(() -> {
+			try {
+				return channel.sendMessage(message, embed);
+			}
+			catch (DiscordException e) {
+				Logger.error("Message could not be sent with error: ");
+				e.printStackTrace();
+				return null;
+			}
+		}).get();
+	}
+	
 	public static IMessage sendMessage(IChannel channel, String message) {
 		return RequestBuffer.request(() -> {
 			try {
@@ -39,24 +50,6 @@ public class BotUtils {
 				return null;
 			}
 		}).get();
-	}
-
-	public static void sendMessage( IChannel[] channel, EmbedObject embed ) {
-		for( IChannel c : channel ) {
-			sendMessage( c, embed );
-		}
-	}
-
-	public static void sendMessage( List<IChannel> channel, EmbedObject embed ) {
-		for( IChannel c : channel ) {
-			sendMessage( c, embed );
-		}
-	}
-
-	public static void sendMessage( List<IChannel> channels, String message ) {
-		for( IChannel c : channels ) {
-			sendMessage(c, message);
-		}
 	}
 
 	public static IMessage sendMessage( IChannel channel, EmbedObject embed ) {

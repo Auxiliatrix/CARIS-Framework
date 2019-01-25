@@ -1,34 +1,35 @@
 package caris.framework.basehandlers;
 
+import java.util.ArrayList;
+
+import com.vdurmont.emoji.Emoji;
+
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
+import caris.framework.tokens.MessageContent;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageDeleteEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionEvent;
+import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IReaction;
 
 public abstract class InteractiveHandler extends Handler {
 
 	public IMessage source;
 	
 	public InteractiveHandler(String name) {
-		this(name, false, null);
+		this(name, false);
 	}
 	
 	public InteractiveHandler(String name, boolean allowBots) {
-		this(name, allowBots, null);
+		super(name, allowBots);
+		this.source = null;
+		Brain.interactives.add(this);
 	}
 	
-	public InteractiveHandler(String name, IMessage source) {
-		this(name, false, source);
-	}
-	
-	public InteractiveHandler(String name, boolean allowBots, IMessage source) {
-		super(name);
-		this.source = source;
-	}
-
 	@Override
 	public Reaction handle(Event event) {
 		Logger.debug("Checking interactive " + name, 0, true);
@@ -52,13 +53,35 @@ public abstract class InteractiveHandler extends Handler {
 				Logger.debug("Non-source interaction. Aborting.", 1, true);
 				return null;
 			}
+		} else if( event instanceof MessageDeleteEvent ) {
+			MessageDeleteEvent messageDeleteEvent = (MessageDeleteEvent) event;
+			if( source != null && messageDeleteEvent.getMessage() == source ) {
+				Logger.debug("Interactive source was deleted. Removing interactive.");
+				destroy();
+				return null;
+			} else {
+				Logger.debug("Not a ReactionEvent. Aborting.", 1, true);
+				return null;
+			}
 		} else {
 			Logger.debug("Not a ReactionEvent. Aborting.", 1, true);
 			return null;
 		}
 	}
 
+	protected boolean equivalentEmojis(IReaction reaction, Emoji emoji) {
+		return reaction.getEmoji().getName().equals(ReactionEmoji.of(emoji.getUnicode()).getName());
+	}
+	
+	protected void destroy() {
+		Brain.interactives.remove(this);
+	}
+	
 	public abstract Reaction process(ReactionEvent reactionEvent);
+	
+	public abstract MessageContent getDefault();
+	
+	public abstract ArrayList<Emoji> getInitialReactions();
 	
 	@Override
 	public abstract String getDescription();
@@ -71,9 +94,5 @@ public abstract class InteractiveHandler extends Handler {
 			}
 		}
 		return false;
-	}
-	
-	public void deactivate() {
-		Brain.interactives.remove(this);
 	}
 }
