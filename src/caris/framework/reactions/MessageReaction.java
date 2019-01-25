@@ -37,14 +37,17 @@ public class MessageReaction extends Reaction {
 	
 	@Override
 	public void run() {
-		Logger.say(message + "\n" + embed.toString(), channel);
 		if( message != "" && embed != null ) {
+			Logger.say(message, channel);
+			Logger.say(embed.toString(), channel);
 			BotUtils.sendMessage(channel, message, embed);
 		} else if( message == "" && embed == null ) {
 			Logger.error("Message sent with no content.");
 		} else if( message.isEmpty() ) {
+			Logger.say(embed.toString(), channel);
 			BotUtils.sendMessage(channel, embed);
 		} else {
+			Logger.say(message, channel);
 			BotUtils.sendMessage(channel, message);
 		}
 	}
