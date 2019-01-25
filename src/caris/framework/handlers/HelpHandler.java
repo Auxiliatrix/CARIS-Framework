@@ -10,7 +10,7 @@ import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.HelpBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
-import caris.framework.reactions.EmbedReaction;
+import caris.framework.reactions.MessageReaction;
 
 public class HelpHandler extends MessageHandler {
 
@@ -31,9 +31,9 @@ public class HelpHandler extends MessageHandler {
 			for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
 				if( accessLevel.toString().equalsIgnoreCase(tokens.get(1)) ) {
 					if( accessLevel == MessageHandler.Access.PASSIVE && !messageEventWrapper.developerAuthor ) {
-						return new EmbedReaction(ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You must be a developer to see these modules!"), messageEventWrapper.getChannel());
+						return new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You must be a developer to see these modules!"));
 					}
-					return new EmbedReaction(HelpBuilder.getHelpEmbed(accessLevel), messageEventWrapper.getChannel());
+					return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed(accessLevel));
 				}
 			}
 			for( String name : Brain.handlers.keySet() ) {
@@ -42,12 +42,12 @@ public class HelpHandler extends MessageHandler {
 				}
 			}
 			if( handler != null ) {
-				return new EmbedReaction(HelpBuilder.getHelpEmbed(handler), messageEventWrapper.getChannel());
+				return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed(handler));
 			} else {
-				return new EmbedReaction(ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "That module does not exist!"), messageEventWrapper.getChannel());
+				return new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "That module does not exist!"));
 			}
 		} else {
-			return new EmbedReaction(HelpBuilder.getHelpEmbed(), messageEventWrapper.getChannel());
+			return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed());
 		}
 	}
 

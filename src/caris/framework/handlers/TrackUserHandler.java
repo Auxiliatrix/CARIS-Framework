@@ -28,14 +28,7 @@ public class TrackUserHandler extends GeneralHandler {
 		Logger.print("New user " + userJoinEvent.getUser().getLongID() + " joined (" + userJoinEvent.getGuild().getLongID() + ") <" + userJoinEvent.getGuild().getName() + ">", 0);
 		MultiReaction welcome = new MultiReaction(-1);
 		welcome.add(new TrackUserReaction(userJoinEvent.getGuild(), userJoinEvent.getUser()));
-		String addedRoles = "";
-		if( addedRoles.length() > 2) {
-			addedRoles = addedRoles.substring(0, addedRoles.length()-2);
-			welcome.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!" +  
-					"\nYou have been given the following roles: "+ addedRoles + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
-		} else {
-			welcome.add(new MessageReaction(("Welcome, " + userJoinEvent.getUser().getName() + "!"), Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel()));
-		}
+		welcome.add(new MessageReaction(Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel(), ("Welcome, " + userJoinEvent.getUser().getName() + "!")));
 		return welcome;
 	}
 	
