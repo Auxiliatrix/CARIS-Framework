@@ -11,7 +11,6 @@ import caris.framework.embedbuilders.HelpBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.reactions.EmbedReaction;
-import caris.framework.utilities.StringUtilities;
 
 public class HelpHandler extends MessageHandler {
 
@@ -27,14 +26,16 @@ public class HelpHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		ArrayList<String> tokens = messageEventWrapper.tokens;
-		MessageHandler handler = null;
+		Handler handler = null;
 		if( tokens.size() > 1 ) {
-			for( int f=1; f<tokens.size(); f++ ) {
-				if( StringUtilities.containsIgnoreCase(Brain.handlers.keySet(), tokens.get(f)) ) {
-					Handler temp = Brain.handlers.get(tokens.get(f));
-					if( temp instanceof MessageHandler ) {
-						handler = (MessageHandler) temp;
-					}
+			for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
+				if( accessLevel.toString().equalsIgnoreCase(tokens.get(1)) ) {
+					return new EmbedReaction(HelpBuilder.getHelpEmbed(accessLevel), messageEventWrapper.getChannel());
+				}
+			}
+			for( String name : Brain.handlers.keySet() ) {
+				if( name.equalsIgnoreCase(tokens.get(1)) ) {
+					handler = Brain.handlers.get(name);
 				}
 			}
 			if( handler != null ) {

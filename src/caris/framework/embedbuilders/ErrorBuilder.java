@@ -26,6 +26,12 @@ public class ErrorBuilder {
 				return "Usage Error!";
 			}
 		},
+		ACCESS {
+			@Override
+			public String toString() {
+				return "Access Denied!";
+			}
+		},
 		DEFAULT {
 			@Override
 			public String toString() {
@@ -35,7 +41,7 @@ public class ErrorBuilder {
 	}
 	
 	public static EmbedBuilder errorBuilder = new EmbedBuilder().withColor(Color.RED);
-	public static final String ERROR_SYMBOL = ":no_entry_sign:";
+	public static final String ERROR_SYMBOL = "⚠️ ";
 	
 	public static EmbedObject getErrorEmbed(String errorMessage) {
 		return getErrorEmbed(ErrorType.DEFAULT, errorMessage);

@@ -15,7 +15,12 @@ public class HelpBuilder {
 													.withColor(Color.CYAN)
 													.withAuthorIcon(Brain.cli.getApplicationIconURL())
 													.withAuthorName(Constants.NAME + " Help")
-													.withDescription(Constants.NAME + " employs modules that are controlled by both commands and conversational context.")
+													.withTitle("Categories:")
+													.withFooterText("Type `" + Constants.INVOCATION_PREFIX + "Help` <category> for commands in that category.");
+	public static EmbedBuilder categoryBuilder = new EmbedBuilder()
+													.withColor(Color.CYAN)
+													.withAuthorIcon(Brain.cli.getApplicationIconURL())
+													.withAuthorName(Constants.NAME + " Help")
 													.withFooterText("Type `" + Constants.INVOCATION_PREFIX + "Help` <module> for information on how to use that module.");
 	public static EmbedBuilder commandBuilder = new EmbedBuilder()
 													.withColor(Color.CYAN)
@@ -24,10 +29,39 @@ public class HelpBuilder {
 	
 	public static EmbedObject getHelpEmbed() {
 		helpBuilder.clearFields();
-		for( String name : Brain.handlers.keySet() ) {
-			helpBuilder.appendField(name, Brain.handlers.get(name).getDescription(), false);
+		String description = "";
+		for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
+			description += accessLevel.toString() + "\n";
 		}
+		if( description.isEmpty() ) {
+			description = "No modules were found for this category.";
+		}
+		helpBuilder.withDescription("```yaml\n" + description + "```");
 		return helpBuilder.build();
+	}
+	
+	public static EmbedObject getHelpEmbed(MessageHandler.Access accessLevel) {
+		categoryBuilder.clearFields();
+		String description = "";
+		for( String name : Brain.handlers.keySet() ) {
+			Handler h = Brain.handlers.get(name);
+			if( h instanceof MessageHandler ) {
+				MessageHandler mh = (MessageHandler) h;
+				if( mh.accessLevel == accessLevel ) {
+					description += name + "\n";
+				}
+			} else if( accessLevel == MessageHandler.Access.PASSIVE ){
+				description += name + "\n";
+			}
+		}
+		if( description.isEmpty() ) {
+			description = "```HTTP\nNo modules were found for this category.\n```";
+		} else {
+			description = "```yaml\n" + description + "```";
+		}
+		categoryBuilder.withTitle(accessLevel.toString() + " Modules:");
+		categoryBuilder.withDescription(description);
+		return categoryBuilder.build();
 	}
 	
 	public static EmbedObject getHelpEmbed(Handler h) {
@@ -35,25 +69,20 @@ public class HelpBuilder {
 		if( h instanceof MessageHandler ) {
 			MessageHandler mh = (MessageHandler) h;
 			commandBuilder.appendField("`" + mh.invocation + "`", h.getDescription(), false);
-			String usage = "```css\n";
+			String usage = "";
 			for( String example : mh.getUsage() ) {
 				usage += example + "\n";
 			}
-			usage += "```";
-			commandBuilder.appendField("Usage", usage, false);
-			switch (mh.accessLevel) {
-				case DEFAULT:
-					commandBuilder.withFooterText("Active | Default");
-					break;
-				case ADMIN:
-					commandBuilder.withFooterText("Active | Admin Only");
-					break;
-				case DEVELOPER:
-					commandBuilder.withFooterText("Active | Developer Only");
-					break;
+			if( usage.isEmpty() ) {
+				usage = "```http\nNo commands were found for this module.\n```";
+			} else {
+				usage = "```css\n" + usage + "```";
 			}
+			commandBuilder.appendField("Usage", usage, false);
+			commandBuilder.withFooterText("Active | " + mh.accessLevel.toString());
 		} else {
 			commandBuilder.appendField(h.name, h.getDescription(), false);
+			commandBuilder.appendField("Usage", "```ini\n[Passive]\n```", false);
 			commandBuilder.withFooterText("Passive | " + Constants.NAME + " Only");
 		}
 		return commandBuilder.build();
