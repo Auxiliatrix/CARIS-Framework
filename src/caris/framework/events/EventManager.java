@@ -7,6 +7,7 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
+import caris.framework.reactions.SaveDataReaction;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -47,6 +48,9 @@ public class EventManager extends SuperEvent {
 					}
 					Arrays.sort(options);
 					options[0].run();
+				}
+				if( !passiveQueue.isEmpty() || !reactions.isEmpty() ) {
+					passiveQueue.add(new SaveDataReaction());
 				}
 				MultiReaction passiveQueueExecutor = new MultiReaction(passiveQueue);
 				passiveQueueExecutor.run();
