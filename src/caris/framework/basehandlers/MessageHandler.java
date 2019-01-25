@@ -14,12 +14,6 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 public abstract class MessageHandler extends Handler {
 		
 	public enum Access {
-		PASSIVE  {
-			@Override
-			public String toString() {
-				return "Passive";
-			}
-		},
 		DEFAULT {
 			@Override
 			public String toString() {
@@ -37,7 +31,13 @@ public abstract class MessageHandler extends Handler {
 			public String toString() {
 				return "Developer";
 			}
-		}
+		},
+		PASSIVE  {
+			@Override
+			public String toString() {
+				return "Passive";
+			}
+		},
 	};
 	
 	public String invocation;

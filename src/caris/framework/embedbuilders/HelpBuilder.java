@@ -31,7 +31,11 @@ public class HelpBuilder {
 		helpBuilder.clearFields();
 		String description = "";
 		for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
-			description += accessLevel.toString() + "\n";
+			if( accessLevel == MessageHandler.Access.DEVELOPER || accessLevel == MessageHandler.Access.PASSIVE ) {
+				description += "🔒 " + accessLevel.toString() + "\n";
+			} else {
+				description += accessLevel.toString() + "\n";
+			}
 		}
 		if( description.isEmpty() ) {
 			description = "No modules were found for this category.";
