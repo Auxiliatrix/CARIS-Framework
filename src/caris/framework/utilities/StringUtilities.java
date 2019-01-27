@@ -1,10 +1,84 @@
 package caris.framework.utilities;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 public class StringUtilities {
+	
+	@SuppressWarnings("serial")
+	public static final HashMap<String, Integer> NUMBER_LOOKUP = new HashMap<String, Integer>() {{
+		put("zero", 0);
+		put("one", 1);
+		put("two", 2);
+		put("three", 3);
+		put("four", 4);
+		put("five", 5);
+		put("six", 6);
+		put("seven", 7);
+		put("eight", 8);
+		put("nine", 9);
+		put("ten", 10);
+		put("eleven", 11);
+		put("twelve", 12);
+		put("thirteen", 13);
+		put("fourteen", 14);
+		put("fifteen", 15);
+		put("sixteen", 16);
+		put("seventeen", 17);
+		put("eighteen", 18);
+		put("nineteen", 19);
+		put("twenty", 20);
+		put("thirty", 30);
+		put("forty", 40);
+		put("fifty", 50);
+		put("sixty", 60);
+		put("seventy", 70);
+		put("eighty", 80);
+		put("ninety", 90);
+	}};
+	
+	@SuppressWarnings("serial")
+	public static final HashMap<String, Integer> MULTIPLIER_LOOKUP = new HashMap<String, Integer>() {{
+		put("hundred", 100);
+		put("thousand", 1000);
+		put("million", 1000000);
+		put("billion", 1000000000);
+	}};
+	
+	public static int wordToNumber(String input) {
+		int total = 0;
+		int subTotal = 0;
+		String lastToken = "";
+		input = input.toLowerCase().trim();
+		input = input.replace("-", " ");
+		input = input.replaceAll("[^a-zA-Z ]", "");
+		String[] tokens = input.split("\\s+");
+		for( String token : tokens ) {
+			if( NUMBER_LOOKUP.keySet().contains(token) ) {
+				subTotal += NUMBER_LOOKUP.get(token);
+			} else if( MULTIPLIER_LOOKUP.keySet().contains(token) ) {
+				if( lastToken.equals("a") ) {
+					total += MULTIPLIER_LOOKUP.get(token);
+				} else {
+					total += subTotal;
+					int lesser = total % MULTIPLIER_LOOKUP.get(token);
+					total -= lesser;
+					total += lesser * MULTIPLIER_LOOKUP.get(token);
+					subTotal = 0;
+				}
+			}
+			lastToken = token;
+		}
+		if( subTotal >= 0 ) {
+			total += subTotal;
+		}
+		if( total <= 0 ) {
+			throw new NumberFormatException("The value specified is too large!");
+		}
+		return total;
+	}
 	
 	public static boolean equalsAnyOfIgnoreCase( String a, String...b ) {
 		return equalsAnyOfIgnoreCase(a, Arrays.asList(b));
