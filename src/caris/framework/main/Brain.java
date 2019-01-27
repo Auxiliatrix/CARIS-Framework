@@ -1,16 +1,20 @@
 package caris.framework.main;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.reflections.Reflections;
 
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.InteractiveHandler;
+import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
 import caris.framework.events.EventManager;
+import caris.framework.events.TimedEventManager;
 import caris.framework.library.JSONable.JSONReloadException;
 import caris.framework.library.Variables;
 import caris.framework.utilities.BotUtils;
@@ -26,19 +30,20 @@ public class Brain {
 	
 	/* Handlers */
 	public static Map<String, Handler> handlers = new HashMap<String, Handler>();
+	
+	/* Interactives */
+	public static ArrayList<InteractiveHandler> interactives = new ArrayList<InteractiveHandler>();
 
 	/* Event Managers */
 	public static EventManager eventManager = new EventManager();
 
-	public static Calendar current = Calendar.getInstance();
-
 	public static IDiscordClient cli = null;
 
 	public static boolean emptyReported = true;
-	public static ArrayList<Thread> threadQueue = new ArrayList<Thread>();
 	
-	/* Interactives */
-	public static ArrayList<InteractiveHandler> interactives = new ArrayList<InteractiveHandler>();
+	/* Synchronized */
+	public static List<Thread> threadQueue = Collections.synchronizedList(new ArrayList<Thread>());
+	public static ConcurrentHashMap<Long, Reaction> timedQueue = new ConcurrentHashMap<Long, Reaction>();
 	
 	public static void main(String[] args) {
 
@@ -75,9 +80,8 @@ public class Brain {
 			iterate();
 		}
 	}
-
+	
 	public static void iterate() { // do things. nothing gets past this block.
-		current = Calendar.getInstance();
 		if( !threadQueue.isEmpty() ) {
 			emptyReported = false;
 			Logger.debug("Threads in queue: " + threadQueue.size(), true);
@@ -144,6 +148,10 @@ public class Brain {
 		for( String s : handlers.keySet() ) {
 			Logger.print(s, 2);
 		}
+		
+		TimedEventManager timedEvents = new TimedEventManager();
+		timedEvents.start();
+				
 		Logger.print("Initialization complete.");
 	}
 }

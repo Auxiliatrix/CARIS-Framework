@@ -1,6 +1,7 @@
 package caris.framework.library;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,19 +10,19 @@ public class Variables implements JSONable {
 	
 
 	// Dynamic global variables
-	public JSONObject variableData;
+	public AtomicReference<JSONObject> atomicVariableData;
 	
 	/* Gigantic Variable Library */
-	public HashMap<Long, GuildInfo> guildIndex;
+	public ConcurrentHashMap<Long, GuildInfo> guildIndex;
 	
 	/* Global UserData */
-	public HashMap<Long, GlobalUserInfo> globalUserIndex;
+	public ConcurrentHashMap<Long, GlobalUserInfo> globalUserIndex;
 	
 	public Variables( JSONObject json ) throws JSONReloadException {
 		this();
 		if( json != null ) {
 			try {
-				variableData = json.getJSONObject("variableData");
+				atomicVariableData = new AtomicReference<JSONObject>(json.getJSONObject("atomicVariableData"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -55,9 +56,9 @@ public class Variables implements JSONable {
 	}
 	
 	public Variables() {
-		variableData = new JSONObject();
-		guildIndex = new HashMap<Long, GuildInfo>();
-		globalUserIndex = new HashMap<Long, GlobalUserInfo>();
+		atomicVariableData = new AtomicReference<JSONObject>(new JSONObject());
+		guildIndex = new ConcurrentHashMap<Long, GuildInfo>();
+		globalUserIndex = new ConcurrentHashMap<Long, GlobalUserInfo>();
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class Variables implements JSONable {
 		}
 		JSONData.put("guildIndex", JSONguildIndex);
 		JSONData.put("globalUserIndex", JSONglobalUserIndex);
-		JSONData.put("variableData", variableData);
+		JSONData.put("atomicVariableData", atomicVariableData.get());
 		return JSONData;
 	}
 }
