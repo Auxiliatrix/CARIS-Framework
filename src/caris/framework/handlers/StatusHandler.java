@@ -8,7 +8,6 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
 import caris.framework.embedbuilders.StatusBuilder;
 import caris.framework.events.MessageEventWrapper;
-import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
 
 public class StatusHandler extends MessageHandler {
@@ -25,7 +24,7 @@ public class StatusHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		long ping = System.currentTimeMillis() - messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.of("America/Los_Angeles")).toInstant().toEpochMilli();
-		return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping, Brain.threadQueue.size()));
+		return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping));
 	}
 
 	@Override

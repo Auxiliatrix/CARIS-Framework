@@ -134,4 +134,32 @@ public class StringUtilities {
 		}
 		return true;
 	}
+	
+	public static String leftJustify(String string, int length) {
+		String result = string;
+		for( int f=0; f<length-string.length(); f++) {
+			result += " ";
+		}
+		return result;
+	}
+	
+	public static String rightJustify(String string, int length) {
+		String result = "";
+		for( int f=0; f<length-string.length(); f++) {
+			result += " ";
+		}
+		return result + string;
+	}
+	
+	public static String centerJustify(String string, int length) {
+		String result = "";
+		for( int f=0; f<(length-string.length())/2 + (length-string.length())%2; f++) {
+			result += " ";
+		}
+		result += string;
+		for( int f=0; f<(length-string.length())/2; f++ ) {
+			result += " ";
+		}
+		return result;
+	}
 }

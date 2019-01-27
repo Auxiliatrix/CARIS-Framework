@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
+import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.util.EmbedBuilder;
 
@@ -14,11 +15,13 @@ public class StatusBuilder {
 													.withAuthorName(Constants.NAME + " Status")
 													.withAuthorIcon(Brain.cli.getApplicationIconURL());
 
-	public static EmbedObject getStatusEmbed(long ping, int threads) {
+	public static EmbedObject getStatusEmbed(long ping) {
 		statusBuilder.clearFields();
 		statusBuilder.withTitle("**ONLINE**");
-		statusBuilder.appendField("Ping", "`" + ping + "`", true);
-		statusBuilder.appendField("Threads", "`" + threads + "`", true);
+		statusBuilder.appendField("Ping", "```" + StringUtilities.leftJustify(ping+"", 29) + "```", true);
+		statusBuilder.appendField("Threads", "```" + StringUtilities.leftJustify(Brain.threadQueue.size()+"", 29) + "```", true);
+		statusBuilder.appendField("Guilds", "```" + StringUtilities.leftJustify(Brain.cli.getGuilds().size()+"", 29) + "```", true);
+		statusBuilder.appendField("Users", "```" + StringUtilities.leftJustify(Brain.cli.getUsers().size()+"", 29	) + "```", true);
 		return statusBuilder.build();
 	}
 	
