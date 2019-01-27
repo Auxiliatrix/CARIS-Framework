@@ -6,6 +6,7 @@ public interface JSONable {
 	
 	public JSONObject getJSONData();
 	
+	@SuppressWarnings("serial")
 	class JSONReloadException extends Exception {
 		public JSONReloadException() {
 			super();
