@@ -157,6 +157,9 @@ public class StringUtilities {
 		if( total < 0 ) {
 			throw new NumberFormatException("The value specified is too large!");
 		}
+		if( total == 0 && tokens.get(tokens.size()-1).equals("a") || tokens.get(tokens.size()-1).equals("an") ) {
+			total = 1;
+		}
 		return total;
 	}
 	

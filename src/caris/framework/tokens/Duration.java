@@ -1,7 +1,15 @@
 package caris.framework.tokens;
 
 public class Duration {
-
+	
+	public static Duration of( int days, int hours, int minutes, int seconds ) {
+		if( sanitary(days, hours, minutes, seconds) ) {
+			return new Duration(days, hours, minutes, seconds);
+		} else {
+			return null;
+		}
+	}
+	
 	private int days;
 	private int hours;
 	private int minutes;
@@ -31,12 +39,12 @@ public class Duration {
 		return seconds;
 	}
 	
-	public static Duration of( int days, int hours, int minutes, int seconds ) {
-		if( sanitary(days, hours, minutes, seconds) ) {
-			return new Duration(days, hours, minutes, seconds);
-		} else {
-			return null;
-		}
+	public long asSeconds() {
+		return ((this.days * 24 + this.hours) * 60 + this.minutes) * 60 + this.seconds;
+	}
+	
+	public long asMili() {
+		return asSeconds() * 1000;
 	}
 	
 	public Duration plus( Duration duration ) {
