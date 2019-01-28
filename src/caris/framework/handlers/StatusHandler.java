@@ -19,13 +19,16 @@ public class StatusHandler extends MessageHandler {
 
 	@Override
 	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return invoked(messageEventWrapper);
+		return invoked(messageEventWrapper) || mentioned(messageEventWrapper) && messageEventWrapper.containsWord("status");
 	}
 
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		long ping = System.currentTimeMillis() - messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.of("America/Los_Angeles")).toInstant().toEpochMilli();
-		return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping));
+		if( !invoked(messageEventWrapper) ) {
+			return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping), 2);
+		}
+		return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping), 1);
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class StatusHandler extends MessageHandler {
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
 		usage.add(invocation);
+		usage.add(Constants.NAME + ", what's your status?");
 		return usage;
 	}
 	
