@@ -22,7 +22,7 @@ public class TrackChannelReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		Brain.variables.guildIndex.get(guild.getLongID()).addChannel(channel);
 		Logger.print("Channel <" + channel.getName() + "> (" + channel.getLongID() + ") added to Guild <" + guild.getName() + "> (" + guild.getLongID() + ")", 0);
 	}

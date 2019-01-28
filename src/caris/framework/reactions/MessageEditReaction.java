@@ -20,7 +20,7 @@ public class MessageEditReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if( content.content != "" && content.embed != null ) {
 			message.edit(content.content, content.embed);
 		} else if( content.content == "" && content.embed == null ) {

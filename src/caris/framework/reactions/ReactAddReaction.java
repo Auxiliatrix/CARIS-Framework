@@ -22,7 +22,7 @@ public class ReactAddReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		message.addReaction(emoji);
 		Logger.print("Reaction [" + emoji.getAliases().toString() + "] added to message (" + message.getLongID() + ")", 3);
 	}

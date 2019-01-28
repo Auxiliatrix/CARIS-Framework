@@ -32,7 +32,7 @@ public class UpdateChannelReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if( override || !Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getGuild().getLongID()).channelData.has(key) ) {
 			Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.put(key, value);
 		}

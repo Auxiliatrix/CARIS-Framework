@@ -21,7 +21,7 @@ public class MessageDeleteReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if( message != null ) {
 			Long id = message.getLongID();
 			message.delete();

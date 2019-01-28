@@ -54,7 +54,7 @@ public class EventManager extends SuperEvent {
 					passiveQueue.add(new SaveDataReaction());
 				}
 				MultiReaction passiveQueueExecutor = new MultiReaction(passiveQueue);
-				passiveQueueExecutor.run();
+				passiveQueueExecutor.start();
 			}
 		};
 		Brain.threadQueue.add(thread);

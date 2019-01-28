@@ -36,7 +36,7 @@ public class MessageReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if( message != "" && embed != null ) {
 			Logger.say(message, channel);
 			Logger.say(embed.toString(), channel);

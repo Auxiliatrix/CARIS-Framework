@@ -23,7 +23,7 @@ public class ReactRemoveReaction extends Reaction {
 	}
 
 	@Override
-	public void run() {
+	public void process() {
 		if( reaction.getUserReacted(user) ) {
 			message.removeReaction(user, reaction);
 		}

@@ -11,7 +11,7 @@ public class SaveDataReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		SaveDataUtilities.JSONOut("tmp/variables.json", Brain.variables.getJSONData());
 	}
 	

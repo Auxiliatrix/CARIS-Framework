@@ -14,7 +14,7 @@ public class ReactionRunnable extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		runnable.run();
 	}
 	

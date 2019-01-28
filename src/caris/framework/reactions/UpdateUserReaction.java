@@ -34,7 +34,7 @@ public class UpdateUserReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if( override || !Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.has(key) ) {
 			Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.put(key, value);
 			}

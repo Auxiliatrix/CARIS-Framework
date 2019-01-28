@@ -19,7 +19,7 @@ public class StatusBuilder {
 		statusBuilder.clearFields();
 		statusBuilder.withTitle("**ONLINE**");
 		statusBuilder.appendField("Ping", "```" + StringUtilities.leftJustify(ping+"", 29) + "```", true);
-		statusBuilder.appendField("Threads", "```" + StringUtilities.leftJustify(Brain.threadQueue.size()+"", 29) + "```", true);
+		statusBuilder.appendField("Threads", "```" + StringUtilities.leftJustify(Brain.threadCount+"", 29) + "```", true);
 		statusBuilder.appendField("Guilds", "```" + StringUtilities.leftJustify(Brain.cli.getGuilds().size()+"", 29) + "```", true);
 		statusBuilder.appendField("Users", "```" + StringUtilities.leftJustify(Brain.cli.getUsers().size()+"", 29	) + "```", true);
 		return statusBuilder.build();

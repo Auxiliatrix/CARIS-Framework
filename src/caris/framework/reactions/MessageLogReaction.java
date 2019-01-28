@@ -21,7 +21,7 @@ public class MessageLogReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if(!channel.isPrivate()) {
 		Logger.print("Logged message from (" + channel.getLongID() + ") <" + channel.getName() + ">", 2);
 		}

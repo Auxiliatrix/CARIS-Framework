@@ -20,7 +20,7 @@ public class RoleAssignReaction extends Reaction {
 		this.role = role;
 	}
 	
-	public void run() {
+	public void process() {
 		user.addRole(role);
 		Logger.print("Role \"" + role.getName() + "\" added to " + user.getName(), 1);
 	}

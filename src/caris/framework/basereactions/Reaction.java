@@ -1,6 +1,8 @@
 package caris.framework.basereactions;
 
-public abstract class Reaction implements Runnable, Comparable<Reaction> {
+import caris.framework.main.Brain;
+
+public abstract class Reaction extends Thread implements Comparable<Reaction> {
 	
 	public int priority;
 	
@@ -13,7 +15,13 @@ public abstract class Reaction implements Runnable, Comparable<Reaction> {
 	}
 	
 	@Override
-	public abstract void run();
+	public void run() {
+		Brain.threadCount.incrementAndGet();
+		process();
+		Brain.threadCount.decrementAndGet();
+	}
+	
+	public abstract void process();
 	
 	@Override
 	public int compareTo(Reaction r) {

@@ -20,7 +20,7 @@ public class BalanceReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		Brain.variables.globalUserIndex.get(user.getLongID()).balance += balance;
 	}
 

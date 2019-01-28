@@ -20,7 +20,7 @@ public class RoleRemoveReaction extends Reaction {
 		this.role = role;
 	}
 	
-	public void run() {
+	public void process() {
 		if( user.hasRole(role) ) {
 			user.removeRole(role);
 			Logger.print("Role \"" + role.getName() + "\" removed from " + user.getName(), 1);

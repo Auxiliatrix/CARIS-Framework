@@ -24,7 +24,7 @@ public class HearReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		try {
 			Logger.hear(message, user, channel);
 		} catch(NullPointerException n) {

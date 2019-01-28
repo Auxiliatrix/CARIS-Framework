@@ -20,7 +20,7 @@ public class TrackGuildReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		if( !Brain.variables.guildIndex.containsKey(guild.getLongID()) ) {
 			GuildInfo guildInfo = new GuildInfo(guild);
 			Brain.variables.guildIndex.put( guild.getLongID(), guildInfo );

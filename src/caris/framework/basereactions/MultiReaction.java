@@ -30,9 +30,9 @@ public class MultiReaction extends Reaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		for( Reaction reaction : reactions ) {
-			reaction.run();
+			reaction.start();
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {

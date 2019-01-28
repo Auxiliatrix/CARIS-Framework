@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.reflections.Reflections;
 
@@ -44,6 +45,7 @@ public class Brain {
 	/* Synchronized */
 	public static List<Thread> threadQueue = Collections.synchronizedList(new ArrayList<Thread>());
 	public static ConcurrentHashMap<Long, Reaction> timedQueue = new ConcurrentHashMap<Long, Reaction>();
+	public static AtomicInteger threadCount = new AtomicInteger(0);
 	
 	public static void main(String[] args) {
 
@@ -86,7 +88,7 @@ public class Brain {
 			emptyReported = false;
 			Logger.debug("Threads in queue: " + threadQueue.size(), true);
 			try {
-				threadQueue.remove(0).run();
+				threadQueue.remove(0).start();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
