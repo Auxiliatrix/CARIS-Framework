@@ -1,11 +1,13 @@
 package caris.modular.handlers;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
+import caris.framework.calibration.Constants;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
@@ -51,15 +53,16 @@ public class ReminderHandler extends MessageHandler {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Makes " + Constants.NAME + " remind you after an amount of time.";
 	}
 	
 
 	@Override
 	public List<String> getUsage() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> usage = new ArrayList<String>();
+		usage.add(Constants.NAME + ", remind me in a day to \"use my daily command.\"");
+		usage.add(Constants.NAME + ", can you remind me in four hours and twenty-six minutes and something like 18 seconds I guess I dunno to \"be happy\"?");
+		return usage;
 	}
 	
 }
