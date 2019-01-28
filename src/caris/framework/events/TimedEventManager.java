@@ -1,5 +1,6 @@
 package caris.framework.events;
 
+import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 
 public class TimedEventManager extends Thread {
@@ -11,7 +12,9 @@ public class TimedEventManager extends Thread {
 				Thread.sleep(1000);
 				for( Long time : Brain.timedQueue.keySet() ) {
 					if( System.currentTimeMillis() >= time ) {
-						Brain.timedQueue.get(time).run();
+						for( Reaction reaction : Brain.timedQueue.get(time) ) {
+							reaction.start();
+						}
 						Brain.timedQueue.remove(time);
 					}
 				}

@@ -44,7 +44,7 @@ public class Brain {
 	
 	/* Synchronized */
 	public static List<Thread> threadQueue = Collections.synchronizedList(new ArrayList<Thread>());
-	public static ConcurrentHashMap<Long, Reaction> timedQueue = new ConcurrentHashMap<Long, Reaction>();
+	public static ConcurrentHashMap<Long, List<Reaction>> timedQueue = new ConcurrentHashMap<Long, List<Reaction>>();
 	public static AtomicInteger threadCount = new AtomicInteger(0);
 	
 	public static void main(String[] args) {
