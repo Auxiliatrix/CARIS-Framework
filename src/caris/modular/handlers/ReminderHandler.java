@@ -28,7 +28,7 @@ public class ReminderHandler extends MessageHandler {
 
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		MultiReaction setReminder = new MultiReaction();
+		MultiReaction setReminder = new MultiReaction(2);
 		String message = "";
 		String parseable = messageEventWrapper.message;
 		if( messageEventWrapper.quotedTokens.size() > 0 ) {
