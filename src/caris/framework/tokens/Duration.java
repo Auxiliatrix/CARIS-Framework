@@ -47,6 +47,37 @@ public class Duration {
 		return asSeconds() * 1000;
 	}
 	
+	public String asString() {
+		String representation = "";
+		if( days > 0 ) {
+			representation += days + " days";
+		}
+		if( hours > 0 ) {
+			if( !representation.isEmpty() ) {
+				representation += " ";
+			}
+			representation += hours + " hours";
+		}
+		if( minutes > 0 ) {
+			if( !representation.isEmpty() ) {
+				representation += " ";
+			}
+			representation += seconds + " seconds";
+		}
+		if( seconds > 0 ) {
+			if( !representation.isEmpty() ) {
+				representation += " ";
+			}
+			representation += seconds + " seconds";
+		}
+		return representation;
+	}
+	
+	@Override
+	public String toString() {
+		return days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds";
+	}
+	
 	public Duration plus( Duration duration ) {
 		return new Duration(this.days + duration.days, this.hours + duration.hours, this.minutes + duration.minutes, this.seconds + duration.seconds);
 	}
