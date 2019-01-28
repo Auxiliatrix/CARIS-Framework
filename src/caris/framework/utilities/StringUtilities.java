@@ -1,14 +1,16 @@
 package caris.framework.utilities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class StringUtilities {
 	
 	@SuppressWarnings("serial")
-	public static final HashMap<String, Integer> NUMBER_LOOKUP = new HashMap<String, Integer>() {{
+	public static final HashMap<String, Integer> WORD_NUMBER_LOOKUP = new HashMap<String, Integer>() {{
 		put("zero", 0);
 		put("one", 1);
 		put("two", 2);
@@ -40,6 +42,38 @@ public class StringUtilities {
 	}};
 	
 	@SuppressWarnings("serial")
+	public static final HashMap<Integer, String> NUMBER_WORD_LOOKUP = new HashMap<Integer, String>() {{
+		put(0, "zero");
+		put(1, "one");
+		put(2, "two");
+		put(3, "three");
+		put(4, "four");
+		put(5, "five");
+		put(6, "six");
+		put(7, "seven");
+		put(8, "eight");
+		put(9, "nine");
+		put(10, "ten");
+		put(11, "eleven");
+		put(12, "twelve");
+		put(13, "thirteen");
+		put(14, "fourteen");
+		put(15, "fifteen");
+		put(16, "sixteen");
+		put(17, "seventeen");
+		put(18, "eighteen");
+		put(19, "nineteen");
+		put(20, "twenty");
+		put(30, "thirty");
+		put(40, "forty");
+		put(50, "fifty");
+		put(60, "sixty");
+		put(70, "seventy");
+		put(80, "eighty");
+		put(90, "ninety");
+	}};
+	
+	@SuppressWarnings("serial")
 	public static final HashMap<String, Integer> MULTIPLIER_LOOKUP = new HashMap<String, Integer>() {{
 		put("hundred", 100);
 		put("thousand", 1000);
@@ -47,17 +81,60 @@ public class StringUtilities {
 		put("billion", 1000000000);
 	}};
 	
+	public static String numberToWord( int input ) {
+		String total = "";
+		int billions = input / 1000000000;
+		int remainder = input % 1000000000;
+		int millions = remainder / 1000000;
+		remainder %= 1000000;
+		int thousands = remainder / 1000;
+		remainder %= 1000;
+		int hundreds = remainder / 100;
+		remainder %= 100;
+		int tens = remainder / 10;
+		remainder %= 10;
+		int ones = remainder;
+		if( billions > 0 ) {
+			total += numberToWord(billions) + " billion ";
+		}
+		if( millions > 0 ) {
+			total += numberToWord(millions) + " million ";
+		}
+		if( thousands > 0 ) {
+			total += numberToWord(thousands) + " thousand ";
+		}
+		if( hundreds > 0 ) {
+			total += numberToWord(hundreds) + " hundred ";
+		}
+		if( tens > 0 ) {
+			total += NUMBER_WORD_LOOKUP.get(tens*10) + " ";
+		}
+		if( ones > 0 ) {
+			total += NUMBER_WORD_LOOKUP.get(ones);
+		}
+		return total;
+	}
+	
 	public static int wordToNumber(String input) {
 		int total = 0;
 		int subTotal = 0;
 		String lastToken = "";
 		input = input.toLowerCase().trim();
 		input = input.replace("-", " ");
-		input = input.replaceAll("[^a-zA-Z ]", "");
-		String[] tokens = input.split("\\s+");
+		input = input.replaceAll("[^a-zA-Z0-9 ]", "");
+		String[] words = input.split("\\s+");
+		ArrayList<String> tokens = new ArrayList<String>();
+		for( String word : words ) {
+			if( word.matches("(0|[1-9]\\d*)") ) {
+				String conversion = numberToWord(Integer.parseInt(word));
+				tokens.addAll(Arrays.asList(conversion.split(" ")));
+			} else {
+				tokens.add(word);
+			}
+		}
 		for( String token : tokens ) {
-			if( NUMBER_LOOKUP.keySet().contains(token) ) {
-				subTotal += NUMBER_LOOKUP.get(token);
+			if( WORD_NUMBER_LOOKUP.keySet().contains(token) ) {
+				subTotal += WORD_NUMBER_LOOKUP.get(token);
 			} else if( MULTIPLIER_LOOKUP.keySet().contains(token) ) {
 				if( lastToken.equals("a") ) {
 					total += MULTIPLIER_LOOKUP.get(token);
@@ -71,10 +148,10 @@ public class StringUtilities {
 			}
 			lastToken = token;
 		}
-		if( subTotal >= 0 ) {
+		if( subTotal > 0 ) {
 			total += subTotal;
 		}
-		if( total <= 0 ) {
+		if( total < 0 ) {
 			throw new NumberFormatException("The value specified is too large!");
 		}
 		return total;
