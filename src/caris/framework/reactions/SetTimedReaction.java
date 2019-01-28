@@ -26,7 +26,10 @@ public class SetTimedReaction extends Reaction {
 	
 	@Override
 	public void process() {
+		System.out.println(timeStamp);
+		System.out.println(timer.asMili());
 		long target = timeStamp * 1000 + timer.asMili();
+		System.out.println(target);
 		if( Brain.timedQueue.containsKey(target) ) {
 			Brain.timedQueue.get(target).add(event);
 		} else {
