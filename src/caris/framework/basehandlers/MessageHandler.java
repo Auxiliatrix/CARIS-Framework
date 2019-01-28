@@ -8,6 +8,7 @@ import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.tokens.RedirectedMessage;
 import caris.framework.utilities.Logger;
+import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -42,6 +43,7 @@ public abstract class MessageHandler extends Handler {
 	
 	public String invocation;
 	public Access accessLevel;
+	public boolean inContext;
 		
 	public MessageHandler(String name) {
 		this(name, false, Access.DEFAULT);
@@ -59,6 +61,7 @@ public abstract class MessageHandler extends Handler {
 		super(name, allowBots);
 		this.accessLevel = accessLevel;
 		this.invocation = Constants.INVOCATION_PREFIX + name;
+		this.inContext = false;
 	}
 	
 	@Override
@@ -68,6 +71,12 @@ public abstract class MessageHandler extends Handler {
 			MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) event;
 			if( !messageReceivedEvent.getChannel().isPrivate() ) {
 				MessageEventWrapper messageEventWrapper = wrap(messageReceivedEvent);
+				inContext = false;
+				if( Brain.variables.guildIndex.get(messageReceivedEvent.getGuild().getLongID()).userIndex.get(messageReceivedEvent.getAuthor().getLongID()).userData.has("lastMessage_" + messageReceivedEvent.getChannel().getLongID()) ) {
+					if( StringUtilities.containsIgnoreCase(Brain.variables.guildIndex.get(messageReceivedEvent.getGuild().getLongID()).userIndex.get(messageReceivedEvent.getAuthor().getLongID()).userData.get("lastMessage_" + messageReceivedEvent.getChannel().getLongID()).toString(), Constants.NAME) ) {
+						inContext = true;
+					}
+				}
 				if( botFilter(event) ) {
 					Logger.debug("Event from a bot. Aborting.", 1, true);
 					return null;
@@ -121,7 +130,7 @@ public abstract class MessageHandler extends Handler {
 	}
 	
 	protected boolean mentioned(MessageEventWrapper messageEventWrapper) {
-		return messageEventWrapper.containsWord(Constants.NAME);
+		return messageEventWrapper.containsWord(Constants.NAME) || inContext;
 	}
 	
 	protected boolean invoked(MessageEventWrapper messageEventWrapper) {
