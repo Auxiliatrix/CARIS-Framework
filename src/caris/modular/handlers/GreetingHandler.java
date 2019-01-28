@@ -49,6 +49,14 @@ public class GreetingHandler extends MessageHandler {
 			"Hiya",
 	};
 	
+	private String[] promptOutput = new String[] {
+			"Yes?",
+			"How may I help you?",
+			"What can I do for you?",
+			"Mmhm?",
+			"What do you need?",
+	};
+	
 	public GreetingHandler() {
 		super("Greeting");
 	}
@@ -61,7 +69,11 @@ public class GreetingHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction returnGreeting = new MultiReaction(0);
-		returnGreeting.add(new MessageReaction(messageEventWrapper.getChannel(), getRandomGreeting() + ", " + messageEventWrapper.getAuthor().getDisplayName(messageEventWrapper.getGuild()) + "!", 0));
+		if( messageEventWrapper.message.endsWith("?") ) {
+			returnGreeting.add(new MessageReaction(messageEventWrapper.getChannel(), getRandomPrompt(), 0));
+		} else {
+			returnGreeting.add(new MessageReaction(messageEventWrapper.getChannel(), getRandomGreeting() + ", " + messageEventWrapper.getAuthor().getDisplayName(messageEventWrapper.getGuild()) + "!", 0));
+		}
 		return returnGreeting;
 	}
 	
@@ -76,6 +88,10 @@ public class GreetingHandler extends MessageHandler {
 	
 	private String getRandomGreeting() {
 		return (greetingsOutput.length > 0) ? greetingsOutput[(int) (Math.random()*greetingsOutput.length)] : "Hello";
+	}
+	
+	private String getRandomPrompt() {
+		return (promptOutput.length > 0) ? promptOutput[(int) (Math.random()*promptOutput.length)] : "Yes?";
 	}
 	
 	@Override
