@@ -1,6 +1,7 @@
 package caris.framework.utilities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TokenUtilities {
 	public static char[] punctuation = new char[] {
@@ -12,8 +13,8 @@ public class TokenUtilities {
 			'@',
 	};
 	
-	public static ArrayList<String> parseTokens(String line) {
-		ArrayList<String> tokens = new ArrayList<String>();
+	public static List<String> parseTokens(String line) {
+		List<String> tokens = new ArrayList<String>();
 		while( line.contains("  ") ) {
 			line = line.replace("  ", " ");
 		}
@@ -63,8 +64,8 @@ public class TokenUtilities {
 		return tokens;
 	}
 	
-	public static ArrayList<String> parseTokens(String line, char[] punctList) {
-		ArrayList<String> tokens = new ArrayList<String>();
+	public static List<String> parseTokens(String line, char[] punctList) {
+		List<String> tokens = new ArrayList<String>();
 		line += " ";
 		while( line.contains("  ") ) {
 			line = line.replace("  ", " ");
@@ -108,7 +109,7 @@ public class TokenUtilities {
 		return tokens;
 	}
 	
-	public static ArrayList<String> parseQuoted(String line) {
+	public static List<String> parseQuoted(String line) {
 		while( line.contains("“") ) {
 			line = line.replace("“", "\"");
 		}
@@ -118,8 +119,8 @@ public class TokenUtilities {
 		return parseCaptured(line, "\"");
 	}
 	
-	public static ArrayList<String> parseCaptured(String line, String boundary) {
-		ArrayList<String> tokens = new ArrayList<String>();
+	public static List<String> parseCaptured(String line, String boundary) {
+		List<String> tokens = new ArrayList<String>();
 		line += " ";
 		while( line.contains(boundary) ) {
 			int indexA = line.indexOf(boundary);
@@ -136,8 +137,8 @@ public class TokenUtilities {
 		return tokens;
 	}
 	
-	public static ArrayList<String> parseCaptured(String line, String open, String close) {
-		ArrayList<String> tokens = new ArrayList<String>();
+	public static List<String> parseCaptured(String line, String open, String close) {
+		List<String> tokens = new ArrayList<String>();
 		line += " ";
 		while( line.contains(open) ) {
 			int indexOpenStart = line.indexOf(open);
@@ -159,9 +160,9 @@ public class TokenUtilities {
 		return tokens;
 	}
 	
-	public static ArrayList<Integer> parseIntegers(String line) {
-		ArrayList<Integer> tokens = new ArrayList<Integer>();
-		ArrayList<String> stringTokens = parseTokens(line);
+	public static List<Integer> parseIntegers(String line) {
+		List<Integer> tokens = new ArrayList<Integer>();
+		List<String> stringTokens = parseTokens(line);
 		for( String s : stringTokens ) {
 			try {
 				tokens.add(Integer.parseInt(s));
@@ -170,9 +171,9 @@ public class TokenUtilities {
 		return tokens;
 	}
 	
-	public static ArrayList<Long> parseLongs(String line) {
-		ArrayList<Long> tokens = new ArrayList<Long>();
-		ArrayList<String> stringTokens = parseTokens(line);
+	public static List<Long> parseLongs(String line) {
+		List<Long> tokens = new ArrayList<Long>();
+		List<String> stringTokens = parseTokens(line);
 		for( String s : stringTokens ) {
 			try {
 				tokens.add(Long.parseLong(s));
@@ -182,7 +183,7 @@ public class TokenUtilities {
 	}
 	
 	public static String[] combineStringArrays(String[]...s) {
-		ArrayList<String> joinedArrayList = new ArrayList<String>();
+		List<String> joinedArrayList = new ArrayList<String>();
 		for( String[] stringArray : s ) {
 			for( String string : stringArray ) {
 				joinedArrayList.add(string);

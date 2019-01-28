@@ -1,6 +1,6 @@
 package caris.framework.basehandlers;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.vdurmont.emoji.Emoji;
 
@@ -81,7 +81,7 @@ public abstract class InteractiveHandler extends Handler {
 	
 	public abstract MessageContent getDefault();
 	
-	public abstract ArrayList<Emoji> getInitialReactions();
+	public abstract List<Emoji> getInitialReactions();
 	
 	@Override
 	public abstract String getDescription();

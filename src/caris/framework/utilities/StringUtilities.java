@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 public class StringUtilities {
@@ -116,14 +115,11 @@ public class StringUtilities {
 	}
 	
 	public static int wordToNumber(String input) {
-		int total = 0;
-		int subTotal = 0;
-		String lastToken = "";
 		input = input.toLowerCase().trim();
 		input = input.replace("-", " ");
 		input = input.replaceAll("[^a-zA-Z0-9 ]", "");
 		String[] words = input.split("\\s+");
-		ArrayList<String> tokens = new ArrayList<String>();
+		List<String> tokens = new ArrayList<String>();
 		for( String word : words ) {
 			if( word.matches("(0|[1-9]\\d*)") ) {
 				String conversion = numberToWord(Integer.parseInt(word));
@@ -132,6 +128,13 @@ public class StringUtilities {
 				tokens.add(word);
 			}
 		}
+		return wordToNumber( tokens );
+	}
+	
+	public static int wordToNumber( List<String> tokens ) {
+		int total = 0;
+		int subTotal = 0;
+		String lastToken = "";
 		for( String token : tokens ) {
 			if( WORD_NUMBER_LOOKUP.keySet().contains(token) ) {
 				subTotal += WORD_NUMBER_LOOKUP.get(token);
@@ -312,5 +315,22 @@ public class StringUtilities {
 			result += " ";
 		}
 		return result;
+	}
+	
+	public static List<String> tokenizeAlphaNum( String input ) {
+		input = input.toLowerCase().trim();
+		input = input.replace("-", " ");
+		input = input.replaceAll("[^a-zA-Z0-9 ]", "");
+		String[] words = input.split("\\s+");
+		List<String> tokens = new ArrayList<String>();
+		for( String word : words ) {
+			if( word.matches("(0|[1-9]\\d*)") ) {
+				String conversion = StringUtilities.numberToWord(Integer.parseInt(word));
+				tokens.addAll(Arrays.asList(conversion.split(" ")));
+			} else {
+				tokens.add(word);
+			}
+		}
+		return tokens;
 	}
 }

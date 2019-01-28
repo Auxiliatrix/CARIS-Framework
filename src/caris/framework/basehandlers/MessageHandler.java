@@ -1,6 +1,6 @@
 package caris.framework.basehandlers;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
@@ -132,7 +132,7 @@ public abstract class MessageHandler extends Handler {
 		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && (accessLevel != Access.DEVELOPER || messageEventWrapper.developerAuthor);
 	}
 	
-	public abstract ArrayList<String> getUsage();
+	public abstract List<String> getUsage();
 	
 	protected abstract boolean isTriggered(MessageEventWrapper messageEventWrapper);
 	protected abstract Reaction process(MessageEventWrapper messageEventWrapper);

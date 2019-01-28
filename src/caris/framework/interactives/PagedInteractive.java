@@ -1,6 +1,7 @@
 package caris.framework.interactives;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.vdurmont.emoji.Emoji;
 
@@ -50,8 +51,8 @@ public class PagedInteractive extends InteractiveHandler {
 	}
 
 	@Override
-	public ArrayList<Emoji> getInitialReactions() {
-		ArrayList<Emoji> emojis = new ArrayList<Emoji>();
+	public List<Emoji> getInitialReactions() {
+		List<Emoji> emojis = new ArrayList<Emoji>();
 		emojis.add(EmojiSet.LEFT);
 		emojis.add(EmojiSet.RIGHT);
 		return emojis;

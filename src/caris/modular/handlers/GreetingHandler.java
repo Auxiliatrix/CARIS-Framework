@@ -1,6 +1,7 @@
 package caris.modular.handlers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
@@ -83,8 +84,8 @@ public class GreetingHandler extends MessageHandler {
 	}
 	
 	@Override
-	public ArrayList<String> getUsage() {
-		ArrayList<String> usage = new ArrayList<String>();
+	public List<String> getUsage() {
+		List<String> usage = new ArrayList<String>();
 		usage.add("Hello " + Constants.NAME + "!");
 		return usage;
 	}

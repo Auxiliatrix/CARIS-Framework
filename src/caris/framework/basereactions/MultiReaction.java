@@ -1,10 +1,11 @@
 package caris.framework.basereactions;
 
+import java.util.List;
 import java.util.ArrayList;
 
 public class MultiReaction extends Reaction {
 
-	protected ArrayList<Reaction> reactions;
+	protected List<Reaction> reactions;
 	
 	public MultiReaction() {
 		this(1);
@@ -15,11 +16,11 @@ public class MultiReaction extends Reaction {
 		reactions = new ArrayList<Reaction>();
 	}
 	
-	public MultiReaction(ArrayList<Reaction> reactions) {
+	public MultiReaction(List<Reaction> reactions) {
 		this(reactions, 1);
 	}
 	
-	public MultiReaction(ArrayList<Reaction> reactions, int priority) {
+	public MultiReaction(List<Reaction> reactions, int priority) {
 		super(priority);
 		this.reactions = reactions;
 	}

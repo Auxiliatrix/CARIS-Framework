@@ -32,7 +32,7 @@ public class Brain {
 	public static Map<String, Handler> handlers = new HashMap<String, Handler>();
 	
 	/* Interactives */
-	public static ArrayList<InteractiveHandler> interactives = new ArrayList<InteractiveHandler>();
+	public static List<InteractiveHandler> interactives = new ArrayList<InteractiveHandler>();
 
 	/* Event Managers */
 	public static EventManager eventManager = new EventManager();

@@ -1,6 +1,7 @@
 package caris.framework.utilities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SwearFilter {
 	
@@ -9,7 +10,7 @@ public class SwearFilter {
 	};
 	
 	public static boolean checkBlacklisted(String line) {
-		ArrayList<String> possibilities = generateSubstitutions(compress(substitute(compress((line.length() > 32 ? line.substring(0, 32) : line).toLowerCase()))), 0);
+		List<String> possibilities = generateSubstitutions(compress(substitute(compress((line.length() > 32 ? line.substring(0, 32) : line).toLowerCase()))), 0);
 		for( String possibility : possibilities ) {
 			for( String word : blacklist ) {
 				if( possibility.contains(word) ) {
@@ -53,8 +54,8 @@ public class SwearFilter {
 		return line;
 	}
 	
-	public static ArrayList<String> generateSubstitutions(String line, int character) {
-		ArrayList<String> possibilities = new ArrayList<String>();
+	public static List<String> generateSubstitutions(String line, int character) {
+		List<String> possibilities = new ArrayList<String>();
 		if( character == line.length() ) {
 			possibilities.add(compress(line));
 			return possibilities;

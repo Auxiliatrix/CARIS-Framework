@@ -1,14 +1,15 @@
 package caris.framework.tokens;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 
 public class InputSources {
 
-	public ArrayList<IGuild> guilds;
-	public ArrayList<IChannel> channels;
+	public List<IGuild> guilds;
+	public List<IChannel> channels;
 
 	public InputSources() {
 		this.guilds = new ArrayList<IGuild>();

@@ -1,5 +1,6 @@
 package caris.framework.events;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,11 +27,11 @@ public class EventManager extends SuperEvent {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				ArrayList<Handler> handlerList = new ArrayList<Handler>();
+				List<Handler> handlerList = new ArrayList<Handler>();
 				handlerList.addAll(Brain.handlers.values());
 				handlerList.addAll(Brain.interactives);
-				ArrayList<Reaction> reactions = new ArrayList<Reaction>();
-				ArrayList<Reaction> passiveQueue = new ArrayList<Reaction>();
+				List<Reaction> reactions = new ArrayList<Reaction>();
+				List<Reaction> passiveQueue = new ArrayList<Reaction>();
 				for( Handler h : handlerList ) {
 					Reaction r = h.handle(event);
 					if( r != null ) {

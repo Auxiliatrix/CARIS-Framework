@@ -1,6 +1,5 @@
 package caris.framework.events;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,10 +11,10 @@ import sx.blah.discord.handle.obj.Permissions;
 public class MessageEventWrapper extends MessageReceivedEvent {
 	
 	public String message;
-	public ArrayList<String> tokens;
-	public ArrayList<String> quotedTokens;
-	public ArrayList<Integer> integerTokens;
-	public ArrayList<Long> longTokens;
+	public List<String> tokens;
+	public List<String> quotedTokens;
+	public List<Integer> integerTokens;
+	public List<Long> longTokens;
 	
 	public boolean adminAuthor;
 	public boolean developerAuthor;
@@ -38,11 +37,11 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		elevatedAuthor = adminAuthor || developerAuthor;
 	}
 	
-	public ArrayList<String> getCapturedTokens(String boundary) {
+	public List<String> getCapturedTokens(String boundary) {
 		return TokenUtilities.parseCaptured(message, boundary);
 	}
 	
-	public ArrayList<String> getCapturedTokens(String open, String close) {
+	public List<String> getCapturedTokens(String open, String close) {
 		return TokenUtilities.parseCaptured(message, open, close);
 	}
 	

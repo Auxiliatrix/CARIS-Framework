@@ -2,6 +2,7 @@ package caris.framework.handlers;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
 
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
@@ -34,8 +35,8 @@ public class StatusHandler extends MessageHandler {
 	
 
 	@Override
-	public ArrayList<String> getUsage() {
-		ArrayList<String> usage = new ArrayList<String>();
+	public List<String> getUsage() {
+		List<String> usage = new ArrayList<String>();
 		usage.add(invocation);
 		return usage;
 	}

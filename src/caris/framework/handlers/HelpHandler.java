@@ -1,6 +1,7 @@
 package caris.framework.handlers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
@@ -25,7 +26,7 @@ public class HelpHandler extends MessageHandler {
 	
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		ArrayList<String> tokens = messageEventWrapper.tokens;
+		List<String> tokens = messageEventWrapper.tokens;
 		Handler handler = null;
 		if( tokens.size() > 1 ) {
 			for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
@@ -57,8 +58,8 @@ public class HelpHandler extends MessageHandler {
 	}
 	
 	@Override
-	public ArrayList<String> getUsage() {
-		ArrayList<String> usage = new ArrayList<String>();
+	public List<String> getUsage() {
+		List<String> usage = new ArrayList<String>();
 		usage.add(invocation + " [module]");
 		return usage;
 	}
