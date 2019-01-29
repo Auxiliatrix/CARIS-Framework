@@ -1,7 +1,5 @@
 package caris.framework.basehandlers;
 
-import java.util.List;
-
 import com.vdurmont.emoji.Emoji;
 
 import caris.framework.basereactions.Reaction;
@@ -18,7 +16,7 @@ import sx.blah.discord.handle.obj.IReaction;
 
 public abstract class InteractiveHandler extends Handler {
 
-	public IMessage source;
+	private IMessage source;
 	
 	public InteractiveHandler(String name) {
 		this(name, false);
@@ -73,6 +71,11 @@ public abstract class InteractiveHandler extends Handler {
 		return reaction.getEmoji().getName().equals(ReactionEmoji.of(emoji.getUnicode()).getName());
 	}
 	
+	public Reaction create(IMessage source) {
+		this.source = source;
+		return open();
+	}
+	
 	public Reaction destroy() {
 		Brain.interactives.remove(this);
 		return close();
@@ -80,11 +83,11 @@ public abstract class InteractiveHandler extends Handler {
 	
 	public abstract Reaction process(ReactionEvent reactionEvent);
 	
+	protected abstract Reaction open();
+	
 	protected abstract Reaction close();
 	
 	public abstract MessageContent getDefault();
-	
-	public abstract List<Emoji> getInitialReactions();
 	
 	@Override
 	public abstract String getDescription();
