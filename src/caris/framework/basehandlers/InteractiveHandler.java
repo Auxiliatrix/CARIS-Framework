@@ -80,7 +80,7 @@ public abstract class InteractiveHandler extends Handler {
 	
 	public abstract Reaction process(ReactionEvent reactionEvent);
 	
-	public abstract Reaction close();
+	protected abstract Reaction close();
 	
 	public abstract MessageContent getDefault();
 	
