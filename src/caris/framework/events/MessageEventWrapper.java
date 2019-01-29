@@ -37,6 +37,14 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		elevatedAuthor = adminAuthor || developerAuthor;
 	}
 	
+	public String notQuoted() {
+		String remainder = message;
+		for( String quoted : quotedTokens ) {
+			message.replace("\"" + quoted + "\"", "");
+		}
+		return remainder;
+	}
+	
 	public List<String> getCapturedTokens(String boundary) {
 		return TokenUtilities.parseCaptured(message, boundary);
 	}
