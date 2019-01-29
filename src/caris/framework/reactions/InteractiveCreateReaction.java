@@ -23,7 +23,7 @@ public class InteractiveCreateReaction extends MultiReaction {
 	}
 	
 	@Override
-	public void run() {
+	public void process() {
 		IMessage source = null;
 		if( interactive.getDefault().content != "" && interactive.getDefault().embed != null ) {
 			source = BotUtils.sendMessage(channel, interactive.getDefault().content, interactive.getDefault().embed);
@@ -38,7 +38,7 @@ public class InteractiveCreateReaction extends MultiReaction {
 		for( Emoji emoji : interactive.getInitialReactions() ) {
 			reactions.add(new ReactAddReaction(source, emoji));
 		}
-		super.run();
+		super.start();
 	}
 	
 }
