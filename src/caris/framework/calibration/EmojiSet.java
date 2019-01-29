@@ -24,4 +24,6 @@ public class EmojiSet {
 	
 	public static final Emoji LEFT = EmojiManager.getForAlias("arrow_left");
 	public static final Emoji RIGHT = EmojiManager.getForAlias("arrow_right");
+	
+	public static final Emoji STOP = EmojiManager.getForAlias("octagonal_sign");
 }
