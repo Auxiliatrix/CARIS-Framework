@@ -32,9 +32,6 @@ public class Brain {
 	/* Handlers */
 	public static Map<String, Handler> handlers = new HashMap<String, Handler>();
 	
-	/* Interactives */
-	public static List<InteractiveHandler> interactives = new ArrayList<InteractiveHandler>();
-
 	/* Event Managers */
 	public static EventManager eventManager = new EventManager();
 
@@ -46,6 +43,7 @@ public class Brain {
 	public static List<Thread> threadQueue = Collections.synchronizedList(new ArrayList<Thread>());
 	public static ConcurrentHashMap<Long, List<Reaction>> timedQueue = new ConcurrentHashMap<Long, List<Reaction>>();
 	public static AtomicInteger threadCount = new AtomicInteger(0);
+	public static List<InteractiveHandler> interactives = Collections.synchronizedList(new ArrayList<InteractiveHandler>());
 	
 	public static void main(String[] args) {
 
