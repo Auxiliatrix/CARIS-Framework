@@ -8,16 +8,16 @@ import caris.framework.utilities.BotUtils;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 
-public class InteractiveReaction extends MultiReaction {
+public class InteractiveCreateReaction extends MultiReaction {
 
 	public IChannel channel;
 	public InteractiveHandler interactive;
 	
-	public InteractiveReaction(IChannel channel, InteractiveHandler interactive) {
+	public InteractiveCreateReaction(IChannel channel, InteractiveHandler interactive) {
 		this(channel, interactive, 1);
 	}
 	
-	public InteractiveReaction(IChannel channel, InteractiveHandler interactive, int priority) {
+	public InteractiveCreateReaction(IChannel channel, InteractiveHandler interactive, int priority) {
 		super(1);
 		this.interactive = interactive;
 	}

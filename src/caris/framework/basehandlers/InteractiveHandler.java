@@ -73,11 +73,14 @@ public abstract class InteractiveHandler extends Handler {
 		return reaction.getEmoji().getName().equals(ReactionEmoji.of(emoji.getUnicode()).getName());
 	}
 	
-	protected void destroy() {
+	public Reaction destroy() {
 		Brain.interactives.remove(this);
+		return close();
 	}
 	
 	public abstract Reaction process(ReactionEvent reactionEvent);
+	
+	public abstract Reaction close();
 	
 	public abstract MessageContent getDefault();
 	
