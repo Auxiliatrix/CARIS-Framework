@@ -16,7 +16,7 @@ import sx.blah.discord.handle.obj.IReaction;
 
 public abstract class InteractiveHandler extends Handler {
 
-	private IMessage source;
+	protected IMessage source;
 	
 	public InteractiveHandler(String name) {
 		this(name, false);

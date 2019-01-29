@@ -1,15 +1,11 @@
 package caris.framework.interactives;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.vdurmont.emoji.Emoji;
-
 import caris.framework.basehandlers.InteractiveHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.EmojiSet;
 import caris.framework.reactions.MessageEditReaction;
+import caris.framework.reactions.ReactAddReaction;
 import caris.framework.reactions.ReactRemoveReaction;
 import caris.framework.tokens.MessageContent;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
@@ -49,18 +45,23 @@ public class PagedInteractive extends InteractiveHandler {
 	public MessageContent getDefault() {
 		return new MessageContent("", pages[0]);
 	}
-
-	@Override
-	public List<Emoji> getInitialReactions() {
-		List<Emoji> emojis = new ArrayList<Emoji>();
-		emojis.add(EmojiSet.LEFT);
-		emojis.add(EmojiSet.RIGHT);
-		return emojis;
-	}
 	
 	@Override
 	public String getDescription() {
 		return "An interactive that can be paged through";
+	}
+
+	@Override
+	protected Reaction open() {
+		MultiReaction addEmojis = new MultiReaction(-1);
+		addEmojis.add(new ReactAddReaction(source, EmojiSet.LEFT));
+		addEmojis.add(new ReactAddReaction(source, EmojiSet.RIGHT));
+		return addEmojis;
+	}
+
+	@Override
+	protected Reaction close() {
+		return null;
 	}
 	
 }

@@ -8,7 +8,7 @@ public class InteractiveDestroyReaction extends Reaction {
 	public InteractiveHandler interactive;
 	
 	public InteractiveDestroyReaction(InteractiveHandler interactive) {
-		this(interactive, 1);
+		this(interactive, -1);
 	}
 	
 	public InteractiveDestroyReaction(InteractiveHandler interactive, int priority) {

@@ -12,7 +12,7 @@ public class InteractiveCreateReaction extends Reaction {
 	public InteractiveHandler interactive;
 	
 	public InteractiveCreateReaction(IChannel channel, InteractiveHandler interactive) {
-		this(channel, interactive, 1);
+		this(channel, interactive, -1);
 	}
 	
 	public InteractiveCreateReaction(IChannel channel, InteractiveHandler interactive, int priority) {
