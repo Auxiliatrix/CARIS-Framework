@@ -47,10 +47,10 @@ public class PollBuilder {
 				return votes.get(arg1) - votes.get(arg0);
 			}
 		});
-		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " | " + votes.get(sortedVotes[0]) * 100 / total + "]");
+		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " | " + votes.get(sortedVotes[0]) * 100 / total + "%]");
 		String description = "";
 		for( String option : sortedVotes ) {
-			description += option + " [" + votes.get(option) + " | " + votes.get(option) * 100 / total + "]\n";
+			description += option + " [" + votes.get(option) + " | " + votes.get(option) * 100 / total + "%]\n";
 		}
 		resultBuilder.withDescription("```HTTP\n" + description + "```");
 		return resultBuilder.build();

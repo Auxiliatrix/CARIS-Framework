@@ -1,5 +1,6 @@
 package caris.modular.interactives;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -14,6 +15,7 @@ import caris.framework.reactions.InteractiveDestroyReaction;
 import caris.framework.reactions.MessageEditReaction;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.ReactAddReaction;
+import caris.framework.reactions.SetTimedReaction;
 import caris.framework.tokens.Duration;
 import caris.framework.tokens.MessageContent;
 import caris.modular.embedbuilders.PollBuilder;
@@ -78,12 +80,15 @@ public class PollInteractive extends InteractiveHandler {
 
 	@Override
 	protected Reaction open() {
-		MultiReaction addEmojis = new MultiReaction(-1);
+		MultiReaction openPoll = new MultiReaction(-1);
 		for( Emoji emoji : Arrays.asList(EmojiSet.NUMBERS).subList(1, Math.min(10, options.length)+1) ) {
-			addEmojis.add(new ReactAddReaction(source, emoji));
+			openPoll.add(new ReactAddReaction(source, emoji));
 		}
-		addEmojis.add(new ReactAddReaction(source, EmojiSet.STOP));
-		return addEmojis;
+		openPoll.add(new ReactAddReaction(source, EmojiSet.STOP));
+		if( timeout != null ) {
+			openPoll.add(new SetTimedReaction(new InteractiveDestroyReaction(this), timeout, source.getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()));
+		}
+		return openPoll;
 	}
 	
 	@Override
