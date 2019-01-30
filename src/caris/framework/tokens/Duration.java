@@ -62,7 +62,7 @@ public class Duration {
 			if( !representation.isEmpty() ) {
 				representation += " ";
 			}
-			representation += seconds + " seconds";
+			representation += minutes + " minutes";
 		}
 		if( seconds > 0 ) {
 			if( !representation.isEmpty() ) {
