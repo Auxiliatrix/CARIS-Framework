@@ -3,6 +3,7 @@ package caris.modular.interactives;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import com.vdurmont.emoji.Emoji;
 
@@ -15,6 +16,7 @@ import caris.framework.reactions.InteractiveDestroyReaction;
 import caris.framework.reactions.MessageEditReaction;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.ReactAddReaction;
+import caris.framework.reactions.ReactClearReaction;
 import caris.framework.reactions.SetTimedReaction;
 import caris.framework.tokens.Duration;
 import caris.framework.tokens.MessageContent;
@@ -24,7 +26,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.Reactio
 import sx.blah.discord.handle.obj.IUser;
 
 public class PollInteractive extends InteractiveHandler {
-
+	
 	public String question;
 	public HashMap<String, Integer> votes;
 	public String[] options;
@@ -80,11 +82,11 @@ public class PollInteractive extends InteractiveHandler {
 
 	@Override
 	protected Reaction open() {
+		completed = false;
 		MultiReaction openPoll = new MultiReaction(-1);
-		for( Emoji emoji : Arrays.asList(EmojiSet.NUMBERS).subList(1, Math.min(10, options.length)+1) ) {
-			openPoll.add(new ReactAddReaction(source, emoji));
-		}
-		openPoll.add(new ReactAddReaction(source, EmojiSet.STOP));
+		List<Emoji> emojis = Arrays.asList(EmojiSet.NUMBERS).subList(1, Math.min(10, options.length)+1);
+		emojis.add(EmojiSet.STOP);
+		openPoll.add(new ReactAddReaction(source, emojis.toArray(new Emoji[emojis.size()])));
 		if( timeout != null ) {
 			openPoll.add(new SetTimedReaction(new InteractiveDestroyReaction(this), timeout, source.getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()));
 		}
@@ -93,7 +95,11 @@ public class PollInteractive extends InteractiveHandler {
 	
 	@Override
 	protected Reaction close() {
-		return new MessageReaction(source.getChannel(), PollBuilder.getResultEmbed(question, votes));
+		MultiReaction closePoll = new MultiReaction();
+		closePoll.add(new MessageReaction(source.getChannel(), PollBuilder.getResultEmbed(question, votes)));
+		closePoll.add(new ReactClearReaction(source));
+		completed = true;
+		return closePoll;
 	}
 	
 	@Override
