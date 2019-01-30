@@ -17,15 +17,16 @@ public class InteractiveCreateReaction extends Reaction {
 	
 	public InteractiveCreateReaction(IChannel channel, InteractiveHandler interactive, int priority) {
 		super(1);
+		this.channel = channel;
 		this.interactive = interactive;
 	}
 	
 	@Override
 	public void process() {
 		IMessage source = null;
-		if( interactive.getDefault().content != "" && interactive.getDefault().embed != null ) {
+		if( !interactive.getDefault().content.isEmpty() && interactive.getDefault().embed != null ) {
 			source = BotUtils.sendMessage(channel, interactive.getDefault().content, interactive.getDefault().embed);
-		} else if( interactive.getDefault().content == "" && interactive.getDefault().embed == null ) {
+		} else if( interactive.getDefault().content.isEmpty() && interactive.getDefault().embed == null ) {
 			source = BotUtils.sendMessage(channel, "```http\nLoading Interactive...\n```");
 		} else if( interactive.getDefault().content.isEmpty() ) {
 			source = BotUtils.sendMessage(channel, interactive.getDefault().embed);
