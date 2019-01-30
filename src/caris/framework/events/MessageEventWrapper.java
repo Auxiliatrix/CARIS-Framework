@@ -40,7 +40,7 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 	public String notQuoted() {
 		String remainder = message;
 		for( String quoted : quotedTokens ) {
-			message.replace("\"" + quoted + "\"", "");
+			remainder.replace("\"" + quoted + "\"", "");
 		}
 		return remainder;
 	}
