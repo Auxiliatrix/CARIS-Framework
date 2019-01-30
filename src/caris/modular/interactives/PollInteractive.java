@@ -61,7 +61,7 @@ public class PollInteractive extends InteractiveHandler {
 	@Override
 	public Reaction process(ReactionEvent reactionEvent) {
 		if( reactionEvent instanceof ReactionAddEvent ) {
-			if( equivalentEmojis(reactionEvent.getReaction(), EmojiSet.STOP) ) {
+			if( equivalentEmojis(reactionEvent.getReaction(), EmojiSet.STOP) && reactionEvent.getUser().equals(owner) ) {
 				return new InteractiveDestroyReaction(this);	
 			}
 			for( int f=1; f<Math.min(10, options.length)+1; f++ ) {

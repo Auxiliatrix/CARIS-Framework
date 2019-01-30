@@ -16,14 +16,14 @@ public class PollBuilder {
 													.withDescription("Vote by reacting with the option number!\nYou can end the poll at any time by reacting with :octagonal_sign:");
 
 	public static EmbedBuilder resultBuilder = new EmbedBuilder().withColor(Color.YELLOW);
-													
+												
 	public static EmbedObject getPollEmbed(String question, String[] options, HashMap<String, Integer> votes, IUser owner, Duration timeout) {
 		pollBuilder.clearFields();
 		pollBuilder.withAuthorIcon(owner.getAvatarURL());
 		pollBuilder.withAuthorName("Poll [created by " + owner.getName() + "]");
 		pollBuilder.withTitle(question);
 		for( int f=0; f<Math.min(10, options.length); f++ ) {
-			pollBuilder.appendField("[" + (f+1) + "] " + options[f], votes.get(options[f]) + " votes", false);
+			pollBuilder.appendField("[" + (f+1) + "] " + options[f], votes.get(options[f]) + (votes.get(options[f]) == 1 ? " vote" : " votes"), false);
 		}
 		if( timeout != null ) {
 			pollBuilder.withFooterText("Poll will last for: " + timeout.asString());
@@ -48,7 +48,7 @@ public class PollBuilder {
 			}
 		});
 		total = Math.max(total, 1);
-		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " " + (votes.get(sortedVotes[0]) == 1 ? "vote" : "votes") + " | " + votes.get(sortedVotes[0]) * 100 / total + "%]");
+		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " " + (votes.get(sortedVotes[0]) == 1 ? "vote" : "votes") + " | " + (votes.get(sortedVotes[0]) * 100) / total + "%]");
 		String content = "";	
 		for( String option : sortedVotes ) {
 			content += votes.get(option) + " " + (votes.get(option) == 1 ? "vote" : "votes") + " for " + option + "\n";
