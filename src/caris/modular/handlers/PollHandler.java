@@ -50,7 +50,8 @@ public class PollHandler extends MessageHandler {
 	@Override
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
-		
+		usage.add("Caris, can we vote on \"are hotdogs a sandwich\" for like two minutes please?");
+		usage.add("Caris, I wanna make a poll for \"What's the best girl scout cookies\" with options for \"Thin Mints\" and \"S'mores\".");
 		return usage;
 	}
 	
