@@ -17,6 +17,7 @@ import sx.blah.discord.handle.obj.IReaction;
 public abstract class InteractiveHandler extends Handler {
 
 	protected IMessage source;
+	public boolean completed;
 	
 	public InteractiveHandler(String name) {
 		this(name, false);
@@ -73,11 +74,13 @@ public abstract class InteractiveHandler extends Handler {
 	
 	public Reaction create(IMessage source) {
 		this.source = source;
+		this.completed = false;
 		return open();
 	}
 	
 	public Reaction destroy() {
 		Brain.interactives.remove(this);
+		this.completed = true;
 		return close();
 	}
 	

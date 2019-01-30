@@ -18,7 +18,9 @@ public class InteractiveDestroyReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		interactive.destroy().start();
+		if( !interactive.completed ) {
+			interactive.destroy().start();
+		}
 	}
 	
 }
