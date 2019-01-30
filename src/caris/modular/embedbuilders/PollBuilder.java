@@ -23,7 +23,7 @@ public class PollBuilder {
 		pollBuilder.withAuthorName("Poll [created by " + owner.getName() + "]");
 		pollBuilder.withTitle(question);
 		for( int f=0; f<Math.min(10, options.length); f++ ) {
-			pollBuilder.appendField("[" + f + "] " + options[f], votes.get(options[f]) + " votes", false);
+			pollBuilder.appendField("[" + (f+1) + "] " + options[f], votes.get(options[f]) + " votes", false);
 		}
 		if( timeout != null ) {
 			pollBuilder.withFooterText("Poll will last for: " + timeout.asString());
@@ -47,12 +47,13 @@ public class PollBuilder {
 				return votes.get(arg1) - votes.get(arg0);
 			}
 		});
-		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " | " + votes.get(sortedVotes[0]) * 100 / total + "%]");
-		String description = "";
+		total = Math.max(total, 1);
+		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " " + (votes.get(sortedVotes[0]) == 1 ? "vote" : "votes") + " | " + votes.get(sortedVotes[0]) * 100 / total + "%]");
+		String content = "";	
 		for( String option : sortedVotes ) {
-			description += option + " [" + votes.get(option) + " | " + votes.get(option) * 100 / total + "%]\n";
+			content += votes.get(option) + " " + (votes.get(option) == 1 ? "vote" : "votes") + " for " + option + "\n";
 		}
-		resultBuilder.withDescription("```HTTP\n" + description + "```");
+		resultBuilder.appendField("Results", "```http\n" + content + "```", true);
 		return resultBuilder.build();
 	}
 

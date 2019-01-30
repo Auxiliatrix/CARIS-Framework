@@ -1,6 +1,7 @@
 package caris.modular.interactives;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +85,8 @@ public class PollInteractive extends InteractiveHandler {
 	protected Reaction open() {
 		completed = false;
 		MultiReaction openPoll = new MultiReaction(-1);
-		List<Emoji> emojis = Arrays.asList(EmojiSet.NUMBERS).subList(1, Math.min(10, options.length)+1);
+		List<Emoji> emojis = new ArrayList<Emoji>();
+		emojis.addAll(Arrays.asList(EmojiSet.NUMBERS).subList(1, Math.min(10, options.length)+1));
 		emojis.add(EmojiSet.STOP);
 		openPoll.add(new ReactAddReaction(source, emojis.toArray(new Emoji[emojis.size()])));
 		if( timeout != null ) {
