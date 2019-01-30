@@ -6,6 +6,7 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.EmojiSet;
 import caris.framework.reactions.MessageEditReaction;
 import caris.framework.reactions.ReactAddReaction;
+import caris.framework.reactions.ReactClearReaction;
 import caris.framework.reactions.ReactRemoveReaction;
 import caris.framework.tokens.MessageContent;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
@@ -53,15 +54,12 @@ public class PagedInteractive extends InteractiveHandler {
 
 	@Override
 	protected Reaction open() {
-		MultiReaction addEmojis = new MultiReaction(-1);
-		addEmojis.add(new ReactAddReaction(source, EmojiSet.LEFT));
-		addEmojis.add(new ReactAddReaction(source, EmojiSet.RIGHT));
-		return addEmojis;
+		return new ReactAddReaction(source, EmojiSet.LEFT, EmojiSet.RIGHT);
 	}
 
 	@Override
 	protected Reaction close() {
-		return null;
+		return new ReactClearReaction(source);
 	}
 	
 }

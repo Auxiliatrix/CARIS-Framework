@@ -11,6 +11,14 @@ public class ReactRemoveReaction extends Reaction {
 	public IUser user;
 	public IReaction reaction;
 	
+	public ReactRemoveReaction(IMessage message, IReaction reaction) {
+		this(message, null, reaction);
+	}
+	
+	public ReactRemoveReaction(IMessage message, IReaction reaction, int priority) {
+		this(message, null, reaction, priority);
+	}
+	
 	public ReactRemoveReaction(IMessage message, IUser user, IReaction reaction) {
 		this(message, user, reaction, 1);
 	}
@@ -24,7 +32,12 @@ public class ReactRemoveReaction extends Reaction {
 
 	@Override
 	public void process() {
-		if( reaction.getUserReacted(user) ) {
+		if( user == null ) {
+			for( IUser reacted : reaction.getUsers() ) {
+				message.removeReaction(reacted, reaction);
+			}
+		}
+		else if( reaction.getUserReacted(user) ) {
 			message.removeReaction(user, reaction);
 		}
 	}
