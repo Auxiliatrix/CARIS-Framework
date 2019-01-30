@@ -24,7 +24,7 @@ public class StatusHandler extends MessageHandler {
 
 	@Override
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		long ping = System.currentTimeMillis() - messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.of("America/Los_Angeles")).toInstant().toEpochMilli();
+		long ping = System.currentTimeMillis() - messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000;
 		if( !invoked(messageEventWrapper) ) {
 			return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping), 2);
 		}
