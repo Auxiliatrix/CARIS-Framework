@@ -15,7 +15,7 @@ public class ReconnectReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( !Brain.cli.isReady() ) {
+		if( !Brain.cli.isReady() || !Brain.cli.isLoggedIn() ) {
 			Brain.cli.login();
 		}
 	}
