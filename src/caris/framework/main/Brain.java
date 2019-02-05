@@ -73,6 +73,9 @@ public class Brain {
 			// Wait to do anything else
 		}
 
+		TimedEventManager timedEvents = new TimedEventManager();
+		timedEvents.start();
+		
 		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
 		cli.changeUsername(Constants.NAME);
 		
@@ -148,9 +151,6 @@ public class Brain {
 		for( String s : handlers.keySet() ) {
 			Logger.print(s, 2);
 		}
-		
-		TimedEventManager timedEvents = new TimedEventManager();
-		timedEvents.start();
 				
 		Logger.print("Initialization complete.");
 	}
