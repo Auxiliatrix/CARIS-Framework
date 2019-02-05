@@ -33,8 +33,20 @@ public class UpdateGlobalUserReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( override || !Brain.variables.globalUserIndex.get(user.getLongID()).userData.has(key) ) {
-			Brain.variables.globalUserIndex.get(user.getLongID()).userData.put(key, value);
+		if( Brain.variables.globalUserIndex.get(user.getLongID()).userData.has(key) ) {
+			if( override ) {
+				if( value == null ) {
+					Brain.variables.globalUserIndex.get(user.getLongID()).userData.remove(key);
+				} else {
+					Brain.variables.globalUserIndex.get(user.getLongID()).userData.put(key, value);
+				}
+			}
+		} else {
+			if( value == null ) {
+				Brain.variables.globalUserIndex.get(user.getLongID()).userData.remove(key);
+			} else {
+				Brain.variables.globalUserIndex.get(user.getLongID()).userData.put(key, value);
+			}
 		}
 	}
 

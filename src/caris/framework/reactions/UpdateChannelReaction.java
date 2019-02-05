@@ -33,8 +33,20 @@ public class UpdateChannelReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( override || !Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getGuild().getLongID()).channelData.has(key) ) {
-			Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.put(key, value);
+		if( Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.has(key) ) {
+			if( override ) {
+				if( value == null ) {
+					Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.remove(key);
+				} else {
+					Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.put(key, value);
+				}
+			}
+		} else {
+			if( value == null ) {
+				Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.remove(key);
+			} else {
+				Brain.variables.guildIndex.get(channel.getGuild().getLongID()).channelIndex.get(channel.getLongID()).channelData.put(key, value);
+			}
 		}
 	}
 
