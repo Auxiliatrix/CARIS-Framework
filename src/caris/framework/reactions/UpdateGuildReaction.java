@@ -33,8 +33,20 @@ public class UpdateGuildReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( override || !Brain.variables.guildIndex.get(guild.getLongID()).guildData.has(key) ) {
-			Brain.variables.guildIndex.get(guild.getLongID()).guildData.put(key, value);
+		if( Brain.variables.guildIndex.get(guild.getLongID()).guildData.has(key) ) {
+			if( override ) {
+				if( value == null ) {
+					Brain.variables.guildIndex.get(guild.getLongID()).guildData.remove(key);
+				} else {
+					Brain.variables.guildIndex.get(guild.getLongID()).guildData.put(key, value);
+				}
+			}
+		} else {
+			if( value == null ) {
+				Brain.variables.guildIndex.get(guild.getLongID()).guildData.remove(key);
+			} else {
+				Brain.variables.guildIndex.get(guild.getLongID()).guildData.put(key, value);
+			}
 		}
 	}
 
