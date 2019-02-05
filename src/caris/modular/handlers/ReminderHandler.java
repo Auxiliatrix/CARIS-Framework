@@ -38,7 +38,7 @@ public class ReminderHandler extends MessageHandler {
 		if( message.isEmpty() ) {
 			message = messageEventWrapper.getAuthor().mention() + ", here's your reminder!";
 		} else {
-			message = messageEventWrapper.getAuthor().mention() + ", here's your reminder to \"" + message + "\"!";
+			message = messageEventWrapper.getAuthor().mention() + ", here's your reminder: \"" + message + "\"!";
 		}
 		try {
 			Duration timer = TimeUtilities.stringToTime(parseable);
