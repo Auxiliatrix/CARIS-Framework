@@ -37,7 +37,9 @@ public class Constants {
 	public final static int DEFAULT_INDENT_LEVEL = 0;
 	public final static int DEFAULT_INDENT_INCREMENT = 2;
 
-
+	// Execution Constants
+	public final static int STUBBORNNESS = 2;
+	
 	// Default Off Modules
 	public static final String[] DEFAULT_DISBABLED = new String[] {
 			
