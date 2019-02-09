@@ -1,11 +1,13 @@
 package caris.modular.handlers;
 
 import caris.framework.basehandlers.Handler;
+import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import caris.modular.reactions.NicknameSetReaction;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.member.NicknameChangedEvent;
+import sx.blah.discord.handle.obj.IGuild;
 
 public class NicknameEnforceHandler extends Handler {
 
@@ -13,6 +15,19 @@ public class NicknameEnforceHandler extends Handler {
 		super("NicknameEnforce", false);
 	}
 
+	@Override
+	public Reaction onStartup() {
+		MultiReaction enforceNicknames = new MultiReaction();
+		for( IGuild guild : Brain.cli.getGuilds() ) {
+			for( Long id : Brain.variables.guildIndex.get(guild.getLongID()).userIndex.keySet() ) {
+				if( Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(id).userData.has("nickname-override") ) {
+					enforceNicknames.add(new NicknameSetReaction(guild, guild.getUserByID(id), (String) Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(id).userData.get("nickname-override")));
+				}
+			}
+		}
+		return enforceNicknames;
+	}
+	
 	@Override
 	public Reaction handle(Event event) {
 		if(event instanceof NicknameChangedEvent) {
