@@ -6,6 +6,7 @@ import java.util.List;
 
 import caris.framework.basehandlers.Handler;
 import caris.framework.basereactions.MultiReaction;
+import caris.framework.basereactions.NullReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import caris.framework.reactions.SaveDataReaction;
@@ -28,7 +29,7 @@ public class EventManager extends SuperEvent {
 				List<Reaction> passiveQueue = new ArrayList<Reaction>();
 				for( Handler h : handlerList ) {
 					Reaction r = h.handle(event);
-					if( r != null ) {
+					if( r != null && !(r instanceof NullReaction) ) {
 						if( r.priority == -1 ) {
 							passiveQueue.add(r);
 						} else {
