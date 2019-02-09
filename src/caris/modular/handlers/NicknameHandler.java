@@ -33,7 +33,7 @@ public class NicknameHandler extends MessageHandler {
 		if( messageEventWrapper.getMessage().getMentions().size() > 0 ) {
 			if( (!messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0))) && !messageEventWrapper.developerAuthor) {
 				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!")));
-			} else if( Brain.cli.getOurUser().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) ) {
+			} else if( !Brain.cli.getOurUser().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) ) {
 				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify this user's nickname!")));
 			} else {
 				if( messageEventWrapper.containsAnyWords("unlock") ) {
@@ -66,7 +66,7 @@ public class NicknameHandler extends MessageHandler {
 			if( !messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.CHANGE_NICKNAME) && !messageEventWrapper.developerAuthor ) {
 				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify your nickname!")));
 			}
-			if( Brain.cli.getOurUser().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.CHANGE_NICKNAME) || getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) ) {
+			if( !Brain.cli.getOurUser().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.CHANGE_NICKNAME) || getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) ) {
 				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify your nickname!")));
 			} else {
 				if( messageEventWrapper.containsAnyWords("unlock") ) {
