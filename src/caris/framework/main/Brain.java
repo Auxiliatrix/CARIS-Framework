@@ -79,6 +79,12 @@ public class Brain {
 		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
 		cli.changeUsername(Constants.NAME);
 		
+		Logger.print("Beginning startup protocols...");
+		for( String name : handlers.keySet() ) {
+			Handler h = handlers.get(name);
+			h.onStartup().start();
+		}
+		
 		while( true ) {
 			iterate();
 		}

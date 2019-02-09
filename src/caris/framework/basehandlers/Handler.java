@@ -1,5 +1,6 @@
 package caris.framework.basehandlers;
 
+import caris.framework.basereactions.NullReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
 import caris.framework.utilities.Logger;
@@ -37,6 +38,10 @@ public abstract class Handler {
 			}
 		}
 		return false;
+	}
+	
+	public Reaction onStartup() {
+		return new NullReaction();
 	}
 	
 	public abstract Reaction handle(Event event);
