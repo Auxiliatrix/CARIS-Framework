@@ -29,6 +29,11 @@ public class NicknameHandler extends MessageHandler {
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction lockNickname = new MultiReaction(1);
 		if( messageEventWrapper.getMessage().getMentions().size() > 0 ) {
+			if( getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) && !messageEventWrapper.developerAuthor) {
+				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!s")));
+			} else if( getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) ) {
+				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "I don't have permission to modify this user's nickname!")));
+			}
 			if( messageEventWrapper.containsAnyWords("unlock") ) {
 				for( IUser user : messageEventWrapper.getMessage().getMentions() ) {
 					lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), user, "nickname-override", null, true));
