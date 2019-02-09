@@ -143,11 +143,6 @@ public abstract class MessageHandler extends Handler {
 		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && (accessLevel != Access.DEVELOPER || messageEventWrapper.developerAuthor);
 	}
 	
-	public abstract List<String> getUsage();
-	
-	protected abstract boolean isTriggered(MessageEventWrapper messageEventWrapper);
-	protected abstract Reaction process(MessageEventWrapper messageEventWrapper);
-	
 	protected int getBotPosition(MessageEventWrapper messageEventWrapper) {
 		return getPosition(messageEventWrapper, Brain.cli.getOurUser());
 	}
@@ -161,5 +156,10 @@ public abstract class MessageHandler extends Handler {
 		}
 		return maxPosition;
 	}
+	
+	public abstract List<String> getUsage();
+	
+	protected abstract boolean isTriggered(MessageEventWrapper messageEventWrapper);
+	protected abstract Reaction process(MessageEventWrapper messageEventWrapper);
 
 }
