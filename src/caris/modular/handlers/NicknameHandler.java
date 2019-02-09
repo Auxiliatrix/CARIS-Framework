@@ -22,7 +22,7 @@ public class NicknameHandler extends MessageHandler {
 
 	@Override
 	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return mentioned(messageEventWrapper) && messageEventWrapper.containsAnyWords("nickname", "username", "name") && messageEventWrapper.containsAnyWords("lock", "unlock", "set");
+		return (invoked(messageEventWrapper) || mentioned(messageEventWrapper)) && messageEventWrapper.containsAnyWords("nickname", "username", "name") && messageEventWrapper.containsAnyWords("lock", "unlock", "set", "change");
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class NicknameHandler extends MessageHandler {
 				} else {
 					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
 				}
-			} else if( messageEventWrapper.containsAnyWords("set") ) {
+			} else if( messageEventWrapper.containsAnyWords("set", "change") ) {
 				if( messageEventWrapper.quotedTokens.size() > 0 ) {
 					lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), messageEventWrapper.quotedTokens.get(0)));
 					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname set successfully!"));
@@ -82,13 +82,15 @@ public class NicknameHandler extends MessageHandler {
 
 	@Override
 	public String getDescription() {
-		return "Locks a user's nickname so that not even administrators can change it.";
+		return "Sets people's nicknames. Locking a nickname makes it so that not even admins can change it.";
 	}
 	
 	@Override
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
+		usage.add(invocation + " (set | lock | unlock) <@user>... <nickname>");
 		usage.add(Constants.NAME + ", set the nicknames of @person and @otherperson to \"nickname\"");
+		usage.add(Constants.NAME + ", lock @person's username as \"nickname\"");
 		usage.add(Constants.NAME + ", unlock @person's username");
 		return usage;
 	}
