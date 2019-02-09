@@ -11,6 +11,8 @@ import caris.framework.utilities.Logger;
 import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.obj.IUser;
 
 public abstract class MessageHandler extends Handler {
 		
@@ -145,4 +147,19 @@ public abstract class MessageHandler extends Handler {
 	
 	protected abstract boolean isTriggered(MessageEventWrapper messageEventWrapper);
 	protected abstract Reaction process(MessageEventWrapper messageEventWrapper);
+	
+	protected int getBotPosition(MessageEventWrapper messageEventWrapper) {
+		return getPosition(messageEventWrapper, Brain.cli.getOurUser());
+	}
+	
+	protected int getPosition(MessageEventWrapper messageEventWrapper, IUser user) {
+		int maxPosition = -1;
+		for( IRole role : user.getRolesForGuild(messageEventWrapper.getGuild()) ) {
+			if( role.getPosition() > maxPosition ) {
+				maxPosition = role.getPosition();
+			}
+		}
+		return maxPosition;
+	}
+
 }
