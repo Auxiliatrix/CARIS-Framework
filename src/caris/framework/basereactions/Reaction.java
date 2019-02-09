@@ -17,7 +17,12 @@ public abstract class Reaction extends Thread implements Comparable<Reaction> {
 	@Override
 	public void run() {
 		Brain.threadCount.incrementAndGet();
-		process();
+		try {
+			process();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Brain.threadCount.decrementAndGet();
+		}
 		Brain.threadCount.decrementAndGet();
 	}
 	
