@@ -32,6 +32,12 @@ public class ErrorBuilder {
 				return "Access Denied!";
 			}
 		},
+		PERMISSION {
+			@Override
+			public String toString() {
+				return "Permissions Missing!";
+			}
+		},
 		DEFAULT {
 			@Override
 			public String toString() {
