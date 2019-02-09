@@ -32,7 +32,11 @@ public class MultiReaction extends Reaction {
 	@Override
 	public void process() {
 		for( Reaction reaction : reactions ) {
-			reaction.start();
+			try {
+				reaction.start();
+			} catch ( Exception e ){
+				e.printStackTrace();
+			}
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
