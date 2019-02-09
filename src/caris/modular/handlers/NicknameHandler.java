@@ -30,53 +30,58 @@ public class NicknameHandler extends MessageHandler {
 		MultiReaction lockNickname = new MultiReaction(1);
 		if( messageEventWrapper.getMessage().getMentions().size() > 0 ) {
 			if( getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) && !messageEventWrapper.developerAuthor) {
-				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!s")));
+				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!")));
 			} else if( getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) ) {
-				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "I don't have permission to modify this user's nickname!")));
-			}
-			if( messageEventWrapper.containsAnyWords("unlock") ) {
-				for( IUser user : messageEventWrapper.getMessage().getMentions() ) {
-					lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), user, "nickname-override", null, true));
-				}
-				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "unlocked successfully!"));
-			} else if( messageEventWrapper.containsAnyWords("lock") ) {
-				if( messageEventWrapper.quotedTokens.size() > 0 ) {
+				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify this user's nickname!")));
+			} else {
+				if( messageEventWrapper.containsAnyWords("unlock") ) {
 					for( IUser user : messageEventWrapper.getMessage().getMentions() ) {
-						lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), user, messageEventWrapper.quotedTokens.get(0)));
-						lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), user, "nickname-override", messageEventWrapper.quotedTokens.get(0), true));
+						lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), user, "nickname-override", null, true));
 					}
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "locked successfully!"));
-				} else {
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
-				}
-			} else if( messageEventWrapper.containsAnyWords("set") ) {
-				if( messageEventWrapper.quotedTokens.size() > 0 ) {
-					for( IUser user : messageEventWrapper.getMessage().getMentions() ) {
-						lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), user, messageEventWrapper.quotedTokens.get(0)));
+					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "unlocked successfully!"));
+				} else if( messageEventWrapper.containsAnyWords("lock") ) {
+					if( messageEventWrapper.quotedTokens.size() > 0 ) {
+						for( IUser user : messageEventWrapper.getMessage().getMentions() ) {
+							lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), user, messageEventWrapper.quotedTokens.get(0)));
+							lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), user, "nickname-override", messageEventWrapper.quotedTokens.get(0), true));
+						}
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "locked successfully!"));
+					} else {
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
 					}
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "set successfully!"));
-				} else {
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+				} else if( messageEventWrapper.containsAnyWords("set") ) {
+					if( messageEventWrapper.quotedTokens.size() > 0 ) {
+						for( IUser user : messageEventWrapper.getMessage().getMentions() ) {
+							lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), user, messageEventWrapper.quotedTokens.get(0)));
+						}
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "set successfully!"));
+					} else {
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+					}
 				}
 			}
 		} else if( messageEventWrapper.containsAnyWords("my") ) {
-			if( messageEventWrapper.containsAnyWords("unlock") ) {
-				lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), "nickname-override", null, true));
-				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "unlocked successfully!"));
-			} else if( messageEventWrapper.containsAnyWords("lock") ) {
-				if( messageEventWrapper.quotedTokens.size() > 0 ) {
-					lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), messageEventWrapper.quotedTokens.get(0)));
-					lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), "nickname-override", messageEventWrapper.quotedTokens.get(0), true));
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "locked successfully!"));
-				} else {
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
-				}
-			} else if( messageEventWrapper.containsAnyWords("set", "change") ) {
-				if( messageEventWrapper.quotedTokens.size() > 0 ) {
-					lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), messageEventWrapper.quotedTokens.get(0)));
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname set successfully!"));
-				} else {
-					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+			if( getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) ) {
+				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify your nickname!")));
+			} else {
+				if( messageEventWrapper.containsAnyWords("unlock") ) {
+					lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), "nickname-override", null, true));
+					lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "unlocked successfully!"));
+				} else if( messageEventWrapper.containsAnyWords("lock") ) {
+					if( messageEventWrapper.quotedTokens.size() > 0 ) {
+						lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), messageEventWrapper.quotedTokens.get(0)));
+						lockNickname.add(new UpdateUserReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), "nickname-override", messageEventWrapper.quotedTokens.get(0), true));
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname" + (messageEventWrapper.getMessage().getMentions().size() > 1 ? "s " : " ") + "locked successfully!"));
+					} else {
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+					}
+				} else if( messageEventWrapper.containsAnyWords("set", "change") ) {
+					if( messageEventWrapper.quotedTokens.size() > 0 ) {
+						lockNickname.add(new NicknameSetReaction(messageEventWrapper.getGuild(), messageEventWrapper.getAuthor(), messageEventWrapper.quotedTokens.get(0)));
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), "Nickname set successfully!"));
+					} else {
+						lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+					}
 				}
 			}
 		} else {
