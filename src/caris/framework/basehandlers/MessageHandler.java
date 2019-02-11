@@ -13,9 +13,10 @@ import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.handle.obj.Permissions;
 
 public abstract class MessageHandler extends Handler {
-		
+	
 	public enum Access {
 		DEFAULT {
 			@Override
@@ -35,7 +36,7 @@ public abstract class MessageHandler extends Handler {
 				return "Developer";
 			}
 		},
-		PASSIVE  {
+		PASSIVE {
 			@Override
 			public String toString() {
 				return "Passive";
@@ -43,10 +44,12 @@ public abstract class MessageHandler extends Handler {
 		},
 	};
 	
-	public String invocation;
 	public Access accessLevel;
+	protected Permissions[] requirements;
+	
+	public String invocation;
 	public boolean inContext;
-		
+			
 	public MessageHandler(String name) {
 		this(name, false, Access.DEFAULT);
 	}
@@ -59,9 +62,22 @@ public abstract class MessageHandler extends Handler {
 		this(name, false, Access.DEFAULT);
 	}
 	
+	public MessageHandler(String name, Permissions[] requirements) {
+		this(name, false, requirements);
+	}
+	
 	public MessageHandler(String name, boolean allowBots, Access accessLevel) {
+		this(name, allowBots, accessLevel, new Permissions[] {});
+	}
+	
+	public MessageHandler(String name, boolean allowBots, Permissions[] requirements) {
+		this(name, allowBots, Access.DEFAULT, requirements);
+	}
+	
+	public MessageHandler(String name, boolean allowBots, Access accessLevel, Permissions[] requirements) {
 		super(name, allowBots);
 		this.accessLevel = accessLevel;
+		this.requirements = requirements;
 		this.invocation = Constants.INVOCATION_PREFIX + name;
 		this.inContext = false;
 	}
@@ -140,7 +156,11 @@ public abstract class MessageHandler extends Handler {
 	}
 	
 	public boolean accessGranted(MessageEventWrapper messageEventWrapper) {
-		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && (accessLevel != Access.DEVELOPER || messageEventWrapper.developerAuthor);
+		boolean meetsRequirements = true;
+		for( Permissions requirement : requirements ) {
+			meetsRequirements &= messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(requirement);
+		}
+		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && (accessLevel != Access.DEVELOPER || messageEventWrapper.developerAuthor) && meetsRequirements;
 	}
 	
 	protected int getBotPosition(MessageEventWrapper messageEventWrapper) {
