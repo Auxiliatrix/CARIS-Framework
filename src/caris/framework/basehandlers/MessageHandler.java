@@ -62,7 +62,7 @@ public abstract class MessageHandler extends Handler {
 		this(name, false, Access.DEFAULT);
 	}
 	
-	public MessageHandler(String name, Permissions[] requirements) {
+	public MessageHandler(String name, Permissions...requirements) {
 		this(name, false, requirements);
 	}
 	
@@ -70,11 +70,11 @@ public abstract class MessageHandler extends Handler {
 		this(name, allowBots, accessLevel, new Permissions[] {});
 	}
 	
-	public MessageHandler(String name, boolean allowBots, Permissions[] requirements) {
+	public MessageHandler(String name, boolean allowBots, Permissions...requirements) {
 		this(name, allowBots, Access.DEFAULT, requirements);
 	}
 	
-	public MessageHandler(String name, boolean allowBots, Access accessLevel, Permissions[] requirements) {
+	public MessageHandler(String name, boolean allowBots, Access accessLevel, Permissions...requirements) {
 		super(name, allowBots);
 		this.accessLevel = accessLevel;
 		this.requirements = requirements;
