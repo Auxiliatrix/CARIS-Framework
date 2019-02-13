@@ -160,7 +160,7 @@ public abstract class MessageHandler extends Handler {
 		for( Permissions requirement : requirements ) {
 			meetsRequirements &= messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(requirement);
 		}
-		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && (accessLevel != Access.DEVELOPER || messageEventWrapper.developerAuthor) && meetsRequirements;
+		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && accessLevel != Access.DEVELOPER && meetsRequirements || messageEventWrapper.developerAuthor;
 	}
 	
 	protected int getBotPosition(MessageEventWrapper messageEventWrapper) {
