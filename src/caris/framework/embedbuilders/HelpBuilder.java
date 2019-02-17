@@ -59,7 +59,7 @@ public class HelpBuilder {
 			}
 		}
 		if( description.isEmpty() ) {
-			description = "```HTTP\nNo modules were found for this category.\n```";
+			description = "```css\nNo modules were found for this category.\n```";
 		} else {
 			description = "```yaml\n" + description + "```";
 		}
@@ -78,9 +78,9 @@ public class HelpBuilder {
 				usage += example + "\n";
 			}
 			if( usage.isEmpty() ) {
-				usage = "```http\nNo commands were found for this module.\n```";
+				usage = "```css\nNo commands were found for this module.\n```";
 			} else {
-				usage = "```css\n" + usage + "```";
+				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
 			commandBuilder.withFooterText("Active | " + mh.accessLevel.toString());
