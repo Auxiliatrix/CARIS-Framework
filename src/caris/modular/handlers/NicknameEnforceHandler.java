@@ -1,15 +1,14 @@
 package caris.modular.handlers;
 
-import caris.framework.basehandlers.Handler;
+import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import caris.modular.reactions.NicknameSetReaction;
-import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.member.NicknameChangedEvent;
 import sx.blah.discord.handle.obj.IGuild;
 
-public class NicknameEnforceHandler extends Handler {
+public class NicknameEnforceHandler extends GeneralHandler<NicknameChangedEvent> {
 
 	public NicknameEnforceHandler() {
 		super("NicknameEnforce", false);
@@ -29,14 +28,15 @@ public class NicknameEnforceHandler extends Handler {
 	}
 	
 	@Override
-	public Reaction handle(Event event) {
-		if(event instanceof NicknameChangedEvent) {
-			NicknameChangedEvent nicknameChangedEvent = (NicknameChangedEvent) event;
-			if( Brain.variables.guildIndex.get(nicknameChangedEvent.getGuild().getLongID()).userIndex.get(nicknameChangedEvent.getUser().getLongID()).userData.has("nickname-override") ) {
-				return new NicknameSetReaction(nicknameChangedEvent.getGuild(), nicknameChangedEvent.getUser(), (String) Brain.variables.guildIndex.get(nicknameChangedEvent.getGuild().getLongID()).userIndex.get(nicknameChangedEvent.getUser().getLongID()).userData.get("nickname-override"));
-			} else {
-				return null;
-			}
+	public boolean isTriggered(NicknameChangedEvent typedEvent) {
+		return true;
+	}
+	
+	@Override
+	public Reaction process(NicknameChangedEvent typedEvent) {
+		NicknameChangedEvent nicknameChangedEvent = (NicknameChangedEvent) typedEvent;
+		if( Brain.variables.guildIndex.get(nicknameChangedEvent.getGuild().getLongID()).userIndex.get(nicknameChangedEvent.getUser().getLongID()).userData.has("nickname-override") ) {
+			return new NicknameSetReaction(nicknameChangedEvent.getGuild(), nicknameChangedEvent.getUser(), (String) Brain.variables.guildIndex.get(nicknameChangedEvent.getGuild().getLongID()).userIndex.get(nicknameChangedEvent.getUser().getLongID()).userData.get("nickname-override"));
 		} else {
 			return null;
 		}
