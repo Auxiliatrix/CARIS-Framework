@@ -19,7 +19,7 @@ import sx.blah.discord.handle.obj.Permissions;
 public class NicknameHandler extends MessageHandler {
 
 	public NicknameHandler() {
-		super("Nickname", false, Access.ADMIN);
+		super("Nickname", false, Access.DEFAULT, Permissions.MANAGE_NICKNAMES);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class NicknameHandler extends MessageHandler {
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction lockNickname = new MultiReaction(1);
 		if( messageEventWrapper.getMessage().getMentions().size() > 0 ) {
-			if( (!messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0))) && !messageEventWrapper.developerAuthor) {
+			if( getPosition(messageEventWrapper, messageEventWrapper.getAuthor()) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) && !messageEventWrapper.developerAuthor) {
 				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!")));
 			} else if( !Brain.cli.getOurUser().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getBotPosition(messageEventWrapper) <= getPosition(messageEventWrapper, messageEventWrapper.getMessage().getMentions().get(0)) ) {
 				lockNickname.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify this user's nickname!")));
@@ -97,16 +97,15 @@ public class NicknameHandler extends MessageHandler {
 
 	@Override
 	public String getDescription() {
-		return "Sets people's nicknames. Locking a nickname makes it so that not even admins can change it.";
+		return "Sets, locks, and unlocks people's nicknames. Locking a nickname makes it so that not even admins can change it.";
 	}
 	
 	@Override
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
-		usage.add(invocation + " (set | lock | unlock) <@user>... <nickname>");
-		usage.add(Constants.NAME + ", set the nicknames of @person and @otherperson to \"nickname\"");
-		usage.add(Constants.NAME + ", lock @person's username as \"nickname\"");
-		usage.add(Constants.NAME + ", unlock @person's username");
+		usage.add(Constants.NAME + ", set @person and @otherperson's nicknames to \"nickname\"");
+		usage.add(Constants.NAME + ", lock @person's username to \"nickname\"");
+		usage.add(Constants.NAME + ", unlock the usernames of @person and @otherperson");
 		return usage;
 	}
 }

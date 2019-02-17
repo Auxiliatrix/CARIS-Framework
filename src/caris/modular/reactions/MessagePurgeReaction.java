@@ -18,12 +18,16 @@ public class MessagePurgeReaction extends Reaction {
 		this(channel, null, -1, 1);
 	}
 	
+	public MessagePurgeReaction(IChannel channel, int number) {
+		this(channel, null, number, 1);
+	}
+	
 	public MessagePurgeReaction(IChannel channel, IUser user) {
 		this(channel, user, -1, 1);
 	}
 	
-	public MessagePurgeReaction(IChannel channel, int number) {
-		this(channel, null, number, 1);
+	public MessagePurgeReaction(IChannel channel, IUser user, int number) {
+		this(channel, user, number, 1);
 	}
 	
 	public MessagePurgeReaction(IChannel channel, IUser user, int number, int priority) {
@@ -36,20 +40,19 @@ public class MessagePurgeReaction extends Reaction {
 	@Override
 	public void process() {
 		List<IMessage> purgeList = new ArrayList<IMessage>();
-		if( user == null ) {
-			if( number > 0 ) {
-				purgeList.addAll(channel.getMessageHistory(number));
-			} else {
-				purgeList.addAll(channel.getMessageHistory());
+		int purgeCount = 0;
+		for( IMessage message : channel.getMessageHistory() ) {
+			if( user == null || message.getAuthor() == user) {
+				purgeList.add(message);
+				purgeCount++;
 			}
-		} else {
-			for( IMessage message : channel.getMessageHistory() ) {
-				if( message.getAuthor() == user ) {
-					purgeList.add(message);
-				}
+			if( purgeCount >= number ) {
+				break;
 			}
 		}
-		channel.bulkDelete(purgeList);
+		if( purgeList.size() > 0 ) {
+			channel.bulkDelete(purgeList);
+		}
 	}
 	
 }

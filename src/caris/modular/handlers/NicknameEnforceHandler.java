@@ -44,7 +44,7 @@ public class NicknameEnforceHandler extends Handler {
 
 	@Override
 	public String getDescription() {
-		return "Automatically sets people's nicknames if a lock exist";
+		return "Automatically sets people's nicknames if a lock exists";
 	}
 	
 }
