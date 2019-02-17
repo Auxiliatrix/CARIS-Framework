@@ -7,27 +7,25 @@ import caris.framework.calibration.Constants;
 import caris.framework.reactions.HearReaction;
 import caris.framework.reactions.MessageLogReaction;
 import caris.framework.reactions.UpdateUserReaction;
-import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
-public class MessageLoggerHandler extends GeneralHandler {
+public class MessageLoggerHandler extends GeneralHandler<MessageReceivedEvent> {
 	
 	public MessageLoggerHandler() {
 		super("MessageLogger", true);
 	}
 	
 	@Override
-	protected boolean isTriggered(Event event) {
-		return event instanceof MessageReceivedEvent;
+	protected boolean isTriggered(MessageReceivedEvent event) {
+		return true;
 	}
 	
 	@Override
-	protected Reaction process(Event event) {
-		MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) event;
+	protected Reaction process(MessageReceivedEvent typedEvent) {
 		MultiReaction logMessage = new MultiReaction(-1);
-		logMessage.add(new HearReaction(messageReceivedEvent.getMessage().getFormattedContent(), messageReceivedEvent.getAuthor(), messageReceivedEvent.getChannel()));
-		logMessage.add(new MessageLogReaction(messageReceivedEvent.getChannel(), messageReceivedEvent.getMessage()));
-		logMessage.add(new UpdateUserReaction(messageReceivedEvent.getGuild(), messageReceivedEvent.getAuthor(), "lastMessage_" + messageReceivedEvent.getChannel().getLongID(), messageReceivedEvent.getMessage(), true));
+		logMessage.add(new HearReaction(typedEvent.getMessage().getFormattedContent(), typedEvent.getAuthor(), typedEvent.getChannel()));
+		logMessage.add(new MessageLogReaction(typedEvent.getChannel(), typedEvent.getMessage()));
+		logMessage.add(new UpdateUserReaction(typedEvent.getGuild(), typedEvent.getAuthor(), "lastMessage_" + typedEvent.getChannel().getLongID(), typedEvent.getMessage(), true));
 		return logMessage;
 	}
 	

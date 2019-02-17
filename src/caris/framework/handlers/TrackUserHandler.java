@@ -8,27 +8,25 @@ import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.TrackUserReaction;
 import caris.framework.utilities.Logger;
-import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 
-public class TrackUserHandler extends GeneralHandler {
+public class TrackUserHandler extends GeneralHandler<UserJoinEvent> {
 
 	public TrackUserHandler() {
 		super("TrackUser");
 	}
 	
 	@Override
-	protected boolean isTriggered(Event event) {
-		return event instanceof UserJoinEvent;
+	protected boolean isTriggered(UserJoinEvent typedEvent) {
+		return true;
 	}
 	
 	@Override
-	protected Reaction process(Event event) {
-		UserJoinEvent userJoinEvent = (UserJoinEvent) event;
-		Logger.print("New user " + userJoinEvent.getUser().getLongID() + " joined (" + userJoinEvent.getGuild().getLongID() + ") <" + userJoinEvent.getGuild().getName() + ">", 0);
+	protected Reaction process(UserJoinEvent typedEvent) {
+		Logger.print("New user " + typedEvent.getUser().getLongID() + " joined (" + typedEvent.getGuild().getLongID() + ") <" + typedEvent.getGuild().getName() + ">", 0);
 		MultiReaction welcome = new MultiReaction(-1);
-		welcome.add(new TrackUserReaction(userJoinEvent.getGuild(), userJoinEvent.getUser()));
-		welcome.add(new MessageReaction(Brain.variables.guildIndex.get(userJoinEvent.getGuild().getLongID()).getDefaultChannel(), ("Welcome, " + userJoinEvent.getUser().getName() + "!")));
+		welcome.add(new TrackUserReaction(typedEvent.getGuild(), typedEvent.getUser()));
+		welcome.add(new MessageReaction(Brain.variables.guildIndex.get(typedEvent.getGuild().getLongID()).getDefaultChannel(), ("Welcome, " + typedEvent.getUser().getName() + "!")));
 		return welcome;
 	}
 	

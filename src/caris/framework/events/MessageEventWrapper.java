@@ -53,6 +53,36 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		return TokenUtilities.parseCaptured(message, open, close);
 	}
 	
+	public boolean containsPhrase(String phrase) {
+		return message.toLowerCase().contains(phrase);
+	}
+	
+	public boolean containsAnyPhrases(List<String> phrases) {
+		for( String phrase : phrases ) {
+			if( containsPhrase(phrase) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean containsAnyPhrases(String...phrases) {
+		return containsAnyPhrases(Arrays.asList(phrases));
+	}
+	
+	public boolean containsAllPhrases(List<String> phrases) {
+		for( String phrase : phrases ) {
+			if( !containsPhrase(phrase) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean containsAllPhrases(String...phrases) {
+		return containsAllWords(Arrays.asList(phrases));
+	}
+	
 	public boolean containsWord(String word) {
 		for( String token : tokens ) {
 			if( token.equalsIgnoreCase(word) ) {

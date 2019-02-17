@@ -4,24 +4,22 @@ import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
 import caris.framework.reactions.TrackChannelReaction;
-import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.ChannelCreateEvent;
 
-public class TrackChannelHandler extends GeneralHandler {
+public class TrackChannelHandler extends GeneralHandler<ChannelCreateEvent> {
 
 	public TrackChannelHandler() {
 		super("TrackChannel");
 	}
 	
 	@Override
-	protected boolean isTriggered(Event event) {
-		return event instanceof ChannelCreateEvent;
+	protected boolean isTriggered(ChannelCreateEvent typedEvent) {
+		return true;
 	}
 	
 	@Override
-	protected Reaction process(Event event) {
-		ChannelCreateEvent channelCreateEvent = (ChannelCreateEvent) event;
-		return new TrackChannelReaction(channelCreateEvent.getGuild(), channelCreateEvent.getChannel(), -1);
+	protected Reaction process(ChannelCreateEvent typedEvent) {
+		return new TrackChannelReaction(typedEvent.getGuild(), typedEvent.getChannel(), -1);
 	}
 
 	@Override
