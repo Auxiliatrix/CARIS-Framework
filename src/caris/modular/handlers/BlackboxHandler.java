@@ -3,6 +3,8 @@ package caris.modular.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
@@ -15,6 +17,8 @@ import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.UpdateChannelReaction;
 import caris.modular.reactions.BlackboxPurgeReaction;
+import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 
 public class BlackboxHandler extends MessageHandler {
 	
@@ -22,6 +26,25 @@ public class BlackboxHandler extends MessageHandler {
 		super("Blackbox", Access.ADMIN);
 	}
 
+	@Override
+	public Reaction onStartup() {
+		MultiReaction reconnectBlackbox = new MultiReaction(-1);
+		for( IGuild guild : Brain.cli.getGuilds() ) {
+			for( IChannel channel : guild.getChannels() ) {
+				if( Brain.variables.getChannelInfo(channel).channelData.has("blackbox") ) {
+					if( Brain.variables.getChannelInfo(channel).channelData.get("blackbox") instanceof JSONArray ) {
+						List<Long> messageList = new ArrayList<Long>();
+						for( int f=0; f<((JSONArray) Brain.variables.getChannelInfo(channel).channelData.get("blackbox")).length(); f++ ) {
+							messageList.add((Long) ((JSONArray) Brain.variables.getChannelInfo(channel).channelData.get("blackbox")).get(f));
+						}
+						reconnectBlackbox.add(new UpdateChannelReaction(channel, "blackbox", messageList, true));
+					}
+				}
+			}
+		}
+		return reconnectBlackbox;
+	}
+	
 	@Override
 	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
 		return mentioned(messageEventWrapper) && messageEventWrapper.containsAnyPhrases("blackbox", "black box") && (messageEventWrapper.containsAnyWords(Keywords.POSITIVE) || messageEventWrapper.containsAnyWords(Keywords.NEGATIVE) || messageEventWrapper.containsAnyWords(Keywords.CANCEL));
