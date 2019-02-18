@@ -3,6 +3,7 @@ package caris.framework.utilities;
 import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
 public class Logger {
@@ -112,10 +113,10 @@ public class Logger {
 //		}
 	}
 	
-	public static void consolePrint(String s) {
-		System.out.println(s);
-		for( Long guildID : Brain.variables.guildIndex.keySet() ) {
-			BotUtils.sendLog(guildID, s);
+	public static void consolePrint(String message) {
+		System.out.println(message);
+		for( IGuild guild : Brain.cli.getGuilds() ) {
+			BotUtils.sendLog(guild, message);
 		}
 	}
 }

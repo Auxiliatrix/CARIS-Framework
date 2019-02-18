@@ -26,8 +26,8 @@ public class SpecialChannelSetReaction extends Reaction {
 	@Override
 	public void process() {
 		if( sc == null ) {
-			Brain.variables.guildIndex.get(guild.getLongID()).specialChannels.remove(sc);
+			Brain.variables.getGuildInfo(guild).specialChannels.remove(sc);
 		}
-		Brain.variables.guildIndex.get(guild.getLongID()).specialChannels.put(sc, channel.getLongID());
+		Brain.variables.getGuildInfo(guild).specialChannels.put(sc, channel.getLongID());
 	}
 }
