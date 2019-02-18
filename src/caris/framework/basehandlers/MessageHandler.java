@@ -61,7 +61,7 @@ public abstract class MessageHandler extends Handler {
 	}
 	
 	public MessageHandler(String name, Access accessLevel) {
-		this(name, false, Access.DEFAULT);
+		this(name, false, accessLevel);
 	}
 	
 	public MessageHandler(String name, Permissions...requirements) {
