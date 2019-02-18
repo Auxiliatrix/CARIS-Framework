@@ -28,11 +28,11 @@ public class BlackboxRecordHandler extends GeneralHandler<MessageReceivedEvent> 
 	@Override
 	protected Reaction process(MessageReceivedEvent typedEvent) {
 		// And here, you can see where my framework utterly crumbles apart.
-		if( Brain.variables.guildIndex.get(typedEvent.getGuild().getLongID()).channelIndex.get(typedEvent.getChannel().getLongID()).channelData.has("blackbox") ) {
+		if( Brain.variables.getChannelInfo(typedEvent.getMessage()).channelData.has("blackbox") ) {
 			return new ReactionRunnable(new Runnable() {
 				@Override
 				public void run() {
-					((List<Long>) Brain.variables.guildIndex.get(typedEvent.getGuild().getLongID()).channelIndex.get(typedEvent.getChannel().getLongID()).channelData.get("blackbox")).add(typedEvent.getMessage().getLongID());
+					((List<Long>) Brain.variables.getChannelInfo(typedEvent.getMessage()).channelData.get("blackbox")).add(typedEvent.getMessage().getLongID());
 				}
 			}, -1);
 		}

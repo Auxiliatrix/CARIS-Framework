@@ -32,22 +32,22 @@ public class BlackboxHandler extends MessageHandler {
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction blackbox = new MultiReaction(1);
 		if( messageEventWrapper.containsAnyWords(Keywords.POSITIVE) ) {
-			if( !Brain.variables.guildIndex.get(messageEventWrapper.getGuild().getLongID()).channelIndex.get(messageEventWrapper.getChannel().getLongID()).channelData.has("blackbox") ) {
+			if( !Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.has("blackbox") ) {
 				blackbox.add(new UpdateChannelReaction(messageEventWrapper.getChannel(), "blackbox", new ArrayList<Long>(), true));
 				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), "Blackbox opened!"));
 			} else {
 				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "A blackbox is already open in this channel!")));
 			}
 		} else if( messageEventWrapper.containsAnyWords(Keywords.NEGATIVE) ) {
-			if( Brain.variables.guildIndex.get(messageEventWrapper.getGuild().getLongID()).channelIndex.get(messageEventWrapper.getChannel().getLongID()).channelData.has("blackbox") ) {
-				blackbox.add(new BlackboxPurgeReaction(messageEventWrapper.getChannel(), ((List<Long>) Brain.variables.guildIndex.get(messageEventWrapper.getGuild().getLongID()).channelIndex.get(messageEventWrapper.getChannel().getLongID()).channelData.get("blackbox"))));
+			if( Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.has("blackbox") ) {
+				blackbox.add(new BlackboxPurgeReaction(messageEventWrapper.getChannel(), ((List<Long>) Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.get("blackbox"))));
 				blackbox.add(new UpdateChannelReaction(messageEventWrapper.getChannel(), "blackbox", null, true));
 				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), "Blackbox closed!"));
 			} else {
 				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "No blackbox open in this channel!")));
 			}
 		} else if( messageEventWrapper.containsAnyWords(Keywords.CANCEL) ) {
-			if( Brain.variables.guildIndex.get(messageEventWrapper.getGuild().getLongID()).channelIndex.get(messageEventWrapper.getChannel().getLongID()).channelData.has("blackbox") ) {
+			if( Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.has("blackbox") ) {
 				blackbox.add(new UpdateChannelReaction(messageEventWrapper.getChannel(), "blackbox", null, true));
 				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), "Blackbox cancelled!"));
 			} else {
