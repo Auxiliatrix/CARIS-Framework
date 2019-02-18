@@ -6,6 +6,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
+
 public class Variables implements JSONable {
 	
 
@@ -13,10 +18,10 @@ public class Variables implements JSONable {
 	public AtomicReference<JSONObject> atomicVariableData;
 	
 	/* Gigantic Variable Library */
-	public ConcurrentHashMap<Long, GuildInfo> guildIndex;
+	private ConcurrentHashMap<Long, GuildInfo> guildIndex;
 	
 	/* Global UserData */
-	public ConcurrentHashMap<Long, GlobalUserInfo> globalUserIndex;
+	private ConcurrentHashMap<Long, GlobalUserInfo> globalUserIndex;
 	
 	public Variables( JSONObject json ) throws JSONReloadException {
 		this();
@@ -61,6 +66,57 @@ public class Variables implements JSONable {
 		globalUserIndex = new ConcurrentHashMap<Long, GlobalUserInfo>();
 	}
 
+	public void addGuild(IGuild guild) {
+		if( !guildIndex.containsKey(guild.getLongID()) ) {
+			guildIndex.put(guild.getLongID(), new GuildInfo(guild));
+		} else {
+			guildIndex.get(guild.getLongID()).reload();
+		}
+	}
+	
+	public void addChannel(IChannel channel) {
+		getGuildInfo(channel.getGuild()).addChannel(channel);
+	}
+	
+	public void addUser(IGuild guild, IUser user) {
+		getGuildInfo(guild).addUser(user);
+		if( !globalUserIndex.containsKey(user.getLongID()) ) {
+			globalUserIndex.put(user.getLongID(), new GlobalUserInfo(user));
+		}
+	}
+	
+	public GuildInfo getGuildInfo(IGuild guild) {
+		return guildIndex.get(guild.getLongID());
+	}
+	
+	public GuildInfo getGuildInfo(IMessage message) {
+		return getGuildInfo(message.getGuild());
+	}
+	
+	public ChannelInfo getChannelInfo(IChannel channel) {
+		return getGuildInfo(channel.getGuild()).getChannelInfo(channel);
+	}
+	
+	public ChannelInfo getChannelInfo(IMessage message) {
+		return getChannelInfo(message.getChannel());
+	}
+	
+	public UserInfo getUserInfo(IGuild guild, IUser user) {
+		return getGuildInfo(guild).getUserInfo(user);
+	}
+	
+	public UserInfo getUserInfo(IMessage message) {
+		return getUserInfo(message.getGuild(), message.getAuthor());
+	}
+	
+	public GlobalUserInfo getGlobalUserInfo(IUser user) {
+		return globalUserIndex.get(user.getLongID());
+	}
+	
+	public GlobalUserInfo getGlobalUserInfo(IMessage message) {
+		return globalUserIndex.get(message.getAuthor().getLongID());
+	}
+	
 	@Override
 	public JSONObject getJSONData() {
 		JSONObject JSONData = new JSONObject();

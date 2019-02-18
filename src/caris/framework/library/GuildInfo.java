@@ -33,8 +33,10 @@ public class GuildInfo implements JSONable {
 	public Long guildID;
 	
 	/* Indices */
-	public HashMap<Long, UserInfo> userIndex;
-	public HashMap<Long, ChannelInfo> channelIndex;
+	private HashMap<Long, UserInfo> userIndex;
+	private HashMap<Long, ChannelInfo> channelIndex;
+	
+	/* ChannelMap */
 	public HashMap<SpecialChannel, Long> specialChannels;
 	
 	/* Modular Info */
@@ -127,19 +129,24 @@ public class GuildInfo implements JSONable {
 		}
 	}
 	
-	public void addUser( IUser u ) {
-		if( !userIndex.containsKey(u.getLongID()) ) {
-			userIndex.put( u.getLongID(), new UserInfo(u) );
-		}
-		if( !Brain.variables.globalUserIndex.containsKey(u.getLongID()) ) {
-			Brain.variables.globalUserIndex.put(u.getLongID(), new GlobalUserInfo(u));
+	public void addUser( IUser user ) {
+		if( !userIndex.containsKey(user.getLongID()) ) {
+			userIndex.put( user.getLongID(), new UserInfo(user) );
 		}
 	}
 	
-	public void addChannel( IChannel c ) {
-		if( !channelIndex.containsKey(c.getLongID()) ) {
-			channelIndex.put( c.getLongID(), new ChannelInfo(c));
+	public void addChannel( IChannel channel ) {
+		if( !channelIndex.containsKey(channel.getLongID()) ) {
+			channelIndex.put( channel.getLongID(), new ChannelInfo(channel));
 		}
+	}
+	
+	public ChannelInfo getChannelInfo( IChannel channel ) {
+		return channelIndex.get(channel.getLongID());
+	}
+	
+	public UserInfo getUserInfo( IUser user ) {
+		return userIndex.get(user.getLongID());
 	}
 	
 	public boolean checkDisabled(String module) {

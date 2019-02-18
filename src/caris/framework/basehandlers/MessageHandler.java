@@ -11,6 +11,8 @@ import caris.framework.utilities.Logger;
 import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
@@ -45,7 +47,7 @@ public abstract class MessageHandler extends Handler {
 	};
 	
 	public Access accessLevel;
-	protected Permissions[] requirements;
+	public Permissions[] requirements;
 	
 	public String invocation;
 	public boolean inContext;
@@ -90,8 +92,8 @@ public abstract class MessageHandler extends Handler {
 			if( !messageReceivedEvent.getChannel().isPrivate() ) {
 				MessageEventWrapper messageEventWrapper = wrap(messageReceivedEvent);
 				inContext = false;
-				if( Brain.variables.guildIndex.get(messageReceivedEvent.getGuild().getLongID()).userIndex.get(messageReceivedEvent.getAuthor().getLongID()).userData.has("lastMessage_" + messageReceivedEvent.getChannel().getLongID()) ) {
-					if( StringUtilities.containsIgnoreCase(Brain.variables.guildIndex.get(messageReceivedEvent.getGuild().getLongID()).userIndex.get(messageReceivedEvent.getAuthor().getLongID()).userData.get("lastMessage_" + messageReceivedEvent.getChannel().getLongID()).toString(), Constants.NAME) ) {
+				if( Brain.variables.getUserInfo(messageReceivedEvent.getMessage()).userData.has("lastMessage_" + messageReceivedEvent.getChannel().getLongID()) ) {
+					if( StringUtilities.containsIgnoreCase(Brain.variables.getUserInfo(messageReceivedEvent.getMessage()).userData.get("lastMessage_" + messageReceivedEvent.getChannel().getLongID()).toString(), Constants.NAME) ) {
 						inContext = true;
 					}
 				}
@@ -129,12 +131,12 @@ public abstract class MessageHandler extends Handler {
 				String tokenContent = token.substring(1, token.length()-1);
 				try {
 					Long channelID = Long.parseLong(tokenContent);
-					for( Long guildID : Brain.variables.guildIndex.keySet() ) {
-						for( Long id : Brain.variables.guildIndex.get(guildID).channelIndex.keySet() ) {
-							if( id == channelID ) {
+					for( IGuild guild : Brain.cli.getGuilds() ) {
+						for( IChannel channel : guild.getChannels() ) {
+							if( channel.getLongID() == channelID ) {
 								messageEventWrapper = new MessageEventWrapper(
 														new MessageReceivedEvent(
-															new RedirectedMessage(messageReceivedEvent.getMessage(), Brain.cli.getGuildByID(guildID).getChannelByID(id), messageEventWrapper.message.substring(messageEventWrapper.message.indexOf("}"+2)))
+															new RedirectedMessage(messageReceivedEvent.getMessage(), channel, messageEventWrapper.message.substring(messageEventWrapper.message.indexOf("}"+2)))
 														));
 							}
 						}

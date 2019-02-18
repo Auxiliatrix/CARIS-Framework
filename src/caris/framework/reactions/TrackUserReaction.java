@@ -23,7 +23,7 @@ public class TrackUserReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		Brain.variables.guildIndex.get(guild.getLongID()).addUser(user);
+		Brain.variables.getGuildInfo(guild).addUser(user);
 		Logger.print("User <" + user.getName() + "#" + user.getDiscriminator() + "> (" + user.getLongID() + ") joined Guild <" + guild.getName() + "> (" + guild.getLongID() + ")", 0);
 	}
 	

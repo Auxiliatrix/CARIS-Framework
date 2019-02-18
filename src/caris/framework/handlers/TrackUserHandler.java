@@ -26,7 +26,7 @@ public class TrackUserHandler extends GeneralHandler<UserJoinEvent> {
 		Logger.print("New user " + typedEvent.getUser().getLongID() + " joined (" + typedEvent.getGuild().getLongID() + ") <" + typedEvent.getGuild().getName() + ">", 0);
 		MultiReaction welcome = new MultiReaction(-1);
 		welcome.add(new TrackUserReaction(typedEvent.getGuild(), typedEvent.getUser()));
-		welcome.add(new MessageReaction(Brain.variables.guildIndex.get(typedEvent.getGuild().getLongID()).getDefaultChannel(), ("Welcome, " + typedEvent.getUser().getName() + "!")));
+		welcome.add(new MessageReaction(Brain.variables.getGuildInfo(typedEvent.getGuild()).getDefaultChannel(), ("Welcome, " + typedEvent.getUser().getName() + "!")));
 		return welcome;
 	}
 	

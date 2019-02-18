@@ -35,19 +35,19 @@ public class UpdateUserReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.has(key) ) {
+		if( Brain.variables.getUserInfo(guild, user).userData.has(key) ) {
 			if( override ) {
 				if( value == null ) {
-					Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.remove(key);
+					Brain.variables.getUserInfo(guild, user).userData.remove(key);
 				} else {
-					Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.put(key, value);
+					Brain.variables.getUserInfo(guild, user).userData.put(key, value);
 				}
 			}
 		} else {
 			if( value == null ) {
-				Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.remove(key);
+				Brain.variables.getUserInfo(guild, user).userData.remove(key);
 			} else {
-				Brain.variables.guildIndex.get(guild.getLongID()).userIndex.get(user.getLongID()).userData.put(key, value);
+				Brain.variables.getUserInfo(guild, user).userData.put(key, value);
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
@@ -108,10 +109,10 @@ public class BotUtils {
 		}).get();
 	}
 	
-	public static void sendLog( Long guildID, String message ) {
+	public static void sendLog( IGuild guild, String message ) {
 		// Send the message to the guild's log channel, if it exists
-		if( Brain.variables.guildIndex.get(guildID).specialChannels.get(GuildInfo.SpecialChannel.LOG) != null ) {
-			sendMessage( Brain.cli.getGuildByID(guildID).getChannelByID(Brain.variables.guildIndex.get(guildID).specialChannels.get(GuildInfo.SpecialChannel.LOG)), message );
+		if( Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG) != null ) {
+			sendMessage( guild.getChannelByID(Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG)), message );
 		}
 	}
 

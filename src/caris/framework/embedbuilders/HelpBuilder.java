@@ -5,8 +5,10 @@ import java.awt.Color;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.calibration.Constants;
+import caris.framework.calibration.PermissionsString;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
+import sx.blah.discord.handle.obj.Permissions;
 import sx.blah.discord.util.EmbedBuilder;
 
 public class HelpBuilder {
@@ -83,13 +85,25 @@ public class HelpBuilder {
 				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
-			commandBuilder.withFooterText("Active | " + mh.accessLevel.toString());
+			commandBuilder.withFooterText(mh.accessLevel.toString() + formatRequirements(mh.requirements));
 		} else {
 			commandBuilder.appendField(h.name, h.getDescription(), false);
 			commandBuilder.appendField("Usage", "```ini\n[Passive]\n```", false);
 			commandBuilder.withFooterText("Passive | " + Constants.NAME + " Only");
 		}
 		return commandBuilder.build();
+	}
+	
+	private static String formatRequirements(Permissions[] requirements) {
+		String requirementsString = " | ";
+		for( Permissions requirement : requirements ) {
+			requirementsString += PermissionsString.PERMISSIONS_STRING.get(requirement) + ", ";
+		}
+		if( requirementsString.length() > 4 ) {
+			return requirementsString.substring(0, requirementsString.length()-2);
+		} else {
+			return "";
+		}
 	}
 		
 }
