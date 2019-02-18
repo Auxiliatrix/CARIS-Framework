@@ -56,6 +56,7 @@ public class Logger {
 		debug(message, level, false);
 	}
 	
+	@SuppressWarnings("unused")
 	public static void debug(String message, int level, boolean verbose) {
 		if( (Constants.DEBUG_LEVEL == -1 || Constants.DEBUG_LEVEL >= level) && (!verbose || Constants.VERBOSE) ) {
 			String output = "[DEBUG]";
@@ -85,6 +86,7 @@ public class Logger {
 		print(message, level, false);
 	}
 	
+	@SuppressWarnings("unused")
 	public static void print(String message, int level, boolean verbose) {
 		if( (Constants.PRINT_LEVEL == -1 || Constants.PRINT_LEVEL >= level) && (!verbose || Constants.VERBOSE)) {
 			String output = "[PRINT]";
@@ -115,8 +117,10 @@ public class Logger {
 	
 	public static void consolePrint(String message) {
 		System.out.println(message);
-		for( IGuild guild : Brain.cli.getGuilds() ) {
-			BotUtils.sendLog(guild, message);
+		if( Brain.cli != null ) {
+			for( IGuild guild : Brain.cli.getGuilds() ) {
+				BotUtils.sendLog(guild, message);
+			}
 		}
 	}
 }

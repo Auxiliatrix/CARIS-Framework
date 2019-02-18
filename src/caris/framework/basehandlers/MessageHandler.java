@@ -47,7 +47,7 @@ public abstract class MessageHandler extends Handler {
 	};
 	
 	public Access accessLevel;
-	protected Permissions[] requirements;
+	public Permissions[] requirements;
 	
 	public String invocation;
 	public boolean inContext;
