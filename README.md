@@ -1,28 +1,28 @@
-# CARIS
+# SCOUT
 
-### Computerized Auto-Responding Intelligent System
+### A TBA-Integrated Discord Bot for FIRST Robotics Teams
 
 #### Developed by Alina Kim
 
+Built on personal framework: https://github.com/auxiliatrix/CARIS-Framework
 Uses framework: https://github.com/austinv11/Discord4J
 
-## What is CARIS?
+For information on the commands used to control SCOUT, please see the Wiki.
+Link for inviting my version of SCOUT will be up soon.
 
-### How does CARIS work?
+## What is SCOUT?
 
-CARIS is an extension of the Discord4J Framework, and uses a thread queue/priority system to run its tasks. Essentially, CARIS runs through the `Handlers` in the `caris.framework.handlers` and `caris.modular.handlers` packages, and produces `Reactions` as specified by the `caris.framework.reactions` and `caris.modular.reactions` packages. `Reactions` are just `Runnable` objects with a priority value (all reactions produces from an event with a priority of -1 are always executed, and all other reactions produced from the same event-- with a priority of 0 or more-- only have the lowest priority value reaction executed).
+### How does SCOUT work?
 
-### What makes CARIS special?
+SCOUT is an extension of my personal CARIS Framework, which in turn is an extension of the Discord4J Framework. I highly recommend that you check out the `generic` branch of CARIS (linked above) if you are interested in extending CARIS (or any of her 'flavors,' including SCOUT, for your own purposes.
 
-CARIS comes with pre-built tools specifically designed for message-activated Discord bots (which is basically all of them). The `MessageHandler` class is an extension of the `Handler` class, and creates `MessageEventWrapper` objects which contain useful features such as token parsing for integers, longs, and quoted strings.
+### What makes SCOUT special?
 
-Another example is the `caris.framework.utilities` package, which comes with String and Token utility classes for all your parsing needs.
+SCOUT is pre-built for FIRST Robotics Teams, in order to aid them during matches by pulling data directly from the thebluealliance.com website. She can be used to remind your team when your matches are about to start, and later will implement features that pull match data and generate aggregate scouting information on various teams.
 
-### How do I use CARIS?
+Later on, SCOUT may even incorporate her own built-in neural net dedicated to predicting match outcomes. That's way far off though.
 
-To develop CARIS for your own purposes, create `Handler` objects in the `caris.modular.handlers` package, and associated `Reaction` objects as needed in the `caris.modular.reactions` package. Nothing else is necessary; CARIS automatically detects the classes and processes them during runtime.
-
-## How to run CARIS:
+## How to run SCOUT:
 
 ### Quick Method
 

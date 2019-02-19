@@ -1,8 +1,8 @@
 package caris.framework.calibration;
 
 public class Constants {
-	public static final String INVOCATION_PREFIX = "c";	
-	public static final String NAME = "CARIS";
+	public static final String INVOCATION_PREFIX = "s";	
+	public static final String NAME = "SCOUT";
 
 	public static final boolean OFFLINE = false;
 	public static final boolean RESPOND_TO_BOT = false; // If the user is a bot, ignore.
