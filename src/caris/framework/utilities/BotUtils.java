@@ -111,8 +111,12 @@ public class BotUtils {
 	
 	public static void sendLog( IGuild guild, String message ) {
 		// Send the message to the guild's log channel, if it exists
-		if( Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG) != null ) {
-			sendMessage( guild.getChannelByID(Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG)), message );
+		try {
+			if( Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG) != null ) {
+				sendMessage( guild.getChannelByID(Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG)), message );
+			}
+		} catch( NullPointerException e ) {
+			
 		}
 	}
 

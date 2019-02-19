@@ -22,6 +22,7 @@ import caris.framework.utilities.BotUtils;
 import caris.framework.utilities.Logger;
 import caris.framework.utilities.SaveDataUtilities;
 import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.handle.obj.IGuild;
 
 
 public class Brain {
@@ -78,6 +79,10 @@ public class Brain {
 		
 		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
 		cli.changeUsername(Constants.NAME);
+				
+		for( IGuild guild : cli.getGuilds() ) {
+			variables.addGuild(guild);
+		}
 		
 		Logger.print("Beginning startup protocols...");
 		for( String name : handlers.keySet() ) {
