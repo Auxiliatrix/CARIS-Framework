@@ -42,13 +42,13 @@ public class PagedInteractive extends InteractiveHandler {
 			}
 		}
 		interaction.add(new ReactRemoveReaction(source, reactionEvent.getUser(), reactionEvent.getReaction()));
-		interaction.add(new MessageEditReaction(source, new MessageContent("Page " + (page+1) + " of " + (pages.length+1), pages[page])));
+		interaction.add(new MessageEditReaction(source, new MessageContent("Page " + (page+1) + " of " + pages.length, pages[page])));
 		return interaction;
 	}
 
 	@Override
 	public MessageContent getDefault() {
-		return new MessageContent("Page 1 / " + (pages.length+1), pages[0]);
+		return new MessageContent("Page 1 / " + pages.length, pages[0]);
 	}
 	
 	@Override
