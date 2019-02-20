@@ -44,7 +44,7 @@ public class PagedInteractive extends InteractiveHandler {
 
 	@Override
 	public MessageContent getDefault() {
-		return new MessageContent("Page 1 / " + pages.length, pages[0]);
+		return new MessageContent("Page 1 / " + (pages.length+1), pages[0]);
 	}
 	
 	@Override
