@@ -76,7 +76,17 @@ public class TBAMatchObject implements Comparable<TBAMatchObject>{
 	@Override
 	public int compareTo(TBAMatchObject o) {
 		if( matchType.compareTo(o.matchType) == 0 ) {
-			return matchNumber - o.matchNumber;
+			if( matchNumber - o.matchNumber == 0 ) {
+				if( predictedTime - o.predictedTime < 0 ) {
+					return -1;
+				} else if( predictedTime - o.predictedTime > 0 ) {
+					return 1;
+				} else {
+					return 0;
+				}
+			} else {
+				return matchNumber - o.matchNumber;
+			}
 		} else {
 			return matchType.compareTo(o.matchType);
 		}
