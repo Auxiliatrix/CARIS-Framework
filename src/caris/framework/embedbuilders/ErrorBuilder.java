@@ -8,6 +8,12 @@ import sx.blah.discord.util.EmbedBuilder;
 public class ErrorBuilder {
 	
 	public enum ErrorType {
+		EXECUTION {
+			@Override
+			public String toString() {
+				return "Something went wrong!";
+			}
+		},
 		SYNTAX {
 			@Override
 			public String toString() {
