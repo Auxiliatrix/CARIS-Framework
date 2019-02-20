@@ -5,6 +5,7 @@ import java.util.List;
 
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
+import caris.framework.calibration.Constants;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.InteractiveCreateReaction;
 import caris.framework.tokens.Duration;
@@ -50,8 +51,8 @@ public class PollHandler extends MessageHandler {
 	@Override
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
-		usage.add("Caris, can we vote on \"are hotdogs a sandwich\" for like two minutes please?");
-		usage.add("Caris, I wanna make a poll for \"What's the best girl scout cookies\" with options for \"Thin Mints\" and \"S'mores\".");
+		usage.add( Constants.NAME + " can we vote on \"are hotdogs a sandwich\" for like two minutes please?");
+		usage.add( Constants.NAME + " I wanna make a poll for \"What's the best girl scout cookies\" with options for \"Thin Mints\" and \"S'mores\".");
 		return usage;
 	}
 	
