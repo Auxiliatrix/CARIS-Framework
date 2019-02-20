@@ -10,6 +10,7 @@ import caris.framework.reactions.ReactClearReaction;
 import caris.framework.reactions.ReactRemoveReaction;
 import caris.framework.tokens.MessageContent;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
+import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionAddEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionEvent;
 
 public class PagedInteractive extends InteractiveHandler {
@@ -25,6 +26,9 @@ public class PagedInteractive extends InteractiveHandler {
 
 	@Override
 	public Reaction process(ReactionEvent reactionEvent) {
+		if( !(reactionEvent instanceof ReactionAddEvent) ) {
+			return null;
+		}
 		MultiReaction interaction = new MultiReaction(-1);
 		if( equivalentEmojis(reactionEvent.getReaction(), EmojiSet.LEFT ) ) {
 			page -= 1;
