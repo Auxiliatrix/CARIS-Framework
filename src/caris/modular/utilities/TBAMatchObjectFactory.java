@@ -1,6 +1,7 @@
 package caris.modular.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -11,6 +12,26 @@ import caris.modular.tokens.TBAMatchObject;
 
 public class TBAMatchObjectFactory {
 
+	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray) {
+		List<TBAMatchObject> matches = new ArrayList<TBAMatchObject>();
+		for( int f=0; f<queueArray.length(); f++ ) {
+			try {
+				TBAMatchObject match = generateTBAMatchObject(queueArray.getJSONObject(f));
+				if( match != null ) {
+					matches.add(match);
+				}
+			} catch (JSONException e) {
+				return null;
+			}
+		}
+		TBAMatchObject[] sortedMatches = matches.toArray(new TBAMatchObject[matches.size()]);
+		Arrays.sort(sortedMatches);
+		if( sortedMatches.length == 0 ) {
+			return null;
+		}
+		return sortedMatches;
+	}
+	
 	public static TBAMatchObject generateTBAMatchObject(JSONObject matchObject) {
 		System.out.println(matchObject.toString());
 		String eventKey = "";
