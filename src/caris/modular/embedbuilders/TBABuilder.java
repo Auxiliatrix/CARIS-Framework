@@ -50,12 +50,6 @@ public class TBABuilder {
 		return TBAQueueBuilder.build();
 	}
 	
-	public static EmbedObject getTeamQueueEmbed(TBAMatchObject[] matchObjects) {
-		
-		
-		return TBAQueueBuilder.build();
-	}
-	
 	public static EmbedObject getAlertEmbed(TBAMatchObject matchObject, String team) {
 		alertBuilder.clearFields();
 		alertBuilder.withAuthorName("Match Starting Soon!");
