@@ -13,12 +13,34 @@ import caris.modular.tokens.TBAMatchObject;
 public class TBAMatchObjectFactory {
 
 	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray) {
+		return generateTBAMatchQueue(queueArray, null);
+	}
+	
+	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray, String teamFilter) {
 		List<TBAMatchObject> matches = new ArrayList<TBAMatchObject>();
 		for( int f=0; f<queueArray.length(); f++ ) {
 			try {
 				TBAMatchObject match = generateTBAMatchObject(queueArray.getJSONObject(f));
 				if( match != null ) {
-					matches.add(match);
+					if( teamFilter == null ) {
+						matches.add(match);
+					}
+					else if( match.redAlliance.length != 0 ) {
+						for( String team : match.redAlliance ) {
+							if( team.equalsIgnoreCase(teamFilter) ) {
+								matches.add(match);
+								break;
+							}
+						}
+					}
+					else if( match.blueAlliance.length != 0 ) {
+						for( String team : match.blueAlliance ) {
+							if( team.equalsIgnoreCase(teamFilter) ) {
+								matches.add(match);
+								break;
+							}
+						}
+					}
 				}
 			} catch (JSONException e) {
 				return null;
