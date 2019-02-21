@@ -1,13 +1,15 @@
 package caris.modular.embedbuilders;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
 
+import caris.framework.utilities.StringUtilities;
 import caris.modular.tokens.TBAMatchObject;
-import caris.modular.utilities.TBAMatchObjectFactory;
+import caris.modular.utilities.TBAObjectFactory;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.util.EmbedBuilder;
 
@@ -23,17 +25,24 @@ public class TBABuilder {
 																	.withFooterIcon(TBA_LAMP_ICON_URL)
 																	.withColor(4149685);
 	
-	public static EmbedObject getQueueBuilder(TBAMatchObject[] TBAMatchObjects) {
-		if( TBAMatchObjects.length == 0 ) {
+	public static EmbedBuilder alertBuilder = new EmbedBuilder().withAuthorIcon(TBA_LAMP_URL)
+																	.withTitle("Match Alert")
+																	.withFooterIcon(TBA_LAMP_ICON_URL);
+	
+	public static EmbedBuilder teamCardBuilder = new EmbedBuilder().withAuthorIcon(TBA_LAMP_URL)
+																	.withFooterIcon(TBA_LAMP_ICON_URL);
+	
+	public static EmbedObject getQueueBuilder(TBAMatchObject[] matchObjects) {
+		if( matchObjects.length == 0 ) {
 			return null;
 		}
 		TBAQueueBuilder.clearFields();
-		TBAQueueBuilder.withAuthorName("The Blue Alliance - " + TBAMatchObjects[0].eventKey);
-		TBAQueueBuilder.withAuthorUrl("https://www.thebluealliance.com/event/" + TBAMatchObjects[0].eventKey);
-		TBAQueueBuilder.withFooterText("https://www.thebluealliance.com/api/v3/event/" + TBAMatchObjects[0].eventKey + "/matches");
+		TBAQueueBuilder.withAuthorName("The Blue Alliance - " + matchObjects[0].eventKey);
+		TBAQueueBuilder.withAuthorUrl("https://www.thebluealliance.com/event/" + matchObjects[0].eventKey);
+		TBAQueueBuilder.withFooterText("https://www.thebluealliance.com/api/v3/event/" + matchObjects[0].eventKey + "/matches");
 		
-		for( int f=0; f<Math.min(PAGE_SIZE, TBAMatchObjects.length); f++ ) {
-			TBAMatchObject match = TBAMatchObjects[f];
+		for( int f=0; f<Math.min(PAGE_SIZE, matchObjects.length); f++ ) {
+			TBAMatchObject match = matchObjects[f];
 			TBAQueueBuilder.appendField("[" + match.matchNumber + "] " + match.matchType.toString(), "```diff\n- [" + String.join(" | ", match.redAlliance) + "]\n```", true);
 			TBAQueueBuilder.appendField(match.getDayOfWeek() + " | " + match.getDate() + " | " + match.getTime(), "```ini\n- [" + String.join(" | ", match.blueAlliance) + "]\n```", true);
 		}
@@ -41,9 +50,36 @@ public class TBABuilder {
 		return TBAQueueBuilder.build();
 	}
 	
+	public static EmbedObject getTeamQueueEmbed(TBAMatchObject[] matchObjects) {
+		
+		
+		return TBAQueueBuilder.build();
+	}
+	
+	public static EmbedObject getAlertEmbed(TBAMatchObject matchObject, String team) {
+		alertBuilder.clearFields();
+		alertBuilder.withAuthorName("Match Starting Soon!");
+		alertBuilder.withTitle(matchObject.matchType.toString() + " [" + matchObject.matchNumber + "] - " + matchObject.getTime());
+		if( StringUtilities.containsIgnoreCase(matchObject.redAlliance, team) ) {
+			alertBuilder.appendField("Red Alliance", "```diff\n- [" + String.join(" | ", matchObject.redAlliance) + "]\n```", false);
+			alertBuilder.appendField("Blue Alliance", "```ini\n- [" + String.join(" | ", matchObject.blueAlliance) + "]\n```", false);
+			alertBuilder.withColor(Color.RED);
+		} else if( StringUtilities.containsIgnoreCase(matchObject.blueAlliance, team) ) {
+			alertBuilder.appendField("Blue Alliance", "```ini\n- [" + String.join(" | ", matchObject.blueAlliance) + "]\n```", false);
+			alertBuilder.appendField("Red Alliance", "```diff\n- [" + String.join(" | ", matchObject.redAlliance) + "]\n```", false);
+			alertBuilder.withColor(Color.BLUE);
+		} else {
+			alertBuilder.appendField("Red Alliance", "```diff\n- [" + String.join(" | ", matchObject.redAlliance) + "]\n```", false);
+			alertBuilder.appendField("Blue Alliance", "```ini\n- [" + String.join(" | ", matchObject.blueAlliance) + "]\n```", false);
+			alertBuilder.withColor(255, 0, 255);
+		}
+		alertBuilder.withFooterText("Event - " + matchObject.eventKey);
+		return alertBuilder.build();
+	}
+	
 	public static EmbedObject[] paginate(JSONArray queueArray) {
 		List<EmbedObject> pages = new ArrayList<EmbedObject>();
-		TBAMatchObject[] sortedMatches = TBAMatchObjectFactory.generateTBAMatchQueue(queueArray);
+		TBAMatchObject[] sortedMatches = TBAObjectFactory.generateTBAMatchQueue(queueArray);
 		if( sortedMatches == null ) {
 			return null;
 		}

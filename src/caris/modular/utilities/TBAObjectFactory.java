@@ -8,9 +8,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import caris.framework.utilities.StringUtilities;
 import caris.modular.tokens.TBAMatchObject;
 
-public class TBAMatchObjectFactory {
+public class TBAObjectFactory {
 
 	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray) {
 		return generateTBAMatchQueue(queueArray, null);
@@ -25,21 +26,11 @@ public class TBAMatchObjectFactory {
 					if( teamFilter == null ) {
 						matches.add(match);
 					}
-					else if( match.redAlliance.length != 0 ) {
-						for( String team : match.redAlliance ) {
-							if( team.equalsIgnoreCase(teamFilter) ) {
-								matches.add(match);
-								break;
-							}
-						}
+					else if( StringUtilities.containsIgnoreCase(match.redAlliance, teamFilter) ) {
+						matches.add(match);
 					}
-					else if( match.blueAlliance.length != 0 ) {
-						for( String team : match.blueAlliance ) {
-							if( team.equalsIgnoreCase(teamFilter) ) {
-								matches.add(match);
-								break;
-							}
-						}
+					else if( StringUtilities.containsIgnoreCase(match.blueAlliance, teamFilter) ) {
+						matches.add(match);
 					}
 				}
 			} catch (JSONException e) {
