@@ -4,6 +4,7 @@ import java.util.List;
 
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
+import caris.framework.calibration.Constants.Access;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.tokens.RedirectedMessage;
@@ -18,33 +19,6 @@ import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
 
 public abstract class MessageHandler extends Handler {
-	
-	public enum Access {
-		DEFAULT {
-			@Override
-			public String toString() {
-				return "Default";
-			}
-		},
-		ADMIN {
-			@Override
-			public String toString() {
-				return "Admin";
-			}
-		},
-		DEVELOPER {
-			@Override
-			public String toString() {
-				return "Developer";
-			}
-		},
-		PASSIVE {
-			@Override
-			public String toString() {
-				return "Passive";
-			}
-		},
-	};
 	
 	public Access accessLevel;
 	public Permissions[] requirements;

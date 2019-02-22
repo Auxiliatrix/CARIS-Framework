@@ -5,6 +5,7 @@ import java.awt.Color;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.calibration.Constants;
+import caris.framework.calibration.Constants.Access;
 import caris.framework.calibration.PermissionsString;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
@@ -32,8 +33,8 @@ public class HelpBuilder {
 	public static EmbedObject getHelpEmbed() {
 		helpBuilder.clearFields();
 		String description = "";
-		for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
-			if( accessLevel == MessageHandler.Access.DEVELOPER || accessLevel == MessageHandler.Access.PASSIVE ) {
+		for( Access accessLevel : Access.values() ) {
+			if( accessLevel == Access.DEVELOPER || accessLevel == Access.PASSIVE ) {
 				description += "🔒 " + accessLevel.toString() + "\n";
 			} else {
 				description += accessLevel.toString() + "\n";
@@ -46,7 +47,7 @@ public class HelpBuilder {
 		return helpBuilder.build();
 	}
 	
-	public static EmbedObject getHelpEmbed(MessageHandler.Access accessLevel) {
+	public static EmbedObject getHelpEmbed(Access accessLevel) {
 		categoryBuilder.clearFields();
 		String description = "";
 		for( String name : Brain.handlers.keySet() ) {
@@ -56,7 +57,7 @@ public class HelpBuilder {
 				if( mh.accessLevel == accessLevel ) {
 					description += name + "\n";
 				}
-			} else if( accessLevel == MessageHandler.Access.PASSIVE ){
+			} else if( accessLevel == Access.PASSIVE ){
 				description += name + "\n";
 			}
 		}

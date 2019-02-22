@@ -7,6 +7,7 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
+import caris.framework.calibration.Constants.Access;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.HelpBuilder;
 import caris.framework.events.MessageEventWrapper;
@@ -29,9 +30,9 @@ public class HelpHandler extends MessageHandler {
 		List<String> tokens = messageEventWrapper.tokens;
 		Handler handler = null;
 		if( tokens.size() > 1 ) {
-			for( MessageHandler.Access accessLevel : MessageHandler.Access.values() ) {
+			for( Access accessLevel : Access.values() ) {
 				if( accessLevel.toString().equalsIgnoreCase(tokens.get(1)) ) {
-					if( accessLevel == MessageHandler.Access.PASSIVE && !messageEventWrapper.developerAuthor ) {
+					if( accessLevel == Access.PASSIVE && !messageEventWrapper.developerAuthor ) {
 						return new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You must be a developer to see these modules!"));
 					}
 					return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed(accessLevel));
