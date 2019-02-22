@@ -103,9 +103,9 @@ public class NicknameHandler extends MessageHandler {
 	@Override
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
-		usage.add(Constants.NAME + ", set @person and @otherperson's nicknames to \"nickname\"");
+		usage.add(Constants.NAME + ", set @person nickname to \"nickname\"");
 		usage.add(Constants.NAME + ", lock @person's username to \"nickname\"");
-		usage.add(Constants.NAME + ", unlock the usernames of @person and @otherperson");
+		usage.add(Constants.NAME + ", unlock the username of @person");
 		return usage;
 	}
 }
