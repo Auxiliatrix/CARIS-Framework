@@ -27,15 +27,15 @@ public class PruneHandler extends MessageHandler {
 	protected Reaction process(MessageEventWrapper messageEventWrapper) {
 		MultiReaction purgeMessages = new MultiReaction();
 		if( messageEventWrapper.integerTokens.size() > 0 ) {
-			if( messageEventWrapper.getMessage().getMentions().size() > 0 ) {
-				for( IUser mention : messageEventWrapper.getMessage().getMentions() ) {
+			if( messageEventWrapper.getAllMentionedUsers().size() > 0 ) {
+				for( IUser mention : messageEventWrapper.getAllMentionedUsers() ) {
 					purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel(), mention, messageEventWrapper.integerTokens.get(0)));
 				}
 			} else {
 				purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel(), messageEventWrapper.integerTokens.get(0)));
 			}
-		} else if( messageEventWrapper.getMessage().getMentions().size() > 0 ) {
-			for( IUser mention : messageEventWrapper.getMessage().getMentions() ) {
+		} else if( messageEventWrapper.getAllMentionedUsers().size() > 0 ) {
+			for( IUser mention : messageEventWrapper.getAllMentionedUsers() ) {
 				purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel(), mention));
 			}
 		} else {
