@@ -1,11 +1,14 @@
 package caris.framework.events;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import caris.framework.calibration.Constants;
 import caris.framework.utilities.TokenUtilities;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
 
 public class MessageEventWrapper extends MessageReceivedEvent {
@@ -35,6 +38,19 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 			}
 		}
 		elevatedAuthor = adminAuthor || developerAuthor;
+	}
+	
+	public List<IUser> getAllMentionedUsers() {
+		List<IUser> mentioned = new ArrayList<IUser>();
+		mentioned.addAll(getMessage().getMentions());
+		for( IRole role : getMessage().getRoleMentions() ) {
+			for( IUser user : getGuild().getUsersByRole(role) ) {
+				if( !mentioned.contains(user) ) {
+					mentioned.add(user);
+				}
+			}
+		}
+		return mentioned;
 	}
 	
 	public String notQuoted() {
