@@ -16,33 +16,6 @@ public class Constants {
 	
 	public static final int REACTION_EXECUTE_DELAY = 250;
 	
-	public static enum Access {
-		DEFAULT {
-			@Override
-			public String toString() {
-				return "Default";
-			}
-		},
-		ADMIN {
-			@Override
-			public String toString() {
-				return "Admin";
-			}
-		},
-		DEVELOPER {
-			@Override
-			public String toString() {
-				return "Developer";
-			}
-		},
-		PASSIVE {
-			@Override
-			public String toString() {
-				return "Passive";
-			}
-		},
-	};
-	
 	// Debug Constants
 	public static final boolean DEBUG = true;
 	public static final boolean PRINT = true;
