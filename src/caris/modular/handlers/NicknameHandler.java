@@ -7,7 +7,6 @@ import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
-import caris.framework.calibration.Constants.Access;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
@@ -20,7 +19,7 @@ import sx.blah.discord.handle.obj.Permissions;
 public class NicknameHandler extends MessageHandler {
 
 	public NicknameHandler() {
-		super("Nickname", false, Access.DEFAULT, Permissions.MANAGE_NICKNAMES);
+		super("Nickname", false, Permissions.MANAGE_NICKNAMES);
 	}
 
 	@Override
