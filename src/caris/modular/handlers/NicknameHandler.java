@@ -19,7 +19,7 @@ import sx.blah.discord.handle.obj.Permissions;
 public class NicknameHandler extends MessageHandler {
 
 	public NicknameHandler() {
-		super("Nickname", false, Permissions.MANAGE_NICKNAMES);
+		super("Nickname");
 	}
 
 	@Override

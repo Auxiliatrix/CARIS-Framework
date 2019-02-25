@@ -12,7 +12,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class NicknameEnforceHandler extends GeneralHandler<NicknameChangedEvent> {
 
 	public NicknameEnforceHandler() {
-		super("NicknameEnforce", false);
+		super("NicknameEnforce");
 	}
 
 	@Override
