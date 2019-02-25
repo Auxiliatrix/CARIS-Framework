@@ -52,6 +52,10 @@ public abstract class MessageHandler extends Handler {
 		this(name, allowBots, "Default", requirements);
 	}
 	
+	public MessageHandler(String name, String category, Permissions...requirements) {
+		this(name, false, category, requirements);
+	}
+	
 	public MessageHandler(String name, boolean allowBots, String category, Permissions...requirements) {
 		super(name, allowBots);
 		this.category = category;
