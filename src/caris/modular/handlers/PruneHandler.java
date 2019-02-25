@@ -7,7 +7,6 @@ import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
-import caris.framework.calibration.Constants.Access;
 import caris.framework.events.MessageEventWrapper;
 import caris.modular.reactions.MessagePurgeReaction;
 import sx.blah.discord.handle.obj.IUser;
@@ -16,7 +15,7 @@ import sx.blah.discord.handle.obj.Permissions;
 public class PruneHandler extends MessageHandler {
 
 	public PruneHandler() {
-		super("Prune", false, Access.DEFAULT, Permissions.MANAGE_MESSAGES);
+		super("Prune", false, Permissions.MANAGE_MESSAGES);
 	}
 
 	@Override

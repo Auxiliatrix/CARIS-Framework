@@ -9,7 +9,6 @@ import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
-import caris.framework.calibration.Constants.Access;
 import caris.framework.calibration.Keywords;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
@@ -20,11 +19,12 @@ import caris.framework.reactions.UpdateChannelReaction;
 import caris.modular.reactions.BlackboxPurgeReaction;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.Permissions;
 
 public class BlackboxHandler extends MessageHandler {
 	
 	public BlackboxHandler() {
-		super("Blackbox", Access.ADMIN);
+		super("Blackbox", "Admin", Permissions.ADMINISTRATOR);
 	}
 
 	@Override
