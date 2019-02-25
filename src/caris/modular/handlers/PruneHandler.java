@@ -15,7 +15,7 @@ import sx.blah.discord.handle.obj.Permissions;
 public class PruneHandler extends MessageHandler {
 
 	public PruneHandler() {
-		super("Prune", false, Permissions.MANAGE_MESSAGES);
+		super("Prune", "Admin", Permissions.MANAGE_MESSAGES);
 	}
 
 	@Override
