@@ -14,7 +14,7 @@ import caris.framework.reactions.MessageReaction;
 public class StatusHandler extends MessageHandler {
 
 	public StatusHandler() {
-		super("Status");
+		super("Status", "Developer");
 	}
 
 	@Override
