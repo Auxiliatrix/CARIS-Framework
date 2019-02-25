@@ -25,7 +25,7 @@ public class TBAHandler extends MessageHandler {
 	public static final String TBA_ENDPOINT = "https://www.thebluealliance.com/api/v3/";
 	
 	public TBAHandler() {
-		super("TBA", false);
+		super("TBA", "TBA");
 	}
 
 	@Override
