@@ -9,7 +9,7 @@ import sx.blah.discord.handle.impl.events.guild.GuildCreateEvent;
 public class TrackGuildHandler extends GeneralHandler<GuildCreateEvent> {
 
 	public TrackGuildHandler() {
-		super("TrackGuild", false);
+		super("TrackGuild");
 	}
 	
 	@Override
