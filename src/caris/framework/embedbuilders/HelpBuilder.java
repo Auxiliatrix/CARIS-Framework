@@ -5,7 +5,6 @@ import java.awt.Color;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.calibration.Constants;
-import caris.framework.calibration.Constants.Access;
 import caris.framework.calibration.PermissionsString;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
@@ -33,12 +32,8 @@ public class HelpBuilder {
 	public static EmbedObject getHelpEmbed() {
 		helpBuilder.clearFields();
 		String description = "";
-		for( Access accessLevel : Access.values() ) {
-			if( accessLevel == Access.DEVELOPER || accessLevel == Access.PASSIVE ) {
-				description += "🔒 " + accessLevel.toString() + "\n";
-			} else {
-				description += accessLevel.toString() + "\n";
-			}
+		for( String category : MessageHandler.categories ) {
+			description += category.toString() + "\n";
 		}
 		if( description.isEmpty() ) {
 			description = "No modules were found for this category.";
@@ -47,18 +42,16 @@ public class HelpBuilder {
 		return helpBuilder.build();
 	}
 	
-	public static EmbedObject getHelpEmbed(Access accessLevel) {
+	public static EmbedObject getHelpEmbed(String category) {
 		categoryBuilder.clearFields();
 		String description = "";
 		for( String name : Brain.handlers.keySet() ) {
 			Handler h = Brain.handlers.get(name);
 			if( h instanceof MessageHandler ) {
 				MessageHandler mh = (MessageHandler) h;
-				if( mh.accessLevel == accessLevel ) {
+				if( mh.category == category ) {
 					description += name + "\n";
 				}
-			} else if( accessLevel == Access.PASSIVE ){
-				description += name + "\n";
 			}
 		}
 		if( description.isEmpty() ) {
@@ -66,7 +59,7 @@ public class HelpBuilder {
 		} else {
 			description = "```yaml\n" + description + "```";
 		}
-		categoryBuilder.withTitle(accessLevel.toString() + " Modules:");
+		categoryBuilder.withTitle(category.toString() + " Modules:");
 		categoryBuilder.withDescription(description);
 		return categoryBuilder.build();
 	}
@@ -86,7 +79,7 @@ public class HelpBuilder {
 				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
-			commandBuilder.withFooterText(mh.accessLevel.toString() + formatRequirements(mh.requirements));
+			commandBuilder.withFooterText(mh.category.toString() + formatRequirements(mh.requirements));
 		} else {
 			commandBuilder.appendField(h.name, h.getDescription(), false);
 			commandBuilder.appendField("Usage", "```ini\n[Passive]\n```", false);

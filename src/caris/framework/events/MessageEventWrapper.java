@@ -9,7 +9,6 @@ import caris.framework.utilities.TokenUtilities;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
-import sx.blah.discord.handle.obj.Permissions;
 
 public class MessageEventWrapper extends MessageReceivedEvent {
 	
@@ -19,9 +18,7 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 	public List<Integer> integerTokens;
 	public List<Long> longTokens;
 	
-	public boolean adminAuthor;
 	public boolean developerAuthor;
-	public boolean elevatedAuthor;
 	
 	public MessageEventWrapper(MessageReceivedEvent messageReceivedEvent) {
 		super(messageReceivedEvent.getMessage());
@@ -31,13 +28,11 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		integerTokens = TokenUtilities.parseIntegers(message);
 		longTokens = TokenUtilities.parseLongs(message);	
 		
-		adminAuthor = messageReceivedEvent.getAuthor().getPermissionsForGuild(messageReceivedEvent.getGuild()).contains(Permissions.ADMINISTRATOR);
 		for( Long id : Constants.ADMIN_IDS ) {
 			if( messageReceivedEvent.getAuthor().getLongID() == id ) {
 				developerAuthor = true;
 			}
 		}
-		elevatedAuthor = adminAuthor || developerAuthor;
 	}
 	
 	public List<IUser> getAllMentionedUsers() {

@@ -1,10 +1,10 @@
 package caris.framework.basehandlers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import caris.framework.basereactions.Reaction;
 import caris.framework.calibration.Constants;
-import caris.framework.calibration.Constants.Access;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.tokens.RedirectedMessage;
@@ -20,39 +20,44 @@ import sx.blah.discord.handle.obj.Permissions;
 
 public abstract class MessageHandler extends Handler {
 	
-	public Access accessLevel;
+	public static List<String> categories = new ArrayList<String>();
+	
+	public String category;
 	public Permissions[] requirements;
 	
 	public String invocation;
 	public boolean inContext;
 			
 	public MessageHandler(String name) {
-		this(name, false, Access.DEFAULT);
+		this(name, false, "Default");
 	}
 	
 	public MessageHandler(String name, boolean allowBots) {
-		this(name, allowBots, Access.DEFAULT);
+		this(name, allowBots, "Default");
 	}
 	
-	public MessageHandler(String name, Access accessLevel) {
-		this(name, false, accessLevel);
+	public MessageHandler(String name, String category) {
+		this(name, false, category);
 	}
 	
 	public MessageHandler(String name, Permissions...requirements) {
 		this(name, false, requirements);
 	}
 	
-	public MessageHandler(String name, boolean allowBots, Access accessLevel) {
-		this(name, allowBots, accessLevel, new Permissions[] {});
+	public MessageHandler(String name, boolean allowBots, String category) {
+		this(name, allowBots, category, new Permissions[] {});
 	}
 	
 	public MessageHandler(String name, boolean allowBots, Permissions...requirements) {
-		this(name, allowBots, Access.DEFAULT, requirements);
+		this(name, allowBots, "Default", requirements);
 	}
 	
-	public MessageHandler(String name, boolean allowBots, Access accessLevel, Permissions...requirements) {
+	public MessageHandler(String name, boolean allowBots, String category, Permissions...requirements) {
 		super(name, allowBots);
-		this.accessLevel = accessLevel;
+		this.category = category;
+		if( !categories.contains(category) ) {
+			categories.add(category);
+		}
 		this.requirements = requirements;
 		this.invocation = Constants.INVOCATION_PREFIX + name;
 		this.inContext = false;
@@ -136,7 +141,7 @@ public abstract class MessageHandler extends Handler {
 		for( Permissions requirement : requirements ) {
 			meetsRequirements &= messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(requirement);
 		}
-		return (accessLevel != Access.ADMIN || messageEventWrapper.elevatedAuthor) && accessLevel != Access.DEVELOPER && meetsRequirements || messageEventWrapper.developerAuthor;
+		return meetsRequirements || messageEventWrapper.developerAuthor;
 	}
 	
 	protected int getBotPosition(MessageEventWrapper messageEventWrapper) {
