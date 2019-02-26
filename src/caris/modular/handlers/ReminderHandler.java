@@ -42,7 +42,7 @@ public class ReminderHandler extends MessageHandler {
 		}
 		try {
 			Duration timer = TimeUtilities.stringToTime(parseable);
-			setReminder.add(new SetTimedReaction(new MessageReaction(messageEventWrapper.getChannel(), message), timer, messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()));
+			setReminder.add(new SetTimedReaction(new MessageReaction(messageEventWrapper.getChannel(), message), timer, messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000));
 			setReminder.add(new MessageReaction(messageEventWrapper.getChannel(), "Reminder set successfully!"));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
