@@ -16,7 +16,10 @@ import caris.framework.events.MessageEventWrapper;
 import caris.framework.interactives.PagedInteractive;
 import caris.framework.reactions.InteractiveCreateReaction;
 import caris.framework.reactions.MessageReaction;
+import caris.framework.reactions.SetTimedReaction;
 import caris.modular.embedbuilders.TBABuilder;
+import caris.modular.reactions.TBAMatchAlertReaction;
+import caris.modular.reactions.TBAMatchTimeUpdateReaction;
 import caris.modular.tokens.TBAMatchObject;
 import caris.modular.utilities.APIRetriever;
 import caris.modular.utilities.TBAObjectFactory;
@@ -67,9 +70,9 @@ public class TBAHandler extends MessageHandler {
 				}
 			} else if( messageEventWrapper.tokens.get(1).equalsIgnoreCase("queue") ) {
 				if( messageEventWrapper.tokens.size() > 3 ) {
-					JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "team/frc" + messageEventWrapper.tokens.get(3) + "/event/" + messageEventWrapper.tokens.get(2) + "/matches");
+					JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + messageEventWrapper.tokens.get(2) + "/matches");
 					if( queueArray != null ) {
-						EmbedObject[] pages = TBABuilder.paginate(queueArray);
+						EmbedObject[] pages = TBABuilder.paginate(queueArray, messageEventWrapper.tokens.get(3));
 						if( pages != null ) {
 							tbaReaction.add(new InteractiveCreateReaction(messageEventWrapper.getChannel(), new PagedInteractive(pages)));
 						} else {
@@ -84,11 +87,12 @@ public class TBAHandler extends MessageHandler {
 			} else if( messageEventWrapper.tokens.get(1).equalsIgnoreCase("alert") ) {
 				if( messageEventWrapper.tokens.size() > 3 ) {
 					if( messageEventWrapper.getAllMentionedUsers().size() > 0 ) {
-						JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "team/frc" + messageEventWrapper.tokens.get(3) + "/event/" + messageEventWrapper.tokens.get(2) + "/matches");
+						JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + messageEventWrapper.tokens.get(2) + "/matches");
 						if( queueArray != null ) {
-							TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray);
+							TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray, messageEventWrapper.tokens.get(3));
 							if( queue != null ) {
-								
+								tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), queue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), queue[0].predictedTime));
+								tbaReaction.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(messageEventWrapper.tokens.get(2), messageEventWrapper.tokens.get(3)), System.currentTimeMillis()+1000));
 							} else {
 								tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "No matches found!")));
 							}

@@ -104,4 +104,36 @@ public class TBABuilder {
 		return pages.toArray(new EmbedObject[pages.size()]);
 	}
 	
+	public static EmbedObject[] paginate(JSONArray queueArray, String teamFilter) {
+		List<EmbedObject> pages = new ArrayList<EmbedObject>();
+		TBAMatchObject[] sortedMatches = TBAObjectFactory.generateTBAMatchQueue(queueArray, teamFilter);
+		if( sortedMatches == null ) {
+			return null;
+		}
+		List<TBAMatchObject> sortedMatchList = Arrays.asList(sortedMatches);
+		List<TBAMatchObject> contents = new ArrayList<TBAMatchObject>();
+		for( int f=0; f<sortedMatchList.size(); f++ ) {
+			contents.add(sortedMatchList.get(f));
+			if( contents.size() == PAGE_SIZE ) {
+				TBAMatchObject[] page = new TBAMatchObject[PAGE_SIZE];
+				for( int g=0; g<PAGE_SIZE; g++ ) {
+					page[g] = contents.get(g);
+				}
+				contents = new ArrayList<TBAMatchObject>();
+				pages.add(getQueueBuilder(page));
+			}
+		}
+		if( contents.size() > 0 ) {
+			TBAMatchObject[] page = new TBAMatchObject[contents.size()];
+			for( int f=0; f<contents.size(); f++ ) {
+				page[f] = contents.get(f);
+			}
+			contents = new ArrayList<TBAMatchObject>();
+			pages.add(getQueueBuilder(page));
+		}
+		if( pages.size() == 0 ) {
+			return null;
+		}
+		return pages.toArray(new EmbedObject[pages.size()]);
+	}
 }
