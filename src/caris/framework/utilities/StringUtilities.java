@@ -250,7 +250,7 @@ public class StringUtilities {
 	
 	public static boolean containsIgnoreCase(List<String> a, String b) {
 		for( String token : a ) {
-			if( containsIgnoreCase(token, b) ) {
+			if( token.equalsIgnoreCase(b) ) {
 				return true;
 			}
 		}
@@ -259,7 +259,7 @@ public class StringUtilities {
 	
 	public static Boolean containsIgnoreCase(Set<String> a, String b) {
 		for( String token : a ) {
-			if( containsIgnoreCase(token, b) ) {
+			if( token.equalsIgnoreCase(b) ) {
 				return true;
 			}
 		}
