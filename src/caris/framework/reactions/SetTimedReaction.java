@@ -1,8 +1,5 @@
 package caris.framework.reactions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import caris.framework.tokens.Duration;
@@ -27,13 +24,7 @@ public class SetTimedReaction extends Reaction {
 	@Override
 	public void process() {
 		long target = timeStamp * 1000 + timer.asMili();
-		if( Brain.timedQueue.containsKey(target) ) {
-			Brain.timedQueue.get(target).add(event);
-		} else {
-			List<Reaction> events = new ArrayList<Reaction>();
-			events.add(event);
-			Brain.timedQueue.put(target, events);
-		}
+		Brain.timedQueue.put(event, target);
 	}
 	
 }

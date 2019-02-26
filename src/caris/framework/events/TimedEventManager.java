@@ -10,12 +10,10 @@ public class TimedEventManager extends Thread {
 		while(true) {
 			try {
 				Thread.sleep(1000);
-				for( Long time : Brain.timedQueue.keySet() ) {
-					if( System.currentTimeMillis() >= time ) {
-						for( Reaction reaction : Brain.timedQueue.get(time) ) {
-							reaction.start();
-						}
-						Brain.timedQueue.remove(time);
+				for( Reaction reaction : Brain.timedQueue.keySet() ) {
+					if( System.currentTimeMillis() >= Brain.timedQueue.get(reaction) ) {
+						reaction.start();
+						Brain.timedQueue.remove(reaction);
 					}
 				}
 			} catch (InterruptedException e) {
