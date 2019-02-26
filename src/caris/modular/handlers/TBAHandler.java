@@ -76,7 +76,7 @@ public class TBAHandler extends MessageHandler {
 						if( pages != null ) {
 							tbaReaction.add(new InteractiveCreateReaction(messageEventWrapper.getChannel(), new PagedInteractive(pages)));
 						} else {
-							tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "No matches found!")));
+							tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.EXECUTION, "No matches found!")));
 						}
 					} else {
 						tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "You must specify a valid event key!")));
@@ -91,10 +91,21 @@ public class TBAHandler extends MessageHandler {
 						if( queueArray != null ) {
 							TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray, messageEventWrapper.tokens.get(3));
 							if( queue != null ) {
-								tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), queue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), queue[0].predictedTime));
-								tbaReaction.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(messageEventWrapper.tokens.get(2), messageEventWrapper.tokens.get(3)), System.currentTimeMillis()+1000));
+								List<TBAMatchObject> futureQueueList = new ArrayList<TBAMatchObject>();
+								for( TBAMatchObject match : queue ) {
+									if( match.predictedTime > System.currentTimeMillis() ) {
+										futureQueueList.add(match);
+									}
+								}
+								if( futureQueueList.size() > 0 ) {
+									TBAMatchObject[] futureQueue = futureQueueList.toArray(new TBAMatchObject[futureQueueList.size()]);
+									tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), futureQueue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), queue[0].predictedTime));
+									tbaReaction.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(messageEventWrapper.tokens.get(2), messageEventWrapper.tokens.get(3)), System.currentTimeMillis()+1000));
+								} else {
+									tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.EXECUTION, "All matches complete!")));
+								}
 							} else {
-								tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "No matches found!")));
+								tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.EXECUTION, "No matches found!")));
 							}
 						} else {
 							tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.KEYWORD, "You must specify a valid event key!")));
@@ -122,7 +133,9 @@ public class TBAHandler extends MessageHandler {
 	@Override
 	public List<String> getUsage() {
 		List<String> usage = new ArrayList<String>();
-		usage.add(invocation + " queue <event_key>");
+		usage.add(invocation + " matches <event_key>");
+		usage.add(invocation + " queue <event_key> <team_number>");
+		usage.add(invocation + " alert <event_key> <team_number> <@user.. @roles..>");
 		return usage;
 	}
 	
