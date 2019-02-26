@@ -90,7 +90,7 @@ public class PollInteractive extends InteractiveHandler {
 		emojis.add(EmojiSet.STOP);
 		openPoll.add(new ReactAddReaction(source, emojis.toArray(new Emoji[emojis.size()])));
 		if( timeout != null ) {
-			openPoll.add(new SetTimedReaction(new InteractiveDestroyReaction(this), timeout, source.getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()));
+			openPoll.add(new SetTimedReaction(new InteractiveDestroyReaction(this), timeout, source.getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000));
 		}
 		return openPoll;
 	}
