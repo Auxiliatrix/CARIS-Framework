@@ -7,23 +7,28 @@ import caris.framework.tokens.Duration;
 public class SetTimedReaction extends Reaction {
 
 	public Reaction event;
-	public Duration timer;
-	public long timeStamp;
+	public long target;
 	
 	public SetTimedReaction(Reaction event, Duration timer, long timeStamp) {
 		this(event, timer, timeStamp, 1);
 	}
 	
+	public SetTimedReaction(Reaction event, long target) {
+		this(event, target, 1);
+	}
+	
 	public SetTimedReaction(Reaction event, Duration timer, long timeStamp, int priority) {
+		this(event, timeStamp + timer.asMili());
+	}
+	
+	public SetTimedReaction(Reaction event, long target, int priority) {
 		super(priority);
 		this.event = event;
-		this.timer = timer;
-		this.timeStamp = timeStamp;
+		this.target = target;
 	}
 	
 	@Override
 	public void process() {
-		long target = timeStamp * 1000 + timer.asMili();
 		Brain.timedQueue.put(event, target);
 	}
 	
