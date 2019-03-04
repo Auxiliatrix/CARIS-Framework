@@ -2,9 +2,9 @@ package caris.modular.utilities;
 
 public class TestDataString {
 
-	public static String JSONText = "[\r\n" + 
+	private static String JSONText = "[\r\n" + 
 			"  {\r\n" + 
-			"    \"actual_time\": 1551240301, \r\n" + 
+			"    \"actual_time\": %1$d, \r\n" + 
 			"    \"alliances\": {\r\n" + 
 			"      \"blue\": {\r\n" + 
 			"        \"dq_team_keys\": [], \r\n" + 
@@ -31,8 +31,8 @@ public class TestDataString {
 			"    \"event_key\": \"2019week0\", \r\n" + 
 			"    \"key\": \"2019week0_f1m1\", \r\n" + 
 			"    \"match_number\": 1, \r\n" + 
-			"    \"post_result_time\": 1551240301, \r\n" + 
-			"    \"predicted_time\": 1551240301, \r\n" + 
+			"    \"post_result_time\": %1$d, \r\n" + 
+			"    \"predicted_time\": %1$d, \r\n" + 
 			"    \"score_breakdown\": {\r\n" + 
 			"      \"blue\": {\r\n" + 
 			"        \"adjustPoints\": 0, \r\n" + 
@@ -142,7 +142,7 @@ public class TestDataString {
 			"      }\r\n" + 
 			"    }, \r\n" + 
 			"    \"set_number\": 1, \r\n" + 
-			"    \"time\": 1551240301, \r\n" + 
+			"    \"time\": %1$d, \r\n" + 
 			"    \"videos\": [\r\n" + 
 			"      {\r\n" + 
 			"        \"key\": \"ynbCsVr8_84\", \r\n" + 
@@ -152,7 +152,7 @@ public class TestDataString {
 			"    \"winning_alliance\": \"blue\"\r\n" + 
 			"  }, \r\n" + 
 			"  {\r\n" + 
-			"    \"actual_time\": 1551240701, \r\n" + 
+			"    \"actual_time\": %2$d, \r\n" + 
 			"    \"alliances\": {\r\n" + 
 			"      \"blue\": {\r\n" + 
 			"        \"dq_team_keys\": [], \r\n" + 
@@ -179,8 +179,8 @@ public class TestDataString {
 			"    \"event_key\": \"2019week0\", \r\n" + 
 			"    \"key\": \"2019week0_f1m2\", \r\n" + 
 			"    \"match_number\": 2, \r\n" + 
-			"    \"post_result_time\": 1551240701, \r\n" + 
-			"    \"predicted_time\": 1551240701, \r\n" + 
+			"    \"post_result_time\": %2$d, \r\n" + 
+			"    \"predicted_time\": %2$d, \r\n" + 
 			"    \"score_breakdown\": {\r\n" + 
 			"      \"blue\": {\r\n" + 
 			"        \"adjustPoints\": 0, \r\n" + 
@@ -290,7 +290,7 @@ public class TestDataString {
 			"      }\r\n" + 
 			"    }, \r\n" + 
 			"    \"set_number\": 1, \r\n" + 
-			"    \"time\": 1551240701, \r\n" + 
+			"    \"time\": %2$d, \r\n" + 
 			"    \"videos\": [\r\n" + 
 			"      {\r\n" + 
 			"        \"key\": \"saGvNGCd7HQ\", \r\n" + 
@@ -300,5 +300,9 @@ public class TestDataString {
 			"    \"winning_alliance\": \"blue\"\r\n" + 
 			"  }, \r\n" + 
 			"]";
+	
+	public static String getTestData() {
+		return String.format(JSONText, System.currentTimeMillis() / 1000 + 60, System.currentTimeMillis() / 1000 + 120);
+	}
 	
 }
