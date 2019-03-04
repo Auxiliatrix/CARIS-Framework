@@ -3,6 +3,8 @@ package caris.modular.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 import org.json.JSONArray;
 
 import com.mashape.unirest.http.Unirest;
@@ -23,6 +25,7 @@ import caris.modular.reactions.TBAMatchTimeUpdateReaction;
 import caris.modular.tokens.TBAMatchObject;
 import caris.modular.utilities.APIRetriever;
 import caris.modular.utilities.TBAObjectFactory;
+import caris.modular.utilities.TestDataString;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 
 public class TBAHandler extends MessageHandler {
@@ -55,6 +58,7 @@ public class TBAHandler extends MessageHandler {
 			if( messageEventWrapper.tokens.get(1).equalsIgnoreCase("matches") ) {
 				if( messageEventWrapper.tokens.size() > 2 ) {
 					JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + messageEventWrapper.tokens.get(2) + "/matches");
+					//JSONArray queueArray = new JSONArray(TestDataString.JSONText);
 					if( queueArray != null ) {
 						EmbedObject[] pages = TBABuilder.paginate(queueArray);
 						if( pages != null ) {
@@ -71,6 +75,7 @@ public class TBAHandler extends MessageHandler {
 			} else if( messageEventWrapper.tokens.get(1).equalsIgnoreCase("queue") ) {
 				if( messageEventWrapper.tokens.size() > 3 ) {
 					JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + messageEventWrapper.tokens.get(2) + "/matches");
+					//JSONArray queueArray = new JSONArray(TestDataString.JSONText);
 					if( queueArray != null ) {
 						EmbedObject[] pages = TBABuilder.paginate(queueArray, messageEventWrapper.tokens.get(3));
 						if( pages != null ) {
@@ -88,18 +93,19 @@ public class TBAHandler extends MessageHandler {
 				if( messageEventWrapper.tokens.size() > 3 ) {
 					if( messageEventWrapper.getAllMentionedUsers().size() > 0 ) {
 						JSONArray queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + messageEventWrapper.tokens.get(2) + "/matches");
+						//JSONArray queueArray = new JSONArray(TestDataString.JSONText);
 						if( queueArray != null ) {
 							TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray, messageEventWrapper.tokens.get(3));
 							if( queue != null ) {
 								List<TBAMatchObject> futureQueueList = new ArrayList<TBAMatchObject>();
 								for( TBAMatchObject match : queue ) {
-									if( match.predictedTime > System.currentTimeMillis() ) {
+									if( match.predictedTime*1000 > System.currentTimeMillis() ) {
 										futureQueueList.add(match);
 									}
 								}
 								if( futureQueueList.size() > 0 ) {
 									TBAMatchObject[] futureQueue = futureQueueList.toArray(new TBAMatchObject[futureQueueList.size()]);
-									tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), futureQueue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), queue[0].predictedTime));
+									tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), futureQueue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), futureQueue[0].predictedTime*1000));
 									tbaReaction.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(messageEventWrapper.tokens.get(2), messageEventWrapper.tokens.get(3)), System.currentTimeMillis()+1000));
 								} else {
 									tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.EXECUTION, "All matches complete!")));

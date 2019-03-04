@@ -46,7 +46,6 @@ public class TBAObjectFactory {
 	}
 	
 	public static TBAMatchObject generateTBAMatchObject(JSONObject matchObject) {
-		System.out.println(matchObject.toString());
 		String eventKey = "";
 		int matchNumber = -1;
 		String matchType = "";

@@ -30,12 +30,12 @@ public class TBAMatchTimeUpdateReaction extends Reaction {
 					TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray);
 					if( queue != null ) {
 						for( TBAMatchObject match : queue ) {
-							if( newMatchAlert.match.eventKey.equalsIgnoreCase(match.eventKey) && newMatchAlert.match.matchType.equals(match.matchType) && newMatchAlert.match.matchNumber == match.matchNumber ) {
+							if( newMatchAlert.match.equals(match) ) {
 								empty = false;
 								Long time = Brain.timedQueue.get(reaction);
-								if( Math.abs(time - match.predictedTime) > 1000 ) {
+								if( Math.abs(time - match.predictedTime*1000) > 1000 ) {
 									Brain.timedQueue.remove(reaction);
-									Brain.timedQueue.put(reaction, match.predictedTime);
+									Brain.timedQueue.put(reaction, match.predictedTime*1000);
 								}
 							}
 						}
