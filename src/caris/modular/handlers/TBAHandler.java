@@ -29,6 +29,7 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 public class TBAHandler extends MessageHandler {
 
 	public static final String TBA_ENDPOINT = "https://www.thebluealliance.com/api/v3/";
+	public static final int ALERT_SECONDS_BEFORE = 300;
 	
 	public TBAHandler() {
 		super("TBA", "frc");
@@ -116,7 +117,7 @@ public class TBAHandler extends MessageHandler {
 								if( futureQueueList.size() > 0 ) {
 									TBAMatchObject[] futureQueue = futureQueueList.toArray(new TBAMatchObject[futureQueueList.size()]);
 									tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), "Alert Queue Set!"));
-									tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), futureQueue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), futureQueue[0].predictedTime*1000));
+									tbaReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(messageEventWrapper.getChannel(), futureQueue, messageEventWrapper.tokens.get(3), messageEventWrapper.getAllMentionedUsers()), (futureQueue[0].predictedTime-ALERT_SECONDS_BEFORE)*1000));
 									tbaReaction.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(messageEventWrapper.tokens.get(2), messageEventWrapper.tokens.get(3)), System.currentTimeMillis()+1000));
 								} else {
 									tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.EXECUTION, "All matches complete!")));
