@@ -10,7 +10,13 @@ import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 
 @Module(name = "Credits")
-@Help(category = "Developer", description = "Displays credits for " + Constants.NAME + "'s development.", usage = {Constants.INVOCATION_PREFIX + "Credits"})
+@Help(
+		category = "Developer", 
+		description = "Displays credits for " + Constants.NAME + "'s development.", 
+		usage = {
+					Constants.INVOCATION_PREFIX + "Credits"
+				}
+	)
 public class CreditsHandler extends MessageHandler {
 
 	public CreditsHandler() {

@@ -12,7 +12,13 @@ import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 
 @Module(name = "Status")
-@Help(category = "Developer", description = "Gets " + Constants.NAME + "'s current status.", usage = {Constants.INVOCATION_PREFIX + "Status", Constants.NAME + ", what's your status?"})
+@Help(
+		category = "Developer", 
+		description = "Gets " + Constants.NAME + "'s current status.", 
+		usage = {
+					Constants.INVOCATION_PREFIX + "Status", Constants.NAME + ", what's your status?"
+				}
+	)
 public class StatusHandler extends MessageHandler {
 
 	public StatusHandler() {

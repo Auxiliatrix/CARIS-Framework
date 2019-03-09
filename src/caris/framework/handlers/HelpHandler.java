@@ -17,7 +17,14 @@ import caris.framework.utilities.Verifier;
 import caris.framework.utilities.Verifier.Verification;
 
 @Module(name = "Help")
-@Help(category = "Default", description = "Provides information on how to use " + Constants.NAME + ".", usage = {Constants.INVOCATION_PREFIX + "Help <category>", Constants.INVOCATION_PREFIX + "Help <module>"})
+@Help(
+		category = "Default", 
+		description = "Provides information on how to use " + Constants.NAME + ".", 
+		usage = {
+					Constants.INVOCATION_PREFIX + "Help <category>", 
+					Constants.INVOCATION_PREFIX + "Help <module>"
+				}
+		)
 public class HelpHandler extends MessageHandler {
 
 	public HelpHandler() {
