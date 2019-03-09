@@ -1,4 +1,4 @@
-package caris.configuration.library;
+package caris.configuration.reference;
 
 import caris.framework.utilities.TokenUtilities;
 

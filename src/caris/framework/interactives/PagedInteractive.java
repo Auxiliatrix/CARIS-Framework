@@ -1,6 +1,6 @@
 package caris.framework.interactives;
 
-import caris.configuration.library.EmojiSet;
+import caris.configuration.reference.EmojiSet;
 import caris.framework.basehandlers.InteractiveModule;
 import caris.framework.basehandlers.InteractiveModule.Interactive;
 import caris.framework.basereactions.MultiReaction;

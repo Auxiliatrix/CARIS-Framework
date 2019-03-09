@@ -1,4 +1,4 @@
-package caris.configuration.library;
+package caris.configuration.reference;
 
 import java.util.HashMap;
 import java.util.Map;

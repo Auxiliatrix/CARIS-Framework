@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import caris.configuration.calibration.Constants;
-import caris.configuration.library.PermissionsString;
+import caris.configuration.reference.PermissionsString;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.main.Brain;
