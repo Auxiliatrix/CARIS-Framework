@@ -12,7 +12,8 @@ import org.reflections.Reflections;
 
 import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.Handler;
-import caris.framework.basehandlers.InteractiveHandler;
+import caris.framework.basehandlers.Handler.Module;
+import caris.framework.basehandlers.InteractiveModule;
 import caris.framework.basereactions.Reaction;
 import caris.framework.events.EventManager;
 import caris.framework.events.TimedEventManager;
@@ -31,87 +32,36 @@ public class Brain {
 	public static Variables variables;
 	
 	/* Handlers */
-	public static Map<String, Handler> handlers = new HashMap<String, Handler>();
+	public static Map<String, Handler> modules = new HashMap<String, Handler>();
 	
 	/* Event Managers */
 	public static EventManager eventManager = new EventManager();
 
 	public static IDiscordClient cli = null;
-
-	public static boolean emptyReported = true;
 	
 	/* Synchronized */
 	public static List<Thread> threadQueue = Collections.synchronizedList(new ArrayList<Thread>());
 	public static ConcurrentHashMap<Reaction, Long> timedQueue = new ConcurrentHashMap<Reaction, Long>();
 	public static AtomicInteger threadCount = new AtomicInteger(0);
-	public static List<InteractiveHandler> interactives = Collections.synchronizedList(new ArrayList<InteractiveHandler>());
+	public static List<InteractiveModule> interactives = Collections.synchronizedList(new ArrayList<InteractiveModule>());
 	
 	public static void main(String[] args) {
-
-		init();
-
 		if (!(args.length >= 1)) {
 			Logger.error("Please pass the TOKEN as the first argument.");
 			Logger.error("# java -jar SimpleResponder.jar TOKEN");
 			System.exit(0);
 		}
-
-		// Gets token from arguments
-		String token = args[0];
-
-		cli = BotUtils.getBuiltDiscordClient(token);
-		Logger.print("Client built successfully.");
-
-		cli.getDispatcher().registerListener( eventManager );
-		Logger.print("Listener established successfully.");
-
-		// Only login after all event registering is done
-		cli.login();
-		Logger.print("Client logged in.");
-		Logger.print("Loaded Channel Map.");
-
-		while( !cli.isReady() ) {
-			// Wait to do anything else
-		}
-
-		TimedEventManager timedEvents = new TimedEventManager();
-		timedEvents.start();
 		
-		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
-		cli.changeUsername(Constants.NAME);
-				
-		for( IGuild guild : cli.getGuilds() ) {
-			variables.addGuild(guild);
-		}
-		
-		Logger.print("Beginning startup protocols...");
-		for( String name : handlers.keySet() ) {
-			Handler h = handlers.get(name);
-			h.onStartup().start();
-		}
+		setup();
+		login(args[0]);
+		startup();
 		
 		while( true ) {
 			iterate();
 		}
 	}
 	
-	public static void iterate() { // do things. nothing gets past this block.
-		if( !threadQueue.isEmpty() ) {
-			emptyReported = false;
-			Logger.debug("Threads in queue: " + threadQueue.size(), true);
-			try {
-				threadQueue.remove(0).start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if( !emptyReported ) {
-			Logger.debug("Thread queue empty.", true);
-			emptyReported = true;
-		}
-	}
-	
-	public static void init() { // add handlers to their appropriate categories here
+	private static void setup() {
 		try {
 			variables = new Variables(SaveDataUtilities.JSONIn("tmp/variables.json"));
 		} catch (JSONReloadException e) {
@@ -119,50 +69,96 @@ public class Brain {
 			variables = new Variables();
 		}
 		
-		Logger.print("Initializing.");
+		Logger.print("Setting up...");
 		
-		// Load modules
-		Logger.print("Loading Handlers...", 1);
-		// Load default handlers
-		Reflections reflect = new Reflections("caris.framework.handlers");
-		for( Class<?> c : reflect.getSubTypesOf( caris.framework.basehandlers.Handler.class ) ) {
-			Handler h = null;
-			try {
-				h = (Handler) c.newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			
-			if( h != null ) {
-				Logger.print("Adding " + h.name + " to the Handler Map", 2);
-				handlers.put( h.name.toLowerCase(), h );
-			}
-		}
-		// Load modular handlers
-		reflect = new Reflections("caris.modular.handlers");
-		for( Class<?> c : reflect.getSubTypesOf( caris.framework.basehandlers.Handler.class ) ) {
-			Handler h = null;
-			try {
-				h = (Handler) c.newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			
-			if( h != null ) {
-				Logger.print("Adding " + h.name + " to the Handler Map", 2);
-				handlers.put( h.name.toLowerCase(), h );
-			}
+		loadModules("caris.framework.handlers");
+		
+		for( String packagePrefix : Constants.MODULE_PACKAGES ) {
+			loadModules(packagePrefix, "caris.framework.handlers");
 		}
 		
-		Logger.print("Loaded Handlers:", 1);
-		for( String s : handlers.keySet() ) {
-			Logger.print(s, 2);
+		Logger.print("Setup complete.");
+	}
+	
+	private static void login(String token) {
+		Logger.print("Logging in...");
+		
+		cli = BotUtils.getBuiltDiscordClient(token);
+		Logger.print("Client built successfully.", 1);
+
+		cli.getDispatcher().registerListener( eventManager );
+		Logger.print("Listener established successfully.", 1);
+
+		cli.login();
+		Logger.print("Client logged in.", 1);
+		Logger.print("Loaded Channel Map.", 1);
+		
+		while( !cli.isReady() ) {}
+		Logger.print("Client ready!", 1);
+		
+		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
+		cli.changeUsername(Constants.NAME);
+		Logger.print("Log in complete.");
+	}
+	
+	private static void startup() {
+		Logger.print("Starting up...");
+		
+		TimedEventManager timedEvents = new TimedEventManager();
+		timedEvents.start();
+		Logger.print("Time started successfully.", 1);
+		
+		for( IGuild guild : cli.getGuilds() ) {
+			variables.addGuild(guild);
 		}
-				
-		Logger.print("Initialization complete.");
+		Logger.print("Guilds loaded successfully.", 1);
+		
+		for( String name : modules.keySet() ) {
+			Handler h = modules.get(name);
+			h.onStartup().start();
+		}
+		Logger.print("Handler startup protocols executed successfully.", 1);
+		
+		Logger.print("Startup complete.");
+	}
+	
+	private static void iterate() {
+		if( !threadQueue.isEmpty() ) {
+			Logger.debug("Threads in queue: " + threadQueue.size(), true);
+			try {
+				threadQueue.remove(0).start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private static void loadModules(String includePrefix) {
+		loadModules(includePrefix, "");
+	}
+	
+	private static void loadModules(String includePrefix, String excludePrefix) {
+		Logger.print("Loading Handlers from \"" + includePrefix + "\":");
+		Reflections include = new Reflections(includePrefix);
+		Reflections exclude = excludePrefix.isEmpty() ? null : new Reflections(excludePrefix);
+		for( Class<?> c : include.getSubTypesOf(caris.framework.basehandlers.Handler.class) ) {
+			if( exclude != null && exclude.getSubTypesOf(caris.framework.basehandlers.Handler.class).contains(c) ) {
+				continue;
+			}
+			Module moduleAnnotation = c.getAnnotation(Module.class);
+			if( moduleAnnotation != null ) {
+				Logger.print("Adding Handler " + moduleAnnotation.name() + " to the Module map.", 1);
+				if( modules.containsKey(moduleAnnotation.name().toLowerCase()) ) {
+					Logger.print("Handler with this name already exists. Overriding.", 2);
+				}
+				try {
+					modules.put( moduleAnnotation.name().toLowerCase(), (Handler) c.newInstance() );
+				} catch (InstantiationException e) {
+					Logger.error("Failed to load Handler " + moduleAnnotation.name() + " (InstantiationException)", 2);
+				} catch (IllegalAccessException e) {
+					Logger.error("Failed to load Handler " + moduleAnnotation.name() + " (IllegalAccessException)", 2);
+				}
+			}
+		}
 	}
 }

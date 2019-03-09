@@ -1,8 +1,12 @@
 package caris.framework.basehandlers;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import com.vdurmont.emoji.Emoji;
 
-import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import caris.framework.tokens.MessageContent;
@@ -14,22 +18,21 @@ import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IReaction;
 
-public abstract class InteractiveHandler extends Handler {
+public abstract class InteractiveModule {
 
+	public String name;
+	public boolean allowBots;
+	
 	protected IMessage source;
 	public boolean completed;
 	
-	public InteractiveHandler(String name) {
-		this(name, false);
-	}
-	
-	public InteractiveHandler(String name, boolean allowBots) {
-		super(name, allowBots);
-		this.source = null;
+	public InteractiveModule() {
+		Interactive self = this.getClass().getAnnotation(Interactive.class);
+		name = self.name();
+		allowBots = self.allowBots();
 		Brain.interactives.add(this);
 	}
-	
-	@Override
+
 	public Reaction handle(Event event) {
 		Logger.debug("Checking interactive " + name, 0, true);
 		if( event instanceof ReactionEvent ) {
@@ -92,16 +95,23 @@ public abstract class InteractiveHandler extends Handler {
 	
 	public abstract MessageContent getDefault();
 	
-	@Override
-	public abstract String getDescription();
+	protected boolean botFilter(Event event) {
+		return isBot(event) && !allowBots;
+	}
 	
-	@Override
 	protected boolean isBot(Event event) {
 		if( event instanceof ReactionEvent ) {
-			if( !Constants.RESPOND_TO_BOT && ((ReactionEvent) event).getUser().isBot() ) {
+			if( ((ReactionEvent) event).getUser().isBot() ) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Interactive {
+		String name();
+		boolean allowBots() default false;
 	}
 }

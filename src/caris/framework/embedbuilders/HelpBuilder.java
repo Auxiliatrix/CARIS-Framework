@@ -1,6 +1,10 @@
 package caris.framework.embedbuilders;
 
 import java.awt.Color;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import caris.configuration.calibration.Constants;
 import caris.configuration.library.PermissionsString;
@@ -45,11 +49,11 @@ public class HelpBuilder {
 	public static EmbedObject getHelpEmbed(String category) {
 		categoryBuilder.clearFields();
 		String description = "";
-		for( String name : Brain.handlers.keySet() ) {
-			Handler h = Brain.handlers.get(name);
-			if( h instanceof MessageHandler ) {
-				MessageHandler mh = (MessageHandler) h;
-				if( mh.category == category ) {
+		for( String name : Brain.modules.keySet() ) {
+			Handler h = Brain.modules.get(name);
+			Help activeAnnotation = h.getClass().getAnnotation(Help.class);
+			if( activeAnnotation != null ) {
+				if( activeAnnotation.category() == category ) {
 					description += name + "\n";
 				}
 			}
@@ -66,11 +70,11 @@ public class HelpBuilder {
 	
 	public static EmbedObject getHelpEmbed(Handler h) {
 		commandBuilder.clearFields();
-		if( h instanceof MessageHandler ) {
-			MessageHandler mh = (MessageHandler) h;
-			commandBuilder.appendField("`" + mh.invocation + "`", h.getDescription(), false);
+		Help activeAnnotation = h.getClass().getAnnotation(Help.class);
+		if( activeAnnotation != null ) {
+			commandBuilder.appendField("`" + h.invocation + "`", activeAnnotation.description(), false);
 			String usage = "";
-			for( String example : mh.getUsage() ) {
+			for( String example : activeAnnotation.usage() ) {
 				usage += example + "\n";
 			}
 			if( usage.isEmpty() ) {
@@ -79,11 +83,7 @@ public class HelpBuilder {
 				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
-			commandBuilder.withFooterText(mh.category.toString() + formatRequirements(mh.requirements));
-		} else {
-			commandBuilder.appendField(h.name, h.getDescription(), false);
-			commandBuilder.appendField("Usage", "```ini\n[Passive]\n```", false);
-			commandBuilder.withFooterText("Passive | " + Constants.NAME + " Only");
+			commandBuilder.withFooterText(activeAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : ""));
 		}
 		return commandBuilder.build();
 	}
@@ -99,5 +99,13 @@ public class HelpBuilder {
 			return "";
 		}
 	}
-		
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Help {
+		String category() default "Default";
+		String description() default "An active module.";
+		String[] usage() default {};
+	}
+	
 }

@@ -1,6 +1,6 @@
 package caris.framework.utilities;
 
-import caris.configuration.calibration.Constants;
+import caris.configuration.calibration.LoggerSettings;
 import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -9,7 +9,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class Logger {
 		
 	public static void say(String message, IChannel channel) {
-		if( Constants.SAY ) {
+		if( LoggerSettings.SAY ) {
 			String output = "(" + channel.getLongID() + ") <" + channel.getName() + ">: " + message;
 			consolePrint(output);
 			log(output);
@@ -17,7 +17,7 @@ public class Logger {
 	}
 	
 	public static void hear(String message, IUser user, IChannel channel) {
-		if( Constants.HEAR ) {
+		if( LoggerSettings.HEAR ) {
 			String output = "(" + channel.getLongID() + ") <";
 			output += channel.getName() + "> [";
 			output += user.getName() + "]: ";
@@ -28,28 +28,28 @@ public class Logger {
 	}
 	
 	public static void error(String message) {
-		error(message, Constants.DEFAULT_INDENT_LEVEL);
+		error(message, LoggerSettings.DEFAULT_INDENT_LEVEL);
 	}
 	
 	public static void error(String message, int level) {
 		String output = "[ERROR]";
-		for( int f=0; f<level*Constants.DEFAULT_INDENT_INCREMENT; f++ ) {
-			output += Constants.ERROR_INDENT;
+		for( int f=0; f<level*LoggerSettings.DEFAULT_INDENT_INCREMENT; f++ ) {
+			output += LoggerSettings.ERROR_INDENT;
 		}
-		output += Constants.HEADER;
+		output += LoggerSettings.HEADER;
 		output += message;
 		System.err.println(output);
-		if( Constants.LOG ) {
+		if( LoggerSettings.LOG ) {
 			log(output);
 		}
 	}
 	
 	public static void debug(String message) {
-		debug(message, Constants.DEFAULT_INDENT_LEVEL, false);
+		debug(message, LoggerSettings.DEFAULT_INDENT_LEVEL, false);
 	}
 	
 	public static void debug(String message, boolean verbose) {
-		debug(message, Constants.DEFAULT_INDENT_LEVEL, verbose);
+		debug(message, LoggerSettings.DEFAULT_INDENT_LEVEL, verbose);
 	}
 	
 	public static void debug(String message, int level) {
@@ -58,16 +58,16 @@ public class Logger {
 	
 	@SuppressWarnings("unused")
 	public static void debug(String message, int level, boolean verbose) {
-		if( (Constants.DEBUG_LEVEL == -1 || Constants.DEBUG_LEVEL >= level) && (!verbose || Constants.VERBOSE) ) {
+		if( (LoggerSettings.DEBUG_LEVEL == -1 || LoggerSettings.DEBUG_LEVEL >= level) && (!verbose || LoggerSettings.VERBOSE) ) {
 			String output = "[DEBUG]";
-			if( Constants.DEBUG ) {
-				for( int f=0; f<level*Constants.DEFAULT_INDENT_INCREMENT; f++ ) {
-					output += Constants.DEBUG_INDENT;
+			if( LoggerSettings.DEBUG ) {
+				for( int f=0; f<level*LoggerSettings.DEFAULT_INDENT_INCREMENT; f++ ) {
+					output += LoggerSettings.DEBUG_INDENT;
 				}
-				output += Constants.HEADER;
+				output += LoggerSettings.HEADER;
 				output += message;
 				consolePrint(output);
-				if( Constants.LOG && ( Constants.LOG_LEVEL == -1 || Constants.LOG_LEVEL >= level )) {
+				if( LoggerSettings.LOG && ( LoggerSettings.LOG_LEVEL == -1 || LoggerSettings.LOG_LEVEL >= level )) {
 					log(output);
 				}
 			}
@@ -75,11 +75,11 @@ public class Logger {
 	}
 	
 	public static void print(String message) {
-		print(message, Constants.DEFAULT_INDENT_LEVEL);
+		print(message, LoggerSettings.DEFAULT_INDENT_LEVEL);
 	}
 	
 	public static void print(String message, boolean verbose) {
-		print(message, Constants.DEFAULT_INDENT_LEVEL, verbose);
+		print(message, LoggerSettings.DEFAULT_INDENT_LEVEL, verbose);
 	}
 	
 	public static void print(String message, int level) {
@@ -88,16 +88,16 @@ public class Logger {
 	
 	@SuppressWarnings("unused")
 	public static void print(String message, int level, boolean verbose) {
-		if( (Constants.PRINT_LEVEL == -1 || Constants.PRINT_LEVEL >= level) && (!verbose || Constants.VERBOSE)) {
+		if( (LoggerSettings.PRINT_LEVEL == -1 || LoggerSettings.PRINT_LEVEL >= level) && (!verbose || LoggerSettings.VERBOSE)) {
 			String output = "[PRINT]";
-			if( Constants.PRINT ) {
-				for( int f=0; f<level*Constants.DEFAULT_INDENT_INCREMENT; f++ ) {
-					output += Constants.PRINT_INDENT;
+			if( LoggerSettings.PRINT ) {
+				for( int f=0; f<level*LoggerSettings.DEFAULT_INDENT_INCREMENT; f++ ) {
+					output += LoggerSettings.PRINT_INDENT;
 				}
-				output += Constants.HEADER;
+				output += LoggerSettings.HEADER;
 				output += message;
 				consolePrint(output);
-				if( Constants.LOG && ( Constants.LOG_LEVEL == -1 || Constants.LOG_LEVEL >= level )) {
+				if( LoggerSettings.LOG && ( LoggerSettings.LOG_LEVEL == -1 || LoggerSettings.LOG_LEVEL >= level )) {
 					log(output);
 				}
 			}
@@ -108,7 +108,7 @@ public class Logger {
 //		BufferedWriter logWriter;
 //		try {
 //			logWriter = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( 
-//					new File( ( Constants.PREPENDDATE ? sdf.format( Calendar.getInstance().getTime() ) + "_" : "" ) + Constants.LOG_FILE_NAME + Constants.SAVEEXTENTION ) ), Constants.ENCODING));
+//					new File( ( LoggerSettings.PREPENDDATE ? sdf.format( Calendar.getInstance().getTime() ) + "_" : "" ) + LoggerSettings.LOG_FILE_NAME + LoggerSettings.SAVEEXTENTION ) ), LoggerSettings.ENCODING));
 //			logWriter.write(message);
 //		} catch (IOException e) {
 //			e.printStackTrace();

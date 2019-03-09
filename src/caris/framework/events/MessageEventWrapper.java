@@ -28,7 +28,7 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		integerTokens = TokenUtilities.parseIntegers(message);
 		longTokens = TokenUtilities.parseLongs(message);	
 		
-		for( Long id : Constants.ADMIN_IDS ) {
+		for( Long id : Constants.DEVELOPER_IDS ) {
 			if( messageReceivedEvent.getAuthor().getLongID() == id ) {
 				developerAuthor = true;
 			}

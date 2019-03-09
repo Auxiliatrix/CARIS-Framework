@@ -1,8 +1,5 @@
 package caris.framework.basehandlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
 import caris.framework.events.MessageEventWrapper;
@@ -19,51 +16,18 @@ import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
 
 public abstract class MessageHandler extends Handler {
-	
-	public static List<String> categories = new ArrayList<String>();
-	
-	public String category;
+		
 	public Permissions[] requirements;
-	
-	public String invocation;
 	public boolean inContext;
-			
-	public MessageHandler(String name) {
-		this(name, false, "Default");
+	
+	public MessageHandler() {
+		this(new Permissions[] {});
 	}
 	
-	public MessageHandler(String name, boolean allowBots) {
-		this(name, allowBots, "Default");
-	}
-	
-	public MessageHandler(String name, String category) {
-		this(name, false, category);
-	}
-	
-	public MessageHandler(String name, Permissions...requirements) {
-		this(name, false, requirements);
-	}
-	
-	public MessageHandler(String name, boolean allowBots, String category) {
-		this(name, allowBots, category, new Permissions[] {});
-	}
-	
-	public MessageHandler(String name, boolean allowBots, Permissions...requirements) {
-		this(name, allowBots, "Default", requirements);
-	}
-	
-	public MessageHandler(String name, String category, Permissions...requirements) {
-		this(name, false, category, requirements);
-	}
-	
-	public MessageHandler(String name, boolean allowBots, String category, Permissions...requirements) {
-		super(name, allowBots);
-		this.category = category;
-		if( !categories.contains(category) ) {
-			categories.add(category);
-		}
+	public MessageHandler(Permissions...requirements) {
+		super();
+		
 		this.requirements = requirements;
-		this.invocation = Constants.INVOCATION_PREFIX + name;
 		this.inContext = false;
 	}
 	
@@ -140,7 +104,7 @@ public abstract class MessageHandler extends Handler {
 		return messageEventWrapper.tokens.size() > 0 ? messageEventWrapper.tokens.get(0).equalsIgnoreCase(invocation) : false;
 	}
 	
-	public boolean accessGranted(MessageEventWrapper messageEventWrapper) {
+	protected boolean accessGranted(MessageEventWrapper messageEventWrapper) {
 		boolean meetsRequirements = true;
 		for( Permissions requirement : requirements ) {
 			meetsRequirements &= messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(requirement);
@@ -161,9 +125,7 @@ public abstract class MessageHandler extends Handler {
 		}
 		return maxPosition;
 	}
-	
-	public abstract List<String> getUsage();
-	
+		
 	protected abstract boolean isTriggered(MessageEventWrapper messageEventWrapper);
 	protected abstract Reaction process(MessageEventWrapper messageEventWrapper);
 

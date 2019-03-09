@@ -26,4 +26,5 @@ public class RoleRemoveReaction extends Reaction {
 			Logger.print("Role \"" + role.getName() + "\" removed from " + user.getName(), 1);
 		}
 	}
+
 }

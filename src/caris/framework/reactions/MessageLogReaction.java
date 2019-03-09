@@ -26,4 +26,5 @@ public class MessageLogReaction extends Reaction {
 		Logger.print("Logged message from (" + channel.getLongID() + ") <" + channel.getName() + ">", 2);
 		}
 	}
+	
 }

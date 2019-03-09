@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import caris.framework.basehandlers.Handler;
+import caris.framework.basehandlers.InteractiveModule;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.NullReaction;
 import caris.framework.basereactions.Reaction;
@@ -22,12 +23,9 @@ public class EventManager extends SuperEvent {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				List<Handler> handlerList = new ArrayList<Handler>();
-				handlerList.addAll(Brain.handlers.values());
-				handlerList.addAll(Brain.interactives);
 				List<Reaction> reactions = new ArrayList<Reaction>();
-				List<Reaction> passiveQueue = new ArrayList<Reaction>();
-				for( Handler h : handlerList ) {
+				MultiReaction passiveQueue = new MultiReaction();
+				for( Handler h : Brain.modules.values() ) {
 					Reaction r = h.handle(event);
 					if( r != null && !(r instanceof NullReaction) ) {
 						if( r.priority == -1 ) {
@@ -37,6 +35,17 @@ public class EventManager extends SuperEvent {
 						}
 					}
 				}
+				for( InteractiveModule i : Brain.interactives ) {
+					Reaction r = i.handle(event);
+					if( r != null && !(r instanceof NullReaction) ) {
+						if( r.priority == -1 ) {
+							passiveQueue.add(r);
+						} else {
+							reactions.add(r);
+						}
+					}
+				}
+				
 				while( !Brain.cli.isReady() || !Brain.cli.isLoggedIn() ) {
 					try {
 						Logger.error("Client disconnected. Waiting for reconnect.");
@@ -45,19 +54,20 @@ public class EventManager extends SuperEvent {
 						e.printStackTrace();
 					}
 				}
+				
 				if( !reactions.isEmpty() ) {
 					Reaction[] options = new Reaction[reactions.size()];
 					for( int f=0; f<reactions.size(); f++ ) {
 						options[f] = reactions.get(f);
 					}
 					Arrays.sort(options);
-					options[0].run();
+					options[0].start();
 				}
 				if( !passiveQueue.isEmpty() || !reactions.isEmpty() ) {
 					passiveQueue.add(new SaveDataReaction());
 				}
-				MultiReaction passiveQueueExecutor = new MultiReaction(passiveQueue);
-				passiveQueueExecutor.start();
+
+				passiveQueue.start();
 			}
 		};
 		Brain.threadQueue.add(thread);
