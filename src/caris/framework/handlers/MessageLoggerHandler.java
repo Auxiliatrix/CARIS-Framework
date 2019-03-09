@@ -1,9 +1,9 @@
 package caris.framework.handlers;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.reactions.HearReaction;
 import caris.framework.reactions.MessageLogReaction;
 import caris.framework.reactions.UpdateUserReaction;

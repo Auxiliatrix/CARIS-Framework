@@ -1,6 +1,6 @@
 package caris.framework.utilities;
 
-import caris.framework.calibration.Constants;
+import caris.configuration.calibration.Constants;
 import caris.framework.library.GuildInfo;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.ClientBuilder;

@@ -2,8 +2,8 @@ package caris.framework.basehandlers;
 
 import com.vdurmont.emoji.Emoji;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
 import caris.framework.tokens.MessageContent;
 import caris.framework.utilities.Logger;

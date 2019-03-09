@@ -3,8 +3,8 @@ package caris.framework.basehandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.tokens.RedirectedMessage;

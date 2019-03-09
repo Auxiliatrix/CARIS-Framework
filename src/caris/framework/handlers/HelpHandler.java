@@ -3,10 +3,10 @@ package caris.framework.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.HelpBuilder;
 import caris.framework.events.MessageEventWrapper;

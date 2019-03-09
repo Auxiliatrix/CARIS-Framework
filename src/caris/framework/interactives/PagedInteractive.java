@@ -1,9 +1,9 @@
 package caris.framework.interactives;
 
+import caris.configuration.library.EmojiSet;
 import caris.framework.basehandlers.InteractiveHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.EmojiSet;
 import caris.framework.reactions.MessageEditReaction;
 import caris.framework.reactions.ReactAddReaction;
 import caris.framework.reactions.ReactClearReaction;

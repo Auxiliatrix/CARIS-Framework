@@ -2,7 +2,7 @@ package caris.framework.embedbuilders;
 
 import java.awt.Color;
 
-import caris.framework.calibration.Constants;
+import caris.configuration.calibration.Constants;
 import caris.framework.main.Brain;
 import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;

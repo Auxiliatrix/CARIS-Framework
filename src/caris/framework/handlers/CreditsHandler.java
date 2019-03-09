@@ -3,9 +3,9 @@ package caris.framework.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.embedbuilders.CreditsBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;

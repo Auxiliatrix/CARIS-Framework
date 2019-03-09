@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.reflections.Reflections;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.InteractiveHandler;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.events.EventManager;
 import caris.framework.events.TimedEventManager;
 import caris.framework.library.JSONable.JSONReloadException;

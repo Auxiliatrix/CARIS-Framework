@@ -1,4 +1,4 @@
-package caris.framework.calibration;
+package caris.configuration.library;
 
 import java.util.HashMap;
 import java.util.Map;

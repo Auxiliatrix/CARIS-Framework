@@ -1,4 +1,4 @@
-package caris.framework.calibration;
+package caris.configuration.library;
 
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;

@@ -1,8 +1,8 @@
 package caris.framework.handlers;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.GeneralHandler;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.reactions.TrackGuildReaction;
 import sx.blah.discord.handle.impl.events.guild.GuildCreateEvent;
 

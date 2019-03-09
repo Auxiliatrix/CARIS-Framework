@@ -2,10 +2,10 @@ package caris.framework.embedbuilders;
 
 import java.awt.Color;
 
+import caris.configuration.calibration.Constants;
+import caris.configuration.library.PermissionsString;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
-import caris.framework.calibration.Constants;
-import caris.framework.calibration.PermissionsString;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.Permissions;
