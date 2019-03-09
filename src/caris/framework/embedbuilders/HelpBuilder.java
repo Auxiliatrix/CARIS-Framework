@@ -50,7 +50,6 @@ public class HelpBuilder {
 		categoryBuilder.clearFields();
 		String description = "";
 		for( String name : Brain.modules.keySet() ) {
-			System.out.println(name);
 			Handler h = Brain.modules.get(name);
 			Help activeAnnotation = h.getClass().getAnnotation(Help.class);
 			if( activeAnnotation != null ) {
