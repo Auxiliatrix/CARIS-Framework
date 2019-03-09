@@ -36,7 +36,7 @@ public class HelpBuilder {
 	public static EmbedObject getHelpEmbed() {
 		helpBuilder.clearFields();
 		String description = "";
-		for( String category : MessageHandler.categories ) {
+		for( String category : Handler.categories ) {
 			description += category.toString() + "\n";
 		}
 		if( description.isEmpty() ) {
@@ -50,10 +50,11 @@ public class HelpBuilder {
 		categoryBuilder.clearFields();
 		String description = "";
 		for( String name : Brain.modules.keySet() ) {
+			System.out.println(name);
 			Handler h = Brain.modules.get(name);
 			Help activeAnnotation = h.getClass().getAnnotation(Help.class);
 			if( activeAnnotation != null ) {
-				if( activeAnnotation.category() == category ) {
+				if( activeAnnotation.category().equals(category) ) {
 					description += name + "\n";
 				}
 			}
