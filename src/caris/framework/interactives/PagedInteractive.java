@@ -1,9 +1,10 @@
 package caris.framework.interactives;
 
-import caris.framework.basehandlers.InteractiveHandler;
+import caris.configuration.reference.EmojiSet;
+import caris.framework.basehandlers.InteractiveModule;
+import caris.framework.basehandlers.InteractiveModule.Interactive;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.EmojiSet;
 import caris.framework.reactions.MessageEditReaction;
 import caris.framework.reactions.ReactAddReaction;
 import caris.framework.reactions.ReactClearReaction;
@@ -13,13 +14,14 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionAddEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionEvent;
 
-public class PagedInteractive extends InteractiveHandler {
+@Interactive(name = "Paged")
+public class PagedInteractive extends InteractiveModule {
 
 	public int page;
 	public EmbedObject[] pages;
 	
 	public PagedInteractive(EmbedObject...pages) {
-		super("Paged");
+		super();
 		page = 0;
 		this.pages = pages;
 	}
@@ -49,11 +51,6 @@ public class PagedInteractive extends InteractiveHandler {
 	@Override
 	public MessageContent getDefault() {
 		return new MessageContent("Page 1 / " + pages.length, pages[0]);
-	}
-	
-	@Override
-	public String getDescription() {
-		return "An interactive that can be paged through";
 	}
 
 	@Override

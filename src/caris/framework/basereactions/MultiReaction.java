@@ -29,6 +29,10 @@ public class MultiReaction extends Reaction {
 		return reactions.add(reaction);
 	}
 	
+	public boolean isEmpty() {
+		return reactions.isEmpty();
+	}
+	
 	@Override
 	public void process() {
 		for( Reaction reaction : reactions ) {

@@ -31,4 +31,5 @@ public class HearReaction extends Reaction {
 			Logger.error("Fatal error: null pointer in reactionhear");
 		}
 	}
+	
 }

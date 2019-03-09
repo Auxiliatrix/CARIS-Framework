@@ -1,19 +1,20 @@
 package caris.framework.handlers;
 
 import caris.framework.basehandlers.GeneralHandler;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.TrackUserReaction;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 
+@Module(name = "TrackUser")
 public class TrackUserHandler extends GeneralHandler<UserJoinEvent> {
 
 	public TrackUserHandler() {
-		super("TrackUser");
+		super();
 	}
 	
 	@Override
@@ -30,8 +31,4 @@ public class TrackUserHandler extends GeneralHandler<UserJoinEvent> {
 		return welcome;
 	}
 	
-	@Override
-	public String getDescription() {
-		return "Handles the joining of new users on " + Constants.NAME + "'s servers.";
-	}
 }

@@ -1,15 +1,16 @@
 package caris.modular.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 
+@Module(name = "Greeting")
+@Help(category = "Default", description = "Makes " + Constants.NAME + " say hi back to you!", usage = {"Hello, " + Constants.NAME + "!"})
 public class GreetingHandler extends MessageHandler {
 	
 	private String[] greetingsInput = new String[] {
@@ -58,7 +59,7 @@ public class GreetingHandler extends MessageHandler {
 	};
 	
 	public GreetingHandler() {
-		super("Greeting");
+		super();
 	}
 	
 	@Override
@@ -92,18 +93,6 @@ public class GreetingHandler extends MessageHandler {
 	
 	private String getRandomPrompt() {
 		return (promptOutput.length > 0) ? promptOutput[(int) (Math.random()*promptOutput.length)] : "Yes?";
-	}
-	
-	@Override
-	public String getDescription() {
-		return "Makes " + Constants.NAME + " say hi back to you!";
-	}
-	
-	@Override
-	public List<String> getUsage() {
-		List<String> usage = new ArrayList<String>();
-		usage.add("Hello " + Constants.NAME + "!");
-		return usage;
 	}
 	
 }

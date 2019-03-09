@@ -6,12 +6,8 @@ import sx.blah.discord.api.events.Event;
 
 public abstract class GeneralHandler<T extends Event> extends Handler {
 	
-	public GeneralHandler(String name) {
-		this(name, false);
-	}
-	
-	public GeneralHandler(String name, boolean allowBots) {
-		super(name, allowBots);
+	public GeneralHandler() {
+		super();
 	}
 	
 	@Override

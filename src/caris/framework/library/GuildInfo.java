@@ -5,7 +5,6 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import caris.framework.calibration.Constants;
 import caris.framework.main.Brain;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -147,15 +146,6 @@ public class GuildInfo implements JSONable {
 	
 	public UserInfo getUserInfo( IUser user ) {
 		return userIndex.get(user.getLongID());
-	}
-	
-	public boolean checkDisabled(String module) {
-		for( String s : Constants.DEFAULT_DISBABLED ) {
-			if( s.equals(module) ) {
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	public IChannel getDefaultChannel() {
