@@ -8,10 +8,11 @@ import java.util.List;
 
 import com.vdurmont.emoji.Emoji;
 
-import caris.framework.basehandlers.InteractiveHandler;
+import caris.configuration.reference.EmojiSet;
+import caris.framework.basehandlers.InteractiveModule;
+import caris.framework.basehandlers.InteractiveModule.Interactive;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.EmojiSet;
 import caris.framework.main.Brain;
 import caris.framework.reactions.InteractiveDestroyReaction;
 import caris.framework.reactions.MessageEditReaction;
@@ -26,7 +27,8 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.Reactio
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionEvent;
 import sx.blah.discord.handle.obj.IUser;
 
-public class PollInteractive extends InteractiveHandler {
+@Interactive(name = "Poll")
+public class PollInteractive extends InteractiveModule {
 	
 	public String question;
 	public HashMap<String, Integer> votes;
@@ -47,7 +49,7 @@ public class PollInteractive extends InteractiveHandler {
 	}
 	
 	public PollInteractive(String question, String[] options, IUser owner, Duration timeout) {
-		super("Poll");
+		super();
 		this.question = question;
 		this.options = options;
 		votes = new HashMap<String, Integer>();
@@ -107,11 +109,6 @@ public class PollInteractive extends InteractiveHandler {
 	@Override
 	public MessageContent getDefault() {
 		return new MessageContent("", PollBuilder.getPollEmbed(question, options, votes, owner, timeout));
-	}
-
-	@Override
-	public String getDescription() {
-		return "An interactive poll that can be voted on.";
 	}
 	
 }

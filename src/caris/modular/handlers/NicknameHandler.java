@@ -1,13 +1,12 @@
 package caris.modular.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.embedbuilders.ErrorBuilder;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
@@ -16,10 +15,20 @@ import caris.modular.reactions.NicknameSetReaction;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
 
+@Module(name = "Nickname")
+@Help(
+		category = "Default",
+		description = "Sets, locks, and unlocks people's nicknames. Locking a nickname makes it so that not even admins can change it.",
+		usage = {
+				Constants.NAME + ", set @person nickname to \"nickname\"",
+				Constants.NAME + ", lock @person's username to \"nickname\"",
+				Constants.NAME + ", unlock the username of @person"
+		}
+	)
 public class NicknameHandler extends MessageHandler {
 
 	public NicknameHandler() {
-		super("Nickname");
+		super();
 	}
 
 	@Override
@@ -94,18 +103,5 @@ public class NicknameHandler extends MessageHandler {
 		}
 		return lockNickname;
 	}
-
-	@Override
-	public String getDescription() {
-		return "Sets, locks, and unlocks people's nicknames. Locking a nickname makes it so that not even admins can change it.";
-	}
 	
-	@Override
-	public List<String> getUsage() {
-		List<String> usage = new ArrayList<String>();
-		usage.add(Constants.NAME + ", set @person nickname to \"nickname\"");
-		usage.add(Constants.NAME + ", lock @person's username to \"nickname\"");
-		usage.add(Constants.NAME + ", unlock the username of @person");
-		return usage;
-	}
 }

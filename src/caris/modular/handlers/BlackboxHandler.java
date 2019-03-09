@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.json.JSONArray;
 
+import caris.configuration.calibration.Constants;
+import caris.configuration.reference.Keywords;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
-import caris.framework.calibration.Keywords;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
@@ -21,10 +23,20 @@ import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.Permissions;
 
+@Module(name = "Blackbox")
+@Help(
+		category = "Admin",
+		description = "Open a blackbox, then close it later to delete all messages sent after it was opened.",
+		usage = {
+				Constants.NAME + ", open up a blackbox",
+				Constants.NAME + ", close the a blackbox",
+				Constants.NAME + ", cancel the current blackbox"
+		}
+	)
 public class BlackboxHandler extends MessageHandler {
 	
 	public BlackboxHandler() {
-		super("Blackbox", "Admin", Permissions.ADMINISTRATOR);
+		super(Permissions.ADMINISTRATOR);
 	}
 
 	@Override
@@ -79,20 +91,6 @@ public class BlackboxHandler extends MessageHandler {
 			}
 		}
 		return blackbox;
-	}
-
-	@Override
-	public String getDescription() {
-		return "Open a blackbox, then close it later to delete all messages sent after it was opened.";
-	}
-	
-	@Override
-	public List<String> getUsage() {
-		List<String> usage = new ArrayList<String>();
-		usage.add(Constants.NAME + ", open up a blackbox");
-		usage.add(Constants.NAME + ", close the blackbox");
-		usage.add(Constants.NAME + ", cancel the current blackbox");
-		return usage;
 	}
 	
 }

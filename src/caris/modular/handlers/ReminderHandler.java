@@ -1,24 +1,33 @@
 package caris.modular.handlers;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
+import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.embedbuilders.ErrorBuilder;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.SetTimedReaction;
 import caris.framework.tokens.Duration;
 import caris.framework.utilities.TimeUtilities;
 
+@Module(name = "Reminder")
+@Help(
+		category = "Default",
+		description = "Makes " + Constants.NAME + " remind you after an amount of time.",
+		usage = {
+					Constants.NAME + ", remind me in a day to \"use my daily command.\"",
+					Constants.NAME + ", can you remind me in four hours and twenty-six minutes and something like 18 seconds I guess I dunno to \"be happy\"?"
+		}
+	)
 public class ReminderHandler extends MessageHandler {
 
 	public ReminderHandler() {
-		super("Reminder");
+		super();
 	}
 
 	@Override
@@ -49,20 +58,6 @@ public class ReminderHandler extends MessageHandler {
 			setReminder.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "Couldn't parse the given time!")));
 		}
 		return setReminder;
-	}
-
-	@Override
-	public String getDescription() {
-		return "Makes " + Constants.NAME + " remind you after an amount of time.";
-	}
-	
-
-	@Override
-	public List<String> getUsage() {
-		List<String> usage = new ArrayList<String>();
-		usage.add(Constants.NAME + ", remind me in a day to \"use my daily command.\"");
-		usage.add(Constants.NAME + ", can you remind me in four hours and twenty-six minutes and something like 18 seconds I guess I dunno to \"be happy\"?");
-		return usage;
 	}
 	
 }
