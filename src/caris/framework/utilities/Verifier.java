@@ -16,6 +16,7 @@ public class Verifier {
 	private class ValidationToken {
 		public String variableName;
 		public ArgClass argClass;
+		@SuppressWarnings("rawtypes")
 		public Validater validater;
 		
 		public ValidationToken(String variableName) {
@@ -24,11 +25,12 @@ public class Verifier {
 			this.validater = null;
 		}
 		
+		@SuppressWarnings("unchecked")
 		public boolean validate(String s) {
 			if( argClass != null ) {
 				if( argClass == ArgClass.INTEGER ) {
 					try {
-						int value = Integer.parseInt(s);
+						Integer.parseInt(s);
 					} catch (NumberFormatException e) {
 						return false;
 					}
@@ -59,6 +61,7 @@ public class Verifier {
 		return this;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public Verifier withValidaters(Validater...validaters) {
 		for( int f=0; f<Math.min(validationTokens.length, validaters.length); f++ ) {
 			if( validaters[f] != null ) {

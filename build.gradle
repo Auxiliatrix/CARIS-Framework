@@ -20,8 +20,6 @@ repositories {
 
 dependencies {
 	compile "com.github.austinv11:Discord4J:2.9.2"
-	compile 'com.sedmelluq:lavaplayer:1.2.45'
-	compile 'org.jsoup:jsoup:1.11.2'
 	compile 'org.reflections:reflections:0.9.11'
 	compile "com.opencsv:opencsv:4.0"
 	//compile "com.github.austinv11:Discord4J:@VERSION@:shaded" //Use this line instead of the one above it if you want a shaded jar (all the Discord4J dependencies bundled into one jar)
@@ -30,7 +28,7 @@ dependencies {
 sourceSets {
    main {
       java {
-         srcDirs = ['src', 'jsoup', 'lavaplayer']
+         srcDirs = ['src']
       }
    }
 }

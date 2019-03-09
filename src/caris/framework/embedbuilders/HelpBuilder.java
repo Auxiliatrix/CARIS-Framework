@@ -54,7 +54,7 @@ public class HelpBuilder {
 			Handler h = Brain.modules.get(name);
 			Help activeAnnotation = h.getClass().getAnnotation(Help.class);
 			if( activeAnnotation != null ) {
-				if( activeAnnotation.category().equals(category) ) {
+				if( activeAnnotation.category().equalsIgnoreCase(category) ) {
 					description += name + "\n";
 				}
 			}

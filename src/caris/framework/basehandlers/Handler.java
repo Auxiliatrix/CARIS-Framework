@@ -13,6 +13,7 @@ import caris.framework.basereactions.NullReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.utilities.Logger;
+import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -33,7 +34,7 @@ public abstract class Handler {
 		
 		Help activeSelf = this.getClass().getAnnotation(Help.class);
 		if( activeSelf != null ) {
-			if( !categories.contains(activeSelf.category())) {
+			if( !StringUtilities.containsIgnoreCase(categories, activeSelf.category())) {
 				categories.add(activeSelf.category());
 			}
 		}
