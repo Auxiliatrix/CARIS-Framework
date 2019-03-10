@@ -128,6 +128,10 @@ public class Verifier {
 			return matches.get(index);
 		}
 		
+		public int size() {
+			return matches.size();
+		}
+		
 	}
 	
 }
