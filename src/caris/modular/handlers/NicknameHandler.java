@@ -98,6 +98,32 @@ public class NicknameHandler extends MessageHandler {
 					}
 				}
 			}
+		} else if( mew.containsAnyWords("your") ) {
+			if( getPosition(mew, mew.getAuthor()) <= getPosition(mew, Brain.cli.getOurUser()) && !mew.developerAuthor) {
+				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!")));
+			} else if( !Brain.cli.getOurUser().getPermissionsForGuild(mew.getGuild()).contains(Permissions.CHANGE_NICKNAME) ) {
+				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify this user's nickname!")));
+			} else {
+				if( mew.containsAnyWords("unlock") ) {
+					lockNickname.add(new UpdateUserReaction(mew.getGuild(), Brain.cli.getOurUser(), "nickname-override", null, true));
+					lockNickname.add(new MessageReaction(mew.getChannel(), "Nickname" + "unlocked successfully!"));
+				} else if( mew.containsAnyWords("lock") ) {
+					if( mew.quotedTokens.size() > 0 ) {
+						lockNickname.add(new NicknameSetReaction(mew.getGuild(), Brain.cli.getOurUser(), mew.quotedTokens.get(0)));
+						lockNickname.add(new UpdateUserReaction(mew.getGuild(), Brain.cli.getOurUser(), "nickname-override", mew.quotedTokens.get(0), true));
+						lockNickname.add(new MessageReaction(mew.getChannel(), "Nickname" + (mew.getMessage().getMentions().size() > 1 ? "s " : " ") + "locked successfully!"));
+					} else {
+						lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+					}
+				} else if( mew.containsAnyWords("set") ) {
+					if( mew.quotedTokens.size() > 0 ) {
+						lockNickname.add(new NicknameSetReaction(mew.getGuild(), Brain.cli.getOurUser(), mew.quotedTokens.get(0)));
+						lockNickname.add(new MessageReaction(mew.getChannel(), "Nickname" + "set successfully!"));
+					} else {
+						lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
+					}
+				}
+			}
 		} else {
 			lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify someone by mentioning them!")));
 		}
