@@ -24,13 +24,13 @@ public class CreditsHandler extends MessageHandler {
 	}
 
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return invoked(messageEventWrapper);
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return invoked(mew);
 	}
 
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		return new MessageReaction(messageEventWrapper.getChannel(), CreditsBuilder.getCreditsEmbed(), 0);
+	protected Reaction process(MessageEventWrapper mew) {
+		return new MessageReaction(mew.getChannel(), CreditsBuilder.getCreditsEmbed(), 0);
 	}
 	
 }

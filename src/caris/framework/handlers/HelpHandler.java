@@ -32,25 +32,25 @@ public class HelpHandler extends MessageHandler {
 	}
 	
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return invoked(messageEventWrapper);
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return invoked(mew);
 	}
 	
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		List<String> tokens = messageEventWrapper.tokens;
+	protected Reaction process(MessageEventWrapper mew) {
+		List<String> tokens = mew.tokens;
 		Verifier helpVerifier = new Verifier("invocation", "module or category");
 		Verification v = helpVerifier.verify(tokens);
 		if( v.pass ) {
 			if( StringUtilities.containsIgnoreCase(Handler.categories, v.get(1)) ) {
-				return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed(v.get(1)));
+				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed(v.get(1)));
 			} else if( Brain.modules.keySet().contains(v.get(1).toLowerCase()) ) {
-				return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed(Brain.modules.get(v.get(1).toLowerCase())));
+				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed(Brain.modules.get(v.get(1).toLowerCase())));
 			} else {
-				return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed());
+				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed());
 			}
 		} else {
-			return new MessageReaction(messageEventWrapper.getChannel(), HelpBuilder.getHelpEmbed());
+			return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed());
 		}
 	}
 }

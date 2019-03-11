@@ -51,9 +51,9 @@ public class HelpBuilder {
 		String description = "";
 		for( String name : Brain.modules.keySet() ) {
 			Handler h = Brain.modules.get(name);
-			Help activeAnnotation = h.getClass().getAnnotation(Help.class);
-			if( activeAnnotation != null ) {
-				if( activeAnnotation.category().equalsIgnoreCase(category) ) {
+			Help helpAnnotation = h.getClass().getAnnotation(Help.class);
+			if( helpAnnotation != null ) {
+				if( helpAnnotation.category().equalsIgnoreCase(category) ) {
 					description += name + "\n";
 				}
 			}
@@ -70,11 +70,11 @@ public class HelpBuilder {
 	
 	public static EmbedObject getHelpEmbed(Handler h) {
 		commandBuilder.clearFields();
-		Help activeAnnotation = h.getClass().getAnnotation(Help.class);
-		if( activeAnnotation != null ) {
-			commandBuilder.appendField("`" + h.invocation + "`", activeAnnotation.description(), false);
+		Help helpAnnotation = h.getClass().getAnnotation(Help.class);
+		if( helpAnnotation != null ) {
+			commandBuilder.appendField("`" + h.invocation + "`", helpAnnotation.description(), false);
 			String usage = "";
-			for( String example : activeAnnotation.usage() ) {
+			for( String example : helpAnnotation.usage() ) {
 				usage += example + "\n";
 			}
 			if( usage.isEmpty() ) {
@@ -83,7 +83,7 @@ public class HelpBuilder {
 				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
-			commandBuilder.withFooterText(activeAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : ""));
+			commandBuilder.withFooterText(helpAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : ""));
 		}
 		return commandBuilder.build();
 	}
