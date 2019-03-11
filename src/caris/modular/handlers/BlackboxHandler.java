@@ -59,35 +59,35 @@ public class BlackboxHandler extends MessageHandler {
 	}
 	
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return mentioned(messageEventWrapper) && messageEventWrapper.containsAnyPhrases("blackbox", "black box") && (messageEventWrapper.containsAnyWords(Keywords.POSITIVE) || messageEventWrapper.containsAnyWords(Keywords.NEGATIVE) || messageEventWrapper.containsAnyWords(Keywords.CANCEL));
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return mentioned(mew) && mew.containsAnyPhrases("blackbox", "black box") && (mew.containsAnyWords(Keywords.POSITIVE) || mew.containsAnyWords(Keywords.NEGATIVE) || mew.containsAnyWords(Keywords.CANCEL));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
+	protected Reaction process(MessageEventWrapper mew) {
 		MultiReaction blackbox = new MultiReaction(1);
-		if( messageEventWrapper.containsAnyWords(Keywords.POSITIVE) ) {
-			if( !Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.has("blackbox") ) {
-				blackbox.add(new UpdateChannelReaction(messageEventWrapper.getChannel(), "blackbox", new ArrayList<Long>(), true));
-				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), "Blackbox opened!"));
+		if( mew.containsAnyWords(Keywords.POSITIVE) ) {
+			if( !Brain.variables.getChannelInfo(mew.getMessage()).channelData.has("blackbox") ) {
+				blackbox.add(new UpdateChannelReaction(mew.getChannel(), "blackbox", new ArrayList<Long>(), true));
+				blackbox.add(new MessageReaction(mew.getChannel(), "Blackbox opened!"));
 			} else {
-				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "A blackbox is already open in this channel!")));
+				blackbox.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "A blackbox is already open in this channel!")));
 			}
-		} else if( messageEventWrapper.containsAnyWords(Keywords.NEGATIVE) ) {
-			if( Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.has("blackbox") ) {
-				blackbox.add(new BlackboxPurgeReaction(messageEventWrapper.getChannel(), ((List<Long>) Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.get("blackbox"))));
-				blackbox.add(new UpdateChannelReaction(messageEventWrapper.getChannel(), "blackbox", null, true));
-				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), "Blackbox closed!"));
+		} else if( mew.containsAnyWords(Keywords.NEGATIVE) ) {
+			if( Brain.variables.getChannelInfo(mew.getMessage()).channelData.has("blackbox") ) {
+				blackbox.add(new BlackboxPurgeReaction(mew.getChannel(), ((List<Long>) Brain.variables.getChannelInfo(mew.getMessage()).channelData.get("blackbox"))));
+				blackbox.add(new UpdateChannelReaction(mew.getChannel(), "blackbox", null, true));
+				blackbox.add(new MessageReaction(mew.getChannel(), "Blackbox closed!"));
 			} else {
-				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "No blackbox open in this channel!")));
+				blackbox.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "No blackbox open in this channel!")));
 			}
-		} else if( messageEventWrapper.containsAnyWords(Keywords.CANCEL) ) {
-			if( Brain.variables.getChannelInfo(messageEventWrapper.getMessage()).channelData.has("blackbox") ) {
-				blackbox.add(new UpdateChannelReaction(messageEventWrapper.getChannel(), "blackbox", null, true));
-				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), "Blackbox cancelled!"));
+		} else if( mew.containsAnyWords(Keywords.CANCEL) ) {
+			if( Brain.variables.getChannelInfo(mew.getMessage()).channelData.has("blackbox") ) {
+				blackbox.add(new UpdateChannelReaction(mew.getChannel(), "blackbox", null, true));
+				blackbox.add(new MessageReaction(mew.getChannel(), "Blackbox cancelled!"));
 			} else {
-				blackbox.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "No blackbox open in this channel!")));
+				blackbox.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.USAGE, "No blackbox open in this channel!")));
 			}
 		}
 		return blackbox;

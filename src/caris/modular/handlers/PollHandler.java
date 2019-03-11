@@ -30,27 +30,27 @@ public class PollHandler extends MessageHandler {
 	}
 
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return mentioned(messageEventWrapper) && messageEventWrapper.containsAnyWords("poll", "question", "vote", "quesitonaire") && messageEventWrapper.quotedTokens.size() > 0;
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return mentioned(mew) && mew.containsAnyWords("poll", "question", "vote", "quesitonaire") && mew.quotedTokens.size() > 0;
 	}
 
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
+	protected Reaction process(MessageEventWrapper mew) {
 		List<String> options = new ArrayList<String>();
-		if( messageEventWrapper.quotedTokens.size() > 1 ) {
-			for( int f=1; f<messageEventWrapper.quotedTokens.size(); f++ ) {
-				options.add(messageEventWrapper.quotedTokens.get(f));
+		if( mew.quotedTokens.size() > 1 ) {
+			for( int f=1; f<mew.quotedTokens.size(); f++ ) {
+				options.add(mew.quotedTokens.get(f));
 			}
 		}
 		if( options.size() == 0 ) {
 			options.add("Yes");
 			options.add("No");
 		}
-		Duration timeout = TimeUtilities.stringToTime(messageEventWrapper.notQuoted());
+		Duration timeout = TimeUtilities.stringToTime(mew.notQuoted());
 		if( timeout.asMili() == 0 ) {
-			return new InteractiveCreateReaction(messageEventWrapper.getChannel(), new PollInteractive(messageEventWrapper.quotedTokens.get(0), options.toArray(new String[options.size()]), messageEventWrapper.getAuthor()));
+			return new InteractiveCreateReaction(mew.getChannel(), new PollInteractive(mew.quotedTokens.get(0), options.toArray(new String[options.size()]), mew.getAuthor()));
 		} else {
-			return new InteractiveCreateReaction(messageEventWrapper.getChannel(), new PollInteractive(messageEventWrapper.quotedTokens.get(0), options.toArray(new String[options.size()]), messageEventWrapper.getAuthor(), timeout));
+			return new InteractiveCreateReaction(mew.getChannel(), new PollInteractive(mew.quotedTokens.get(0), options.toArray(new String[options.size()]), mew.getAuthor(), timeout));
 		}
 	}
 	

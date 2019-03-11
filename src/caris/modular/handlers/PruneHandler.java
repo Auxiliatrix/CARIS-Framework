@@ -29,27 +29,27 @@ public class PruneHandler extends MessageHandler {
 	}
 
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return mentioned(messageEventWrapper) && messageEventWrapper.containsAnyWords("prune") && messageEventWrapper.containsAnyWords("message", "messages");
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return mentioned(mew) && mew.containsAnyWords("prune") && mew.containsAnyWords("message", "messages");
 	}
 
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
+	protected Reaction process(MessageEventWrapper mew) {
 		MultiReaction purgeMessages = new MultiReaction();
-		if( messageEventWrapper.integerTokens.size() > 0 ) {
-			if( messageEventWrapper.getAllMentionedUsers().size() > 0 ) {
-				for( IUser mention : messageEventWrapper.getAllMentionedUsers() ) {
-					purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel(), mention, messageEventWrapper.integerTokens.get(0)));
+		if( mew.integerTokens.size() > 0 ) {
+			if( mew.getAllMentionedUsers().size() > 0 ) {
+				for( IUser mention : mew.getAllMentionedUsers() ) {
+					purgeMessages.add(new MessagePurgeReaction(mew.getChannel(), mention, mew.integerTokens.get(0)));
 				}
 			} else {
-				purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel(), messageEventWrapper.integerTokens.get(0)));
+				purgeMessages.add(new MessagePurgeReaction(mew.getChannel(), mew.integerTokens.get(0)));
 			}
-		} else if( messageEventWrapper.getAllMentionedUsers().size() > 0 ) {
-			for( IUser mention : messageEventWrapper.getAllMentionedUsers() ) {
-				purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel(), mention));
+		} else if( mew.getAllMentionedUsers().size() > 0 ) {
+			for( IUser mention : mew.getAllMentionedUsers() ) {
+				purgeMessages.add(new MessagePurgeReaction(mew.getChannel(), mention));
 			}
 		} else {
-			purgeMessages.add(new MessagePurgeReaction(messageEventWrapper.getChannel()));
+			purgeMessages.add(new MessagePurgeReaction(mew.getChannel()));
 		}
 		return purgeMessages;
 	}
