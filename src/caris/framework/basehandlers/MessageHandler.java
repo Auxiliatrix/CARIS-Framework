@@ -7,7 +7,6 @@ import caris.framework.main.Brain;
 import caris.framework.tokens.RedirectedMessage;
 import caris.framework.utilities.Logger;
 import caris.framework.utilities.StringUtilities;
-import caris.framework.utilities.TokenUtilities;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
@@ -36,13 +35,12 @@ public abstract class MessageHandler extends Handler {
 	public Reaction handle(Event event) {
 		Logger.debug("Checking " + name, 0, true);
 		if( event instanceof MessageReceivedEvent ) {
-			MessageReceivedEvent messageReceivedEvent = (MessageReceivedEvent) event;
-			if( !messageReceivedEvent.getChannel().isPrivate() ) {
-				MessageEventWrapper messageEventWrapper = wrap(messageReceivedEvent);
+			MessageReceivedEvent mre = (MessageReceivedEvent) event;
+			if( !mre.getChannel().isPrivate() ) {
+				MessageEventWrapper messageEventWrapper = wrap(mre);
 				inContext = false;
-				if( Brain.variables.getUserInfo(messageReceivedEvent.getMessage()).userData.has("lastMessage_" + messageReceivedEvent.getChannel().getLongID()) ) {
-					StringUtilities.containsIgnoreCase(TokenUtilities.parseTokens(Brain.variables.getUserInfo(messageReceivedEvent.getMessage()).userData.getString("lastMessage_" + messageReceivedEvent.getChannel().getLongID()).toString()), Constants.NAME);
-					if( StringUtilities.containsIgnoreCase(Brain.variables.getUserInfo(messageReceivedEvent.getMessage()).userData.get("lastMessage_" + messageReceivedEvent.getChannel().getLongID()).toString(), Constants.NAME) ) {
+				if( mre.getMessage().getMentions().contains(Brain.cli.getOurUser()) || Brain.variables.getUserInfo(mre.getMessage()).userData.has("lastMessage_" + mre.getChannel().getLongID()) ) {
+					if( StringUtilities.containsIgnoreCase(Brain.variables.getUserInfo(mre.getMessage()).userData.get("lastMessage_" + mre.getChannel().getLongID()).toString(), Constants.NAME) ) {
 						inContext = true;
 					}
 				}
@@ -99,7 +97,7 @@ public abstract class MessageHandler extends Handler {
 	}
 	
 	protected boolean mentioned(MessageEventWrapper mew) {
-		return mew.containsWord(Constants.NAME) || inContext;
+		return mew.containsWord(Constants.NAME) || mew.getAllMentionedUsers().contains(Brain.cli.getOurUser()) || inContext;
 	}
 	
 	protected boolean invoked(MessageEventWrapper mew) {
