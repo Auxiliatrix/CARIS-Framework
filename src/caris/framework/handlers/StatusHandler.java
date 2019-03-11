@@ -16,7 +16,7 @@ import caris.framework.reactions.MessageReaction;
 		category = "Developer", 
 		description = "Gets " + Constants.NAME + "'s current status.", 
 		usage = {
-					Constants.INVOCATION_PREFIX + "Status", Constants.NAME + ", what's your status?"
+					Constants.INVOCATION_PREFIX + "Status"
 				}
 	)
 public class StatusHandler extends MessageHandler {
@@ -27,7 +27,7 @@ public class StatusHandler extends MessageHandler {
 
 	@Override
 	protected boolean isTriggered(MessageEventWrapper mew) {
-		return invoked(mew) || mentioned(mew) && mew.containsWord("status");
+		return invoked(mew);
 	}
 
 	@Override
