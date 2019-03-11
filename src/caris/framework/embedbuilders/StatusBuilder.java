@@ -24,6 +24,5 @@ public class StatusBuilder {
 		statusBuilder.appendField("Users", "```" + StringUtilities.leftJustify(Brain.cli.getUsers().size()+"", 29	) + "```", true);
 		return statusBuilder.build();
 	}
-	
-	
+		
 }

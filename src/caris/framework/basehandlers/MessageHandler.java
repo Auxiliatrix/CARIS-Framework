@@ -70,20 +70,20 @@ public abstract class MessageHandler extends Handler {
 		}
 	}
 	
-	private MessageEventWrapper wrap(MessageReceivedEvent messageReceivedEvent) {
-		MessageEventWrapper messageEventWrapper = new MessageEventWrapper(messageReceivedEvent);
-		if( messageEventWrapper.tokens.size() > 0 ) {
-			String token = messageEventWrapper.tokens.get(0);
-			if( token.startsWith("{") && token.endsWith("}") && token.length() > 2 && messageEventWrapper.message.length() > token.length() + 1) {
+	private MessageEventWrapper wrap(MessageReceivedEvent mre) {
+		MessageEventWrapper mew = new MessageEventWrapper(mre);
+		if( mew.tokens.size() > 0 ) {
+			String token = mew.tokens.get(0);
+			if( token.startsWith("{") && token.endsWith("}") && token.length() > 2 && mew.message.length() > token.length() + 1) {
 				String tokenContent = token.substring(1, token.length()-1);
 				try {
 					Long channelID = Long.parseLong(tokenContent);
 					for( IGuild guild : Brain.cli.getGuilds() ) {
 						for( IChannel channel : guild.getChannels() ) {
 							if( channel.getLongID() == channelID ) {
-								messageEventWrapper = new MessageEventWrapper(
+								mew = new MessageEventWrapper(
 														new MessageReceivedEvent(
-															new RedirectedMessage(messageReceivedEvent.getMessage(), channel, messageEventWrapper.message.substring(messageEventWrapper.message.indexOf("}"+2)))
+															new RedirectedMessage(mre.getMessage(), channel, mew.message.substring(mew.message.indexOf("}"+2)))
 														));
 							}
 						}
@@ -93,32 +93,32 @@ public abstract class MessageHandler extends Handler {
 				}
 			}
 		}
-		return messageEventWrapper;
+		return mew;
 	}
 	
-	protected boolean mentioned(MessageEventWrapper messageEventWrapper) {
-		return messageEventWrapper.containsWord(Constants.NAME) || inContext;
+	protected boolean mentioned(MessageEventWrapper mew) {
+		return mew.containsWord(Constants.NAME) || inContext;
 	}
 	
-	protected boolean invoked(MessageEventWrapper messageEventWrapper) {
-		return messageEventWrapper.tokens.size() > 0 ? messageEventWrapper.tokens.get(0).equalsIgnoreCase(invocation) : false;
+	protected boolean invoked(MessageEventWrapper mew) {
+		return mew.tokens.size() > 0 ? mew.tokens.get(0).equalsIgnoreCase(invocation) : false;
 	}
 	
-	protected boolean accessGranted(MessageEventWrapper messageEventWrapper) {
+	protected boolean accessGranted(MessageEventWrapper mew) {
 		boolean meetsRequirements = true;
 		for( Permissions requirement : requirements ) {
-			meetsRequirements &= messageEventWrapper.getAuthor().getPermissionsForGuild(messageEventWrapper.getGuild()).contains(requirement);
+			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
 		}
-		return meetsRequirements || messageEventWrapper.developerAuthor;
+		return meetsRequirements || mew.developerAuthor;
 	}
 	
-	protected int getBotPosition(MessageEventWrapper messageEventWrapper) {
-		return getPosition(messageEventWrapper, Brain.cli.getOurUser());
+	protected int getBotPosition(MessageEventWrapper mew) {
+		return getPosition(mew, Brain.cli.getOurUser());
 	}
 	
-	protected int getPosition(MessageEventWrapper messageEventWrapper, IUser user) {
+	protected int getPosition(MessageEventWrapper mew, IUser user) {
 		int maxPosition = -1;
-		for( IRole role : user.getRolesForGuild(messageEventWrapper.getGuild()) ) {
+		for( IRole role : user.getRolesForGuild(mew.getGuild()) ) {
 			if( role.getPosition() > maxPosition ) {
 				maxPosition = role.getPosition();
 			}
@@ -126,7 +126,7 @@ public abstract class MessageHandler extends Handler {
 		return maxPosition;
 	}
 		
-	protected abstract boolean isTriggered(MessageEventWrapper messageEventWrapper);
-	protected abstract Reaction process(MessageEventWrapper messageEventWrapper);
+	protected abstract boolean isTriggered(MessageEventWrapper mew);
+	protected abstract Reaction process(MessageEventWrapper mew);
 
 }

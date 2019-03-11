@@ -26,16 +26,16 @@ public abstract class Handler {
 	public String invocation;
 	
 	public Handler() {
-		Module passiveSelf = this.getClass().getAnnotation(Module.class);
-		name = passiveSelf.name();
-		allowBots = passiveSelf.allowBots();
+		Module self = this.getClass().getAnnotation(Module.class);
+		name = self.name();
+		allowBots = self.allowBots();
 		
 		this.invocation = Constants.INVOCATION_PREFIX + name;
 		
-		Help activeSelf = this.getClass().getAnnotation(Help.class);
-		if( activeSelf != null ) {
-			if( !StringUtilities.containsIgnoreCase(categories, activeSelf.category())) {
-				categories.add(activeSelf.category());
+		Help helpAnnotation = this.getClass().getAnnotation(Help.class);
+		if( helpAnnotation != null ) {
+			if( !StringUtilities.containsIgnoreCase(categories, helpAnnotation.category())) {
+				categories.add(helpAnnotation.category());
 			}
 		}
 		

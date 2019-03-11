@@ -26,14 +26,14 @@ public class StatusHandler extends MessageHandler {
 	}
 
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return invoked(messageEventWrapper) || mentioned(messageEventWrapper) && messageEventWrapper.containsWord("status");
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return invoked(mew) || mentioned(mew) && mew.containsWord("status");
 	}
 
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		long ping = System.currentTimeMillis() - messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000;
-		return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping), invoked(messageEventWrapper) ? 1 : 2);
+	protected Reaction process(MessageEventWrapper mew) {
+		long ping = System.currentTimeMillis() - mew.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000;
+		return new MessageReaction(mew.getChannel(), StatusBuilder.getStatusEmbed(ping), invoked(mew) ? 1 : 2);
 	}
 	
 }
