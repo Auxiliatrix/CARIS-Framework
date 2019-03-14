@@ -1,6 +1,7 @@
 package caris.modular.handlers;
 
 import caris.framework.basehandlers.GeneralHandler;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
@@ -9,10 +10,11 @@ import sx.blah.discord.handle.impl.events.guild.member.NicknameChangedEvent;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
+@Module(name = "NicknameEnforce")
 public class NicknameEnforceHandler extends GeneralHandler<NicknameChangedEvent> {
 
 	public NicknameEnforceHandler() {
-		super("NicknameEnforce");
+		super();
 	}
 
 	@Override
@@ -41,11 +43,6 @@ public class NicknameEnforceHandler extends GeneralHandler<NicknameChangedEvent>
 		} else {
 			return null;
 		}
-	}
-
-	@Override
-	public String getDescription() {
-		return "Automatically sets people's nicknames if a lock exists";
 	}
 	
 }

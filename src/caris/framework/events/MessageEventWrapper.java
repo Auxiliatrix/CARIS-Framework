@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import caris.framework.calibration.Constants;
+import caris.configuration.calibration.Constants;
 import caris.framework.utilities.TokenUtilities;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IRole;
@@ -20,16 +20,16 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 	
 	public boolean developerAuthor;
 	
-	public MessageEventWrapper(MessageReceivedEvent messageReceivedEvent) {
-		super(messageReceivedEvent.getMessage());
-		message = messageReceivedEvent.getMessage().getContent();
+	public MessageEventWrapper(MessageReceivedEvent mew) {
+		super(mew.getMessage());
+		message = mew.getMessage().getContent();
 		tokens = TokenUtilities.parseTokens(message);
 		quotedTokens = TokenUtilities.parseQuoted(message);
 		integerTokens = TokenUtilities.parseIntegers(message);
 		longTokens = TokenUtilities.parseLongs(message);	
 		
-		for( Long id : Constants.ADMIN_IDS ) {
-			if( messageReceivedEvent.getAuthor().getLongID() == id ) {
+		for( Long id : Constants.DEVELOPER_IDS ) {
+			if( mew.getAuthor().getLongID() == id ) {
 				developerAuthor = true;
 			}
 		}

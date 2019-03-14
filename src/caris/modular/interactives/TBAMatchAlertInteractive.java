@@ -1,10 +1,11 @@
 package caris.modular.interactives;
 
-import caris.framework.basehandlers.InteractiveHandler;
+import caris.configuration.reference.EmojiSet;
+import caris.framework.basehandlers.InteractiveModule;
+import caris.framework.basehandlers.InteractiveModule.Interactive;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.basereactions.ReactionRunnable;
-import caris.framework.calibration.EmojiSet;
 import caris.framework.main.Brain;
 import caris.framework.reactions.InteractiveDestroyReaction;
 import caris.framework.reactions.ReactAddReaction;
@@ -15,14 +16,15 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionAddEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionEvent;
 
-public class TBAMatchAlertInteractive extends InteractiveHandler {
+@Interactive(name = "TBAMatchAlert")
+public class TBAMatchAlertInteractive extends InteractiveModule {
 
 	public String mentioned;
 	public EmbedObject defaultEmbed;
 	public int id;
 	
 	public TBAMatchAlertInteractive(String mentions, EmbedObject embed, int id) {
-		super("TBAMatchAlert");
+		super();
 		this.mentioned = mentions;
 		this.defaultEmbed = embed;
 		this.id = id;
@@ -49,7 +51,7 @@ public class TBAMatchAlertInteractive extends InteractiveHandler {
 					}
 				}
 			}));
-			for( InteractiveHandler interactive : Brain.interactives ) {
+			for( InteractiveModule interactive : Brain.interactives ) {
 				if( interactive instanceof TBAMatchAlertInteractive ) {
 					TBAMatchAlertInteractive alertInteractive = (TBAMatchAlertInteractive) interactive;
 					if( alertInteractive.id == id ) {
@@ -64,11 +66,6 @@ public class TBAMatchAlertInteractive extends InteractiveHandler {
 	@Override
 	public MessageContent getDefault() {
 		return new MessageContent(mentioned, defaultEmbed);
-	}
-	
-	@Override
-	public String getDescription() {
-		return "React with :stop: to stop notifications";
 	}
 
 	@Override

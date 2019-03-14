@@ -3,20 +3,17 @@ package caris.modular.handlers;
 import java.util.List;
 
 import caris.framework.basehandlers.GeneralHandler;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basereactions.Reaction;
 import caris.framework.basereactions.ReactionRunnable;
 import caris.framework.main.Brain;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
+@Module(name = "BlackboxRecord", allowBots = true)
 public class BlackboxRecordHandler extends GeneralHandler<MessageReceivedEvent> {
 
 	public BlackboxRecordHandler() {
-		super("BlackboxRecord", true);
-	}
-
-	@Override
-	public String getDescription() {
-		return "Records messages into blackboxes when active";
+		super();
 	}
 
 	@Override

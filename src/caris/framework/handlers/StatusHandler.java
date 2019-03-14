@@ -1,48 +1,39 @@
 package caris.framework.handlers;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
+import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.embedbuilders.StatusBuilder;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 
+@Module(name = "Status")
+@Help(
+		category = "Developer", 
+		description = "Gets " + Constants.NAME + "'s current status.", 
+		usage = {
+					Constants.INVOCATION_PREFIX + "Status"
+				}
+	)
 public class StatusHandler extends MessageHandler {
 
 	public StatusHandler() {
-		super("Status", "Developer");
+		super();
 	}
 
 	@Override
-	protected boolean isTriggered(MessageEventWrapper messageEventWrapper) {
-		return invoked(messageEventWrapper) || mentioned(messageEventWrapper) && messageEventWrapper.containsWord("status");
+	protected boolean isTriggered(MessageEventWrapper mew) {
+		return invoked(mew);
 	}
 
 	@Override
-	protected Reaction process(MessageEventWrapper messageEventWrapper) {
-		long ping = System.currentTimeMillis() - messageEventWrapper.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000;
-		if( !invoked(messageEventWrapper) ) {
-			return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping), 2);
-		}
-		return new MessageReaction(messageEventWrapper.getChannel(), StatusBuilder.getStatusEmbed(ping), 1);
-	}
-
-	@Override
-	public String getDescription() {
-		return "Gets " + Constants.NAME + "'s current status.";
-	}
-	
-
-	@Override
-	public List<String> getUsage() {
-		List<String> usage = new ArrayList<String>();
-		usage.add(invocation);
-		usage.add(Constants.NAME + ", what's your status?");
-		return usage;
+	protected Reaction process(MessageEventWrapper mew) {
+		long ping = System.currentTimeMillis() - mew.getMessage().getTimestamp().atZone(ZoneId.systemDefault()).toEpochSecond()*1000;
+		return new MessageReaction(mew.getChannel(), StatusBuilder.getStatusEmbed(ping), invoked(mew) ? 1 : 2);
 	}
 	
 }

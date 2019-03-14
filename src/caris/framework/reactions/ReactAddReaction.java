@@ -2,8 +2,8 @@ package caris.framework.reactions;
 
 import com.vdurmont.emoji.Emoji;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.obj.IMessage;
 

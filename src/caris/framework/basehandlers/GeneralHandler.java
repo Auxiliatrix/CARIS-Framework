@@ -6,12 +6,8 @@ import sx.blah.discord.api.events.Event;
 
 public abstract class GeneralHandler<T extends Event> extends Handler {
 	
-	public GeneralHandler(String name) {
-		this(name, false);
-	}
-	
-	public GeneralHandler(String name, boolean allowBots) {
-		super(name, allowBots);
+	public GeneralHandler() {
+		super();
 	}
 	
 	@Override
@@ -21,6 +17,10 @@ public abstract class GeneralHandler<T extends Event> extends Handler {
 		T typedEvent = (T) event;
 		if( botFilter(event) ) {
 			Logger.debug("Event from a bot. Aborting.", 1, true);
+			return null;
+		}
+		if( disableFilter(event) ) {
+			Logger.debug("Handler disabled for this location. Aborting.", 1, true);
 			return null;
 		}
 		try {

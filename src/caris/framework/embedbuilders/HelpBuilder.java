@@ -1,13 +1,18 @@
 package caris.framework.embedbuilders;
 
 import java.awt.Color;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+import caris.configuration.calibration.Constants;
+import caris.configuration.reference.PermissionsString;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
-import caris.framework.calibration.Constants;
-import caris.framework.calibration.PermissionsString;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.Permissions;
 import sx.blah.discord.util.EmbedBuilder;
 
@@ -32,7 +37,7 @@ public class HelpBuilder {
 	public static EmbedObject getHelpEmbed() {
 		helpBuilder.clearFields();
 		String description = "";
-		for( String category : MessageHandler.categories ) {
+		for( String category : Handler.categories ) {
 			description += category.toString() + "\n";
 		}
 		if( description.isEmpty() ) {
@@ -42,15 +47,19 @@ public class HelpBuilder {
 		return helpBuilder.build();
 	}
 	
-	public static EmbedObject getHelpEmbed(String category) {
+	public static EmbedObject getHelpEmbed(String category, IGuild guild) {
 		categoryBuilder.clearFields();
 		String description = "";
-		for( String name : Brain.handlers.keySet() ) {
-			Handler h = Brain.handlers.get(name);
-			if( h instanceof MessageHandler ) {
-				MessageHandler mh = (MessageHandler) h;
-				if( mh.category == category ) {
-					description += name + "\n";
+		for( String name : Brain.modules.keySet() ) {
+			Handler h = Brain.modules.get(name);
+			Help helpAnnotation = h.getClass().getAnnotation(Help.class);
+			if( helpAnnotation != null ) {
+				if( helpAnnotation.category().equalsIgnoreCase(category) ) {
+					if( h.disabledOn(guild.getLongID()) ) {
+						description += name + " (DISABLED) \n";
+					} else {
+						description += name + "\n";
+					}
 				}
 			}
 		}
@@ -64,13 +73,17 @@ public class HelpBuilder {
 		return categoryBuilder.build();
 	}
 	
-	public static EmbedObject getHelpEmbed(Handler h) {
+	public static EmbedObject getHelpEmbed(Handler h, IGuild guild) {
 		commandBuilder.clearFields();
-		if( h instanceof MessageHandler ) {
-			MessageHandler mh = (MessageHandler) h;
-			commandBuilder.appendField("`" + mh.invocation + "`", h.getDescription(), false);
+		Help helpAnnotation = h.getClass().getAnnotation(Help.class);
+		if( helpAnnotation != null ) {
+			if( h.disabledOn(guild.getLongID()) ) {
+				commandBuilder.appendField("~~" + h.invocation + "~~ (DISABLED)", helpAnnotation.description(), false);
+			} else {
+				commandBuilder.appendField("`" + h.invocation + "`", helpAnnotation.description(), false);
+			}
 			String usage = "";
-			for( String example : mh.getUsage() ) {
+			for( String example : helpAnnotation.usage() ) {
 				usage += example + "\n";
 			}
 			if( usage.isEmpty() ) {
@@ -79,11 +92,7 @@ public class HelpBuilder {
 				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
-			commandBuilder.withFooterText(mh.category.toString() + formatRequirements(mh.requirements));
-		} else {
-			commandBuilder.appendField(h.name, h.getDescription(), false);
-			commandBuilder.appendField("Usage", "```ini\n[Passive]\n```", false);
-			commandBuilder.withFooterText("Passive | " + Constants.NAME + " Only");
+			commandBuilder.withFooterText(helpAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : ""));
 		}
 		return commandBuilder.build();
 	}
@@ -99,5 +108,13 @@ public class HelpBuilder {
 			return "";
 		}
 	}
-		
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Help {
+		String category() default "Default";
+		String description() default "An active module.";
+		String[] usage() default {};
+	}
+	
 }

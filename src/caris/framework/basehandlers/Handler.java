@@ -1,39 +1,103 @@
 package caris.framework.basehandlers;
 
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
+
+import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.NullReaction;
 import caris.framework.basereactions.Reaction;
-import caris.framework.calibration.Constants;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.utilities.Logger;
+import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.events.Event;
+import sx.blah.discord.handle.impl.events.guild.GuildEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public abstract class Handler {
-
-	public boolean enabled;
+	public static List<String> categories = new ArrayList<String>();
 	
 	public String name;
-	public boolean allowBots;
-		
-	public Handler(String name) {
-		this(name, false);
-	}
+	protected boolean allowBots;
+	protected boolean whitelist;
+	protected boolean root;
 	
-	public Handler(String name, boolean allowBots) {
-		enabled = true;
+	public String invocation;
+	
+	protected List<Long> disabledGuilds;
+	
+	public Handler() {
+		Module self = this.getClass().getAnnotation(Module.class);
+		name = self.name();
+		allowBots = self.allowBots();
+		whitelist = self.whitelist();
+		root = self.root();
 		
-		this.name = name;
-		this.allowBots = allowBots;
-						
+		this.invocation = Constants.INVOCATION_PREFIX + name;
+		
+		Help helpAnnotation = this.getClass().getAnnotation(Help.class);
+		if( helpAnnotation != null ) {
+			if( !StringUtilities.containsIgnoreCase(categories, helpAnnotation.category())) {
+				categories.add(helpAnnotation.category());
+			}
+		}
+		
+		disabledGuilds = new ArrayList<Long>();
+		
 		Logger.debug("Handler " + name + " initialized.", 1);
 	}
-		
+	
+	public boolean disabledOn(Long id) {
+		return !whitelist && disabledGuilds.contains(id) || !root && whitelist && !disabledGuilds.contains(id);
+	}
+	
+	public void disableOn(Long id) {
+		if( whitelist ) {
+			disabledGuilds.remove(id);
+		} else {
+			if( !root ) {
+				if( !disabledGuilds.contains(id) ) {
+					disabledGuilds.add(id);
+				}
+			}
+		}
+	}
+	
+	public void enableOn(Long id) {
+		if( whitelist ) {
+			if( !root ) {
+				if( !disabledGuilds.contains(id) ) {
+					disabledGuilds.add(id);
+				}
+			}
+		} else {
+			disabledGuilds.remove(id);
+		}
+	}
+	
+	public boolean isRoot() {
+		return root;
+	}
+	
+	protected boolean disableFilter(Event event) {
+		if( whitelist ) {
+			return event instanceof GuildEvent && !disabledGuilds.contains(((GuildEvent) event).getGuild().getLongID());
+		} else {
+			return event instanceof GuildEvent && disabledGuilds.contains(((GuildEvent) event).getGuild().getLongID());
+		}
+	}
+	
 	protected boolean botFilter(Event event) {
 		return isBot(event) && !allowBots;
 	}
 	
 	protected boolean isBot(Event event) {
 		if( event instanceof MessageReceivedEvent ) {
-			if( !Constants.RESPOND_TO_BOT && ((MessageReceivedEvent) event).getAuthor().isBot() ) {
+			if( ((MessageReceivedEvent) event).getAuthor().isBot() ) {
 				return true;
 			}
 		}
@@ -45,6 +109,13 @@ public abstract class Handler {
 	}
 	
 	public abstract Reaction handle(Event event);
-	public abstract String getDescription();
-	
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Module {
+		String name();
+		boolean allowBots() default false;
+		boolean whitelist() default false;
+		boolean root() default false;
+	}
 }

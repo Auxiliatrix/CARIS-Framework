@@ -30,4 +30,5 @@ public class SpecialChannelSetReaction extends Reaction {
 		}
 		Brain.variables.getGuildInfo(guild).specialChannels.put(sc, channel.getLongID());
 	}
+
 }

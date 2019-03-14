@@ -7,11 +7,14 @@ import org.json.JSONArray;
 
 import com.mashape.unirest.http.Unirest;
 
+import caris.framework.basehandlers.Handler.Module;
+import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.basereactions.ReactionRunnable;
 import caris.framework.embedbuilders.ErrorBuilder;
+import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.interactives.PagedInteractive;
 import caris.framework.reactions.InteractiveCreateReaction;
@@ -26,13 +29,23 @@ import caris.modular.utilities.TBAObjectFactory;
 import caris.modular.utilities.TestDataString;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 
+@Module(name = "TBA")
+@Help(
+		category = "frc",
+		description = "Reads from thebluealliance website to provide live tournament data.",
+		usage = {
+					Constants.INVOCATION_PREFIX + "TBA matches <event_key>",
+					Constants.INVOCATION_PREFIX + "TBA queue <event_key> <team_number>",
+					Constants.INVOCATION_PREFIX + "TBA alert <event_key> <team_number> <@user.. @roles..>"
+				}
+	)
 public class TBAHandler extends MessageHandler {
 
 	public static final String TBA_ENDPOINT = "https://www.thebluealliance.com/api/v3/";
 	public static final int ALERT_SECONDS_BEFORE = 300;
 	
 	public TBAHandler() {
-		super("TBA", "frc");
+		super();
 	}
 
 	@Override
@@ -141,20 +154,6 @@ public class TBAHandler extends MessageHandler {
 			tbaReaction.add(new MessageReaction(messageEventWrapper.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a command!")));
 		}
 		return tbaReaction;
-	}
-
-	@Override
-	public String getDescription() {
-		return "Reads from thebluealliance website to provide live tournament data.";
-	}
-	
-	@Override
-	public List<String> getUsage() {
-		List<String> usage = new ArrayList<String>();
-		usage.add(invocation + " matches <event_key>");
-		usage.add(invocation + " queue <event_key> <team_number>");
-		usage.add(invocation + " alert <event_key> <team_number> <@user.. @roles..>");
-		return usage;
 	}
 	
 }

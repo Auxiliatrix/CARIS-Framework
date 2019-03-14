@@ -114,7 +114,7 @@ public class TokenUtilities {
 			line = line.replace("“", "\"");
 		}
 		while( line.contains("“") ) {
-			line = line.replaceAll("“", "\"");
+			line = line.replace("“", "\"");
 		}
 		while( line.contains("”") ) {
 			line = line.replace("”", "\"");
