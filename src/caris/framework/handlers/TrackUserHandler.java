@@ -8,7 +8,7 @@ import caris.framework.reactions.TrackUserReaction;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 
-@Module(name = "TrackUser")
+@Module(name = "TrackUser", root = true)
 public class TrackUserHandler extends GeneralHandler<UserJoinEvent> {
 
 	public TrackUserHandler() {

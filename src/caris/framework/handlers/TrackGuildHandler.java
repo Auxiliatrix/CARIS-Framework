@@ -6,7 +6,7 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.reactions.TrackGuildReaction;
 import sx.blah.discord.handle.impl.events.guild.GuildCreateEvent;
 
-@Module(name = "TrackGuild")
+@Module(name = "TrackGuild", root = true)
 public class TrackGuildHandler extends GeneralHandler<GuildCreateEvent> {
 
 	public TrackGuildHandler() {

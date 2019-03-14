@@ -12,6 +12,7 @@ import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.Permissions;
 import sx.blah.discord.util.EmbedBuilder;
 
@@ -46,7 +47,7 @@ public class HelpBuilder {
 		return helpBuilder.build();
 	}
 	
-	public static EmbedObject getHelpEmbed(String category) {
+	public static EmbedObject getHelpEmbed(String category, IGuild guild) {
 		categoryBuilder.clearFields();
 		String description = "";
 		for( String name : Brain.modules.keySet() ) {
@@ -54,7 +55,11 @@ public class HelpBuilder {
 			Help helpAnnotation = h.getClass().getAnnotation(Help.class);
 			if( helpAnnotation != null ) {
 				if( helpAnnotation.category().equalsIgnoreCase(category) ) {
-					description += name + "\n";
+					if( h.disabledOn(guild.getLongID()) ) {
+						description += name + " (DISABLED) \n";
+					} else {
+						description += name + "\n";
+					}
 				}
 			}
 		}
@@ -68,11 +73,15 @@ public class HelpBuilder {
 		return categoryBuilder.build();
 	}
 	
-	public static EmbedObject getHelpEmbed(Handler h) {
+	public static EmbedObject getHelpEmbed(Handler h, IGuild guild) {
 		commandBuilder.clearFields();
 		Help helpAnnotation = h.getClass().getAnnotation(Help.class);
 		if( helpAnnotation != null ) {
-			commandBuilder.appendField("`" + h.invocation + "`", helpAnnotation.description(), false);
+			if( h.disabledOn(guild.getLongID()) ) {
+				commandBuilder.appendField("~~" + h.invocation + "~~ (DISABLED)", helpAnnotation.description(), false);
+			} else {
+				commandBuilder.appendField("`" + h.invocation + "`", helpAnnotation.description(), false);
+			}
 			String usage = "";
 			for( String example : helpAnnotation.usage() ) {
 				usage += example + "\n";
@@ -83,7 +92,7 @@ public class HelpBuilder {
 				usage = "```http\n" + usage + "```";
 			}
 			commandBuilder.appendField("Usage", usage, false);
-			commandBuilder.withFooterText(helpAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : ""));
+			commandBuilder.withFooterText(helpAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : ""));
 		}
 		return commandBuilder.build();
 	}

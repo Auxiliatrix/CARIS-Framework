@@ -15,20 +15,27 @@ import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.utilities.Logger;
 import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.events.Event;
+import sx.blah.discord.handle.impl.events.guild.GuildEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public abstract class Handler {
 	public static List<String> categories = new ArrayList<String>();
 	
 	public String name;
-	public boolean allowBots;
+	protected boolean allowBots;
+	protected boolean whitelist;
+	protected boolean root;
 	
 	public String invocation;
+	
+	protected List<Long> disabledGuilds;
 	
 	public Handler() {
 		Module self = this.getClass().getAnnotation(Module.class);
 		name = self.name();
 		allowBots = self.allowBots();
+		whitelist = self.whitelist();
+		root = self.root();
 		
 		this.invocation = Constants.INVOCATION_PREFIX + name;
 		
@@ -39,7 +46,49 @@ public abstract class Handler {
 			}
 		}
 		
+		disabledGuilds = new ArrayList<Long>();
+		
 		Logger.debug("Handler " + name + " initialized.", 1);
+	}
+	
+	public boolean disabledOn(Long id) {
+		return !whitelist && disabledGuilds.contains(id) || !root && whitelist && !disabledGuilds.contains(id);
+	}
+	
+	public void disableOn(Long id) {
+		if( whitelist ) {
+			disabledGuilds.remove(id);
+		} else {
+			if( !root ) {
+				if( !disabledGuilds.contains(id) ) {
+					disabledGuilds.add(id);
+				}
+			}
+		}
+	}
+	
+	public void enableOn(Long id) {
+		if( whitelist ) {
+			if( !root ) {
+				if( !disabledGuilds.contains(id) ) {
+					disabledGuilds.add(id);
+				}
+			}
+		} else {
+			disabledGuilds.remove(id);
+		}
+	}
+	
+	public boolean isRoot() {
+		return root;
+	}
+	
+	protected boolean disableFilter(Event event) {
+		if( whitelist ) {
+			return event instanceof GuildEvent && !disabledGuilds.contains(((GuildEvent) event).getGuild().getLongID());
+		} else {
+			return event instanceof GuildEvent && disabledGuilds.contains(((GuildEvent) event).getGuild().getLongID());
+		}
 	}
 	
 	protected boolean botFilter(Event event) {
@@ -66,5 +115,7 @@ public abstract class Handler {
 	public static @interface Module {
 		String name();
 		boolean allowBots() default false;
+		boolean whitelist() default false;
+		boolean root() default false;
 	}
 }

@@ -9,7 +9,7 @@ import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 
-@Module(name = "Credits")
+@Module(name = "Credits", root = true)
 @Help(
 		category = "Developer", 
 		description = "Displays credits for " + Constants.NAME + "'s development.", 

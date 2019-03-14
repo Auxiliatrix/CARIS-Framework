@@ -6,7 +6,7 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.reactions.TrackChannelReaction;
 import sx.blah.discord.handle.impl.events.guild.channel.ChannelCreateEvent;
 
-@Module(name = "TrackChannel")
+@Module(name = "TrackChannel", root = true)
 public class TrackChannelHandler extends GeneralHandler<ChannelCreateEvent> {
 
 	public TrackChannelHandler() {

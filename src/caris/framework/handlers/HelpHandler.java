@@ -1,7 +1,5 @@
 package caris.framework.handlers;
 
-import java.util.List;
-
 import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.Handler.Module;
@@ -16,7 +14,7 @@ import caris.framework.utilities.StringUtilities;
 import caris.framework.utilities.Verifier;
 import caris.framework.utilities.Verifier.Verification;
 
-@Module(name = "Help")
+@Module(name = "Help", root = true)
 @Help(
 		category = "Default", 
 		description = "Provides information on how to use " + Constants.NAME + ".", 
@@ -38,14 +36,13 @@ public class HelpHandler extends MessageHandler {
 	
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
-		List<String> tokens = mew.tokens;
 		Verifier helpVerifier = new Verifier("invocation", "module or category");
-		Verification v = helpVerifier.verify(tokens);
+		Verification v = helpVerifier.verify(mew.tokens);
 		if( v.pass ) {
 			if( StringUtilities.containsIgnoreCase(Handler.categories, v.get(1)) ) {
-				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed(v.get(1)));
+				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed(v.get(1), mew.getGuild()));
 			} else if( Brain.modules.keySet().contains(v.get(1).toLowerCase()) ) {
-				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed(Brain.modules.get(v.get(1).toLowerCase())));
+				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed(Brain.modules.get(v.get(1).toLowerCase()), mew.getGuild()));
 			} else {
 				return new MessageReaction(mew.getChannel(), HelpBuilder.getHelpEmbed());
 			}
