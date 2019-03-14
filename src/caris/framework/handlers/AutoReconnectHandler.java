@@ -6,7 +6,7 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.reactions.ReconnectReaction;
 import sx.blah.discord.handle.impl.events.shard.DisconnectedEvent;
 
-@Module(name = "AutoReconnect")
+@Module(name = "AutoReconnect", root = true)
 public class AutoReconnectHandler extends GeneralHandler<DisconnectedEvent> {
 
 	public AutoReconnectHandler() {

@@ -47,7 +47,12 @@ public abstract class MessageHandler extends Handler {
 				if( botFilter(event) ) {
 					Logger.debug("Event from a bot. Aborting.", 1, true);
 					return null;
-				} else if( isTriggered(messageEventWrapper) && accessGranted(messageEventWrapper) ) {
+				}
+				if( disableFilter(event) ) {
+					Logger.debug("Handler disabled for this location. Aborting.", 1, true);
+					return null;
+				}
+				if( isTriggered(messageEventWrapper) && accessGranted(messageEventWrapper) ) {
 					Logger.debug("Conditions satisfied for " + name + ". Processing.", 1);
 					Reaction result = process(messageEventWrapper);
 					if( result == null ) {
