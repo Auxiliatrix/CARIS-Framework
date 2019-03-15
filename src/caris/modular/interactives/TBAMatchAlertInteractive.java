@@ -32,11 +32,10 @@ public class TBAMatchAlertInteractive extends InteractiveModule {
 	
 	@Override
 	public Reaction process(ReactionEvent reactionEvent) {
-		MultiReaction interact = new MultiReaction();
+		MultiReaction interact = new MultiReaction(-1);
 		if( !(reactionEvent instanceof ReactionAddEvent) ) {
 			return null;
 		}
-		MultiReaction interaction = new MultiReaction(-1);
 		if( equivalentEmojis(reactionEvent.getReaction(), EmojiSet.STOP ) ) {
 			interact.add(new ReactionRunnable(new Runnable() {
 				@Override
@@ -60,7 +59,7 @@ public class TBAMatchAlertInteractive extends InteractiveModule {
 				}
 			}
 		}
-		return interaction;
+		return interact;
 	}
 	
 	@Override
