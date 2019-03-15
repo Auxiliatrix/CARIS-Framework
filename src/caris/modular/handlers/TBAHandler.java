@@ -25,7 +25,7 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 
 @Module(name = "TBA")
 @Help(
-		category = "frc",
+		category = "FRC",
 		description = "Reads from thebluealliance website to provide online data.",
 		usage = {
 					Constants.INVOCATION_PREFIX + "TBA matches <event_key>",
@@ -36,7 +36,6 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 public class TBAHandler extends MessageHandler {
 
 	public static final String TBA_ENDPOINT = "https://www.thebluealliance.com/api/v3/";
-	public static final int ALERT_SECONDS_BEFORE = 300;
 	
 	public TBAHandler() {
 		super();

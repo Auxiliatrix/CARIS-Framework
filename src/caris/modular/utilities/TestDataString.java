@@ -301,8 +301,18 @@ public class TestDataString {
 			"  }, \r\n" + 
 			"]";
 	
+	public static long lastReference = 0;
+	
+	public static final int OFFSET_ONE = 35;
+	public static final int OFFSET_TWO = 40;
+	
 	public static String getTestData() {
-		return String.format(JSONText, System.currentTimeMillis() / 1000 + 60, System.currentTimeMillis() / 1000 + 120);
+		lastReference = System.currentTimeMillis();
+		return String.format(JSONText, lastReference / 1000 + OFFSET_ONE, lastReference / 1000 + OFFSET_TWO);
+	}
+	
+	public static String getTestDataAgain() {
+		return String.format(JSONText, lastReference / 1000 + OFFSET_ONE, lastReference / 1000 + OFFSET_TWO);
 	}
 	
 }

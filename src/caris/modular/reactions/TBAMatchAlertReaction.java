@@ -7,6 +7,7 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import caris.framework.reactions.InteractiveCreateReaction;
 import caris.modular.embedbuilders.TBABuilder;
+import caris.modular.handlers.FeedHandler;
 import caris.modular.interactives.TBAMatchAlertInteractive;
 import caris.modular.tokens.TBAMatchObject;
 import sx.blah.discord.handle.obj.IChannel;
@@ -55,7 +56,7 @@ public class TBAMatchAlertReaction extends Reaction {
 			for( int f=1; f<queue.length; f++ ) {
 				newQueue[f-1] = queue[f];
 			}
-			Brain.timedQueue.put(new TBAMatchAlertReaction(channel, newQueue, team, users, id), queue[1].predictedTime*1000);
+			Brain.timedQueue.put(new TBAMatchAlertReaction(channel, newQueue, team, users, id), (queue[1].predictedTime-FeedHandler.ALERT_SECONDS_BEFORE)*1000);
 		}
 	}
 

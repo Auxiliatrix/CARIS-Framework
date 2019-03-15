@@ -93,6 +93,6 @@ public class TBAMatchObject implements Comparable<TBAMatchObject>{
 	}
 	
 	public boolean equals(TBAMatchObject o) {
-		return eventKey == o.eventKey && matchNumber == o.matchNumber && matchType == o.matchType;
+		return eventKey.equals(o.eventKey) && matchNumber == o.matchNumber && matchType.toString().equals(o.matchType.toString());
 	}
 }
