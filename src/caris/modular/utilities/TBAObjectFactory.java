@@ -13,15 +13,15 @@ import caris.modular.tokens.TBAMatchObject;
 
 public class TBAObjectFactory {
 
-	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray) {
-		return generateTBAMatchQueue(queueArray, null);
+	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray, int offset) {
+		return generateTBAMatchQueue(queueArray, null, offset);
 	}
 	
-	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray, String teamFilter) {
+	public static TBAMatchObject[] generateTBAMatchQueue(JSONArray queueArray, String teamFilter, int offset) {
 		List<TBAMatchObject> matches = new ArrayList<TBAMatchObject>();
 		for( int f=0; f<queueArray.length(); f++ ) {
 			try {
-				TBAMatchObject match = generateTBAMatchObject(queueArray.getJSONObject(f));
+				TBAMatchObject match = generateTBAMatchObject(queueArray.getJSONObject(f), offset);
 				if( match != null ) {
 					if( teamFilter == null ) {
 						matches.add(match);
@@ -45,7 +45,7 @@ public class TBAObjectFactory {
 		return sortedMatches;
 	}
 	
-	public static TBAMatchObject generateTBAMatchObject(JSONObject matchObject) {
+	public static TBAMatchObject generateTBAMatchObject(JSONObject matchObject, int offset) {
 		String eventKey = "";
 		int matchNumber = -1;
 		String matchType = "";
@@ -71,7 +71,7 @@ public class TBAObjectFactory {
 		} catch (JSONException e) {
 			return null;
 		}
-		return new TBAMatchObject(eventKey, matchNumber, matchType, predictedTime, redAlliance.toArray(new String[redAlliance.size()]), blueAlliance.toArray(new String[blueAlliance.size()]));
+		return new TBAMatchObject(eventKey, matchNumber, matchType, predictedTime, redAlliance.toArray(new String[redAlliance.size()]), blueAlliance.toArray(new String[blueAlliance.size()]), offset);
 	}
 	
 }

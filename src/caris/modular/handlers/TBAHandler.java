@@ -14,6 +14,7 @@ import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.interactives.PagedInteractive;
+import caris.framework.main.Brain;
 import caris.framework.reactions.InteractiveCreateReaction;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.utilities.Verifier;
@@ -73,7 +74,11 @@ public class TBAHandler extends MessageHandler {
 						queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + matchesVerification.get(2) + "/matches");
 					}
 					if( queueArray != null ) {
-						EmbedObject[] pages = TBABuilder.paginate(queueArray);
+						int offset = 0;
+						if( Brain.variables.getGuildInfo(mew.getGuild()).guildData.has("time_zone") ) {
+							offset = Brain.variables.getGuildInfo(mew.getGuild()).guildData.getInt("time_zone");
+						}
+						EmbedObject[] pages = TBABuilder.paginate(queueArray, offset);
 						if( pages != null ) {
 							tbaReaction.add(new InteractiveCreateReaction(mew.getChannel(), new PagedInteractive(pages)));
 						} else {
@@ -96,7 +101,11 @@ public class TBAHandler extends MessageHandler {
 						queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + queueVerification.get(2) + "/matches");
 					}
 					if( queueArray != null ) {
-						EmbedObject[] pages = TBABuilder.paginate(queueArray, queueVerification.get(3));
+						int offset = 0;
+						if( Brain.variables.getGuildInfo(mew.getGuild()).guildData.has("time_zone") ) {
+							offset = Brain.variables.getGuildInfo(mew.getGuild()).guildData.getInt("time_zone");
+						}
+						EmbedObject[] pages = TBABuilder.paginate(queueArray, queueVerification.get(3), offset);
 						if( pages != null ) {
 							tbaReaction.add(new InteractiveCreateReaction(mew.getChannel(), new PagedInteractive(pages)));
 						} else {

@@ -15,10 +15,12 @@ public class TBAMatchTimeUpdateReaction extends Reaction {
 
 	public String event;
 	public String team;
+	public int offset;
 	
-	public TBAMatchTimeUpdateReaction(String event, String team) {
+	public TBAMatchTimeUpdateReaction(String event, String team, int offset) {
 		this.event = event;
 		this.team = team;
+		this.offset = offset;
 	}
 	
 	@Override
@@ -34,7 +36,7 @@ public class TBAMatchTimeUpdateReaction extends Reaction {
 					queueArray = APIRetriever.getJSONArray(TBAHandler.TBA_ENDPOINT + "team/frc" + team + "/event/" + event + "/matches");
 				}
 				if( queueArray != null ) {
-					TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray);
+					TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray, offset);
 					if( queue != null ) {
 						for( TBAMatchObject match : queue ) {
 							if( newMatchAlert.match.equals(match) ) {
@@ -51,7 +53,7 @@ public class TBAMatchTimeUpdateReaction extends Reaction {
 			}
 		}
 		if( !empty ) {
-			Brain.timedQueue.put(new TBAMatchTimeUpdateReaction(event, team), System.currentTimeMillis()+1000);
+			Brain.timedQueue.put(new TBAMatchTimeUpdateReaction(event, team, offset), System.currentTimeMillis()+1000);
 		}
 	}
 	

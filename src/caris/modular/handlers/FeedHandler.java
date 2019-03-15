@@ -17,6 +17,7 @@ import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
+import caris.framework.main.Brain;
 import caris.framework.reactions.CreateChannelReaction;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.SetTimedReaction;
@@ -80,7 +81,11 @@ public class FeedHandler extends MessageHandler {
 						queueArray = APIRetriever.getJSONArray(TBA_ENDPOINT + "event/" + initialVerification.get(2) + "/matches");
 					}
 					if( queueArray != null ) {
-						TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray, queueVerification.get(3));
+						int offset = 0;
+						if( Brain.variables.getGuildInfo(mew.getGuild()).guildData.has("time_zone") ) {
+							offset = Brain.variables.getGuildInfo(mew.getGuild()).guildData.getInt("time_zone");
+						}
+						TBAMatchObject[] queue = TBAObjectFactory.generateTBAMatchQueue(queueArray, queueVerification.get(3), offset);
 						List<TBAMatchObject> futureQueueList = new ArrayList<TBAMatchObject>();
 						for( TBAMatchObject match : queue ) {
 							if( match.predictedTime*1000 > System.currentTimeMillis() ) {
@@ -121,9 +126,13 @@ public class FeedHandler extends MessageHandler {
 											e.printStackTrace();
 										}
 									}
+									int offset = 0;
+									if( Brain.variables.getGuildInfo(mew.getGuild()).guildData.has("time_zone") ) {
+										offset = Brain.variables.getGuildInfo(mew.getGuild()).guildData.getInt("time_zone");
+									}
 									MultiReaction initializeFeed = new MultiReaction(0);
 									initializeFeed.add(new SetTimedReaction(new TBAMatchAlertReaction(targetChannel, futureQueue, queueVerification.get(3), mew.getAllMentionedUsers()), (futureQueue[0].predictedTime-ALERT_SECONDS_BEFORE)*1000));
-									initializeFeed.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(queueVerification.get(2), queueVerification.get(3)), System.currentTimeMillis()+1000));
+									initializeFeed.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(queueVerification.get(2), queueVerification.get(3), offset), System.currentTimeMillis()+1000));
 									initializeFeed.add(new MessageReaction(targetChannel, "Alert Queue Set for " + queueVerification.get(2)));
 									initializeFeed.start();
 								}

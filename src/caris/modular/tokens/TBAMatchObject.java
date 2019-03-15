@@ -51,12 +51,12 @@ public class TBAMatchObject implements Comparable<TBAMatchObject>{
 	public String[] redAlliance;
 	public String[] blueAlliance;
 	
-	public TBAMatchObject( String eventKey, int matchNumber, String matchType, long predictedTime, String[] redAlliance, String[] blueAlliance ) {
+	public TBAMatchObject( String eventKey, int matchNumber, String matchType, long predictedTime, String[] redAlliance, String[] blueAlliance, int offset ) {
 		this.eventKey = eventKey;
 		this.matchNumber = matchNumber;
 		this.matchType = matchTypeKeys.get(matchType);
 		this.predictedTime = predictedTime;
-		this.predictedLDT = LocalDateTime.ofEpochSecond(predictedTime, 0, ZoneOffset.UTC);
+		this.predictedLDT = LocalDateTime.ofEpochSecond(predictedTime + offset * 3600, 0, ZoneOffset.UTC);
 		this.redAlliance = redAlliance;
 		this.blueAlliance = blueAlliance;
 	}

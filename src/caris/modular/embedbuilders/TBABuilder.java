@@ -71,9 +71,9 @@ public class TBABuilder {
 		return alertBuilder.build();
 	}
 	
-	public static EmbedObject[] paginate(JSONArray queueArray) {
+	public static EmbedObject[] paginate(JSONArray queueArray, int offset) {
 		List<EmbedObject> pages = new ArrayList<EmbedObject>();
-		TBAMatchObject[] sortedMatches = TBAObjectFactory.generateTBAMatchQueue(queueArray);
+		TBAMatchObject[] sortedMatches = TBAObjectFactory.generateTBAMatchQueue(queueArray, offset);
 		if( sortedMatches == null ) {
 			return null;
 		}
@@ -104,9 +104,9 @@ public class TBABuilder {
 		return pages.toArray(new EmbedObject[pages.size()]);
 	}
 	
-	public static EmbedObject[] paginate(JSONArray queueArray, String teamFilter) {
+	public static EmbedObject[] paginate(JSONArray queueArray, String teamFilter, int offset) {
 		List<EmbedObject> pages = new ArrayList<EmbedObject>();
-		TBAMatchObject[] sortedMatches = TBAObjectFactory.generateTBAMatchQueue(queueArray, teamFilter);
+		TBAMatchObject[] sortedMatches = TBAObjectFactory.generateTBAMatchQueue(queueArray, teamFilter, offset);
 		if( sortedMatches == null ) {
 			return null;
 		}

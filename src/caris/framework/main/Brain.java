@@ -97,7 +97,7 @@ public class Brain {
 		Logger.print("Client ready!", 1);
 		
 		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
-		cli.changeUsername(Constants.NAME);
+		// cli.changeUsername(Constants.NAME);
 		Logger.print("Log in complete.");
 	}
 	
