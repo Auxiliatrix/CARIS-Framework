@@ -70,7 +70,7 @@ public class TBAMatchObject implements Comparable<TBAMatchObject>{
 	}
 	
 	public String getTime() {
-		return DateTimeFormatter.ofPattern("hh:mm:ss").format(predictedLDT);
+		return DateTimeFormatter.ofPattern("HH:mm:ss").format(predictedLDT);
 	}
 
 	@Override
