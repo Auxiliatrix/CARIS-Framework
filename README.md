@@ -1,4 +1,4 @@
-# SCOUT
+# SCOUT (Search, Collect, Organize, Unify, Translate)
 
 ### A TBA-Integrated Discord Bot for FIRST Robotics Teams
 
