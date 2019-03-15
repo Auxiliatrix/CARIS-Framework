@@ -43,7 +43,7 @@ public class CalibrateHandler extends MessageHandler {
 		if( initialVerification.pass ) {
 			if( initialVerification.get(1).equalsIgnoreCase("zone") ) {
 				int offset = Integer.parseInt(initialVerification.get(2));
-				calibrate.add(new UpdateGuildReaction(mew.getGuild(), "time_zone", offset));
+				calibrate.add(new UpdateGuildReaction(mew.getGuild(), "time_zone", offset, true));
 				calibrate.add(new MessageReaction(mew.getChannel(), "Time Zone updated successfully!"));
 			}
 		} else {
