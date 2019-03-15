@@ -42,7 +42,7 @@ import sx.blah.discord.handle.obj.Permissions;
 public class FeedHandler extends MessageHandler {
 
 	public static final String TBA_ENDPOINT = "https://www.thebluealliance.com/api/v3/";
-	public static final int ALERT_SECONDS_BEFORE = 30;
+	public static final int ALERT_SECONDS_BEFORE = 300;
 	
 	public FeedHandler() {
 		super(Permissions.MANAGE_CHANNELS);
