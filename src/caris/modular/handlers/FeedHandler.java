@@ -17,6 +17,7 @@ import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
+import caris.framework.reactions.CreateChannelReaction;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.SetTimedReaction;
 import caris.framework.utilities.Verifier;
@@ -27,6 +28,7 @@ import caris.modular.tokens.TBAMatchObject;
 import caris.modular.utilities.APIRetriever;
 import caris.modular.utilities.TBAObjectFactory;
 import caris.modular.utilities.TestDataString;
+import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.Permissions;
 
 @Module(name = "Feed")
@@ -87,9 +89,45 @@ public class FeedHandler extends MessageHandler {
 						}
 						if( futureQueueList.size() > 0 ) {
 							TBAMatchObject[] futureQueue = futureQueueList.toArray(new TBAMatchObject[futureQueueList.size()]);
-							feedReaction.add(new SetTimedReaction(new TBAMatchAlertReaction(mew.getChannel(), futureQueue, queueVerification.get(3), mew.getAllMentionedUsers()), (futureQueue[0].predictedTime-ALERT_SECONDS_BEFORE)*1000));
-							feedReaction.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(queueVerification.get(2), queueVerification.get(3)), System.currentTimeMillis()+1000));
-							feedReaction.add(new MessageReaction(mew.getChannel(), "Alert Queue Set!"));
+							feedReaction.add(new ReactionRunnable(new Runnable() {
+								@Override
+								public void run() {
+									IChannel targetChannel = null;
+									for( IChannel channel : mew.getGuild().getChannelsByName(queueVerification.get(2) + "_" + queueVerification.get(3)) ) {
+										if( channel.getCategory().getName().equals("TBA Feeds") ) {
+											targetChannel = channel;
+										}
+									}
+									if( targetChannel == null ) {
+										CreateChannelReaction createChannel = new CreateChannelReaction(mew.getGuild(), "TBA Feeds", queueVerification.get(2) + "_" + queueVerification.get(3));
+										createChannel.run();
+									}
+									for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
+										for( IChannel channel : mew.getGuild().getChannelsByName(queueVerification.get(2) + "_" + queueVerification.get(3)) ) {
+											if( channel.getCategory() == null ) {
+												continue;
+											}
+											if( channel.getCategory().getName().equals("TBA Feeds") ) {
+												targetChannel = channel;
+												break;
+											}
+										}
+										if( targetChannel != null ) {
+											break;	
+										}
+										try {
+											Thread.sleep(1000);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+									}
+									MultiReaction initializeFeed = new MultiReaction(0);
+									initializeFeed.add(new SetTimedReaction(new TBAMatchAlertReaction(targetChannel, futureQueue, queueVerification.get(3), mew.getAllMentionedUsers()), (futureQueue[0].predictedTime-ALERT_SECONDS_BEFORE)*1000));
+									initializeFeed.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(queueVerification.get(2), queueVerification.get(3)), System.currentTimeMillis()+1000));
+									initializeFeed.add(new MessageReaction(targetChannel, "Alert Queue Set for " + queueVerification.get(2)));
+									initializeFeed.start();
+								}
+							}));
 						} else {
 							feedReaction.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.EXECUTION, "All matches complete!")));
 						}
