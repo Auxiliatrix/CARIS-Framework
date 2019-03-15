@@ -20,7 +20,7 @@ public class TimedQueueBuilder {
 		timedQueueBuilder.withFooterText(Brain.timedQueue.size() + " item(s) in queue");
 		for( Reaction r : Brain.timedQueue.keySet() ) {
 			long time = Brain.timedQueue.get(r);
-			timedQueueBuilder.appendField("T-" + (System.currentTimeMillis() - time) / 1000 + " seconds", r.toString(), false);
+			timedQueueBuilder.appendField("T" + (System.currentTimeMillis() - time) / 1000 + " seconds", r.toString(), false);
 		}
 		return timedQueueBuilder.build();
 	}
