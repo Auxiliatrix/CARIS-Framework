@@ -13,13 +13,14 @@ public class TimedQueueBuilder {
 														.withColor(Color.GREEN)
 														.withAuthorIcon(Brain.cli.getApplicationIconURL())
 														.withAuthorName("CARIS Timed Queue")
-														.withTitle("Pending Tasks: ")
-														.withFooterText(Brain.timedQueue.size() + " item(s) in queue");
+														.withTitle("Pending Tasks: ");
 	
 	public static EmbedObject getTimedQueue() {
 		timedQueueBuilder.clearFields();
+		timedQueueBuilder.withFooterText(Brain.timedQueue.size() + " item(s) in queue");
 		for( Reaction r : Brain.timedQueue.keySet() ) {
-			timedQueueBuilder.appendField(Brain.timedQueue.get(r)+"", r.toString(), false);
+			long time = Brain.timedQueue.get(r);
+			timedQueueBuilder.appendField("T-" + (System.currentTimeMillis() - time) / 1000 + " seconds", r.toString(), false);
 		}
 		return timedQueueBuilder.build();
 	}
