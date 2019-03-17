@@ -131,7 +131,7 @@ public class FeedHandler extends MessageHandler {
 										offset = Brain.variables.getGuildInfo(mew.getGuild()).guildData.getInt("time_zone");
 									}
 									MultiReaction initializeFeed = new MultiReaction(0);
-									initializeFeed.add(new SetTimedReaction(new TBAMatchAlertReaction(targetChannel, futureQueue, queueVerification.get(3), mew.getAllMentionedUsers()), (futureQueue[0].predictedTime-ALERT_SECONDS_BEFORE)*1000));
+									initializeFeed.add(new SetTimedReaction(new TBAMatchAlertReaction(targetChannel, futureQueue, queueVerification.get(3), mew.getMessage().getMentions(), mew.getMessage().getRoleMentions()), (futureQueue[0].predictedTime-ALERT_SECONDS_BEFORE)*1000));
 									initializeFeed.add(new SetTimedReaction(new TBAMatchTimeUpdateReaction(queueVerification.get(2), queueVerification.get(3), offset), System.currentTimeMillis()+1000));
 									initializeFeed.add(new MessageReaction(targetChannel, "Alert Queue Set for " + queueVerification.get(2)));
 									initializeFeed.start();

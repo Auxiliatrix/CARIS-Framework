@@ -11,6 +11,7 @@ import caris.modular.handlers.FeedHandler;
 import caris.modular.interactives.TBAMatchAlertInteractive;
 import caris.modular.tokens.TBAMatchObject;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 public class TBAMatchAlertReaction extends Reaction {
@@ -23,13 +24,14 @@ public class TBAMatchAlertReaction extends Reaction {
 	public TBAMatchObject match;
 	public String team;
 	public List<IUser> users;
+	public List<IRole> roles;
 	
-	public TBAMatchAlertReaction(IChannel channel, TBAMatchObject[] queue, String team, List<IUser> users) {
-		this(channel, queue, team, users, count);
+	public TBAMatchAlertReaction(IChannel channel, TBAMatchObject[] queue, String team, List<IUser> users, List<IRole> roles) {
+		this(channel, queue, team, users, roles, count);
 		count++;
 	}
 	
-	public TBAMatchAlertReaction(IChannel channel, TBAMatchObject[] queue, String team, List<IUser> users, int id) {
+	public TBAMatchAlertReaction(IChannel channel, TBAMatchObject[] queue, String team, List<IUser> users, List<IRole> roles, int id) {
 		this.id = id;
 		
 		this.channel = channel;
@@ -37,6 +39,7 @@ public class TBAMatchAlertReaction extends Reaction {
 		this.match = queue[0];
 		this.team = team;
 		this.users = users;
+		this.roles = roles;
 	}
 
 	@Override
@@ -45,6 +48,9 @@ public class TBAMatchAlertReaction extends Reaction {
 			List<String> mentions = new ArrayList<String>();
 			for( IUser user : users ) {
 				mentions.add(user.mention());
+			}
+			for( IRole role : roles ) {
+				mentions.add(role.mention());
 			}
 			String messageContent = String.join(" ", mentions);
 			TBAMatchAlertInteractive interactive = new TBAMatchAlertInteractive(messageContent, TBABuilder.getAlertEmbed(queue[0], team), id);
@@ -56,7 +62,7 @@ public class TBAMatchAlertReaction extends Reaction {
 			for( int f=1; f<queue.length; f++ ) {
 				newQueue[f-1] = queue[f];
 			}
-			Brain.timedQueue.put(new TBAMatchAlertReaction(channel, newQueue, team, users, id), (queue[1].predictedTime-FeedHandler.ALERT_SECONDS_BEFORE)*1000);
+			Brain.timedQueue.put(new TBAMatchAlertReaction(channel, newQueue, team, users, roles, id), (queue[1].predictedTime-FeedHandler.ALERT_SECONDS_BEFORE)*1000);
 		}
 	}
 
