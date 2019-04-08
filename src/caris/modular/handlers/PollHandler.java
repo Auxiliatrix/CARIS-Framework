@@ -7,9 +7,12 @@ import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.Reaction;
+import caris.framework.embedbuilders.ErrorBuilder;
+import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.InteractiveCreateReaction;
+import caris.framework.reactions.MessageReaction;
 import caris.framework.tokens.Duration;
 import caris.framework.utilities.TimeUtilities;
 import caris.modular.interactives.PollInteractive;
@@ -37,15 +40,19 @@ public class PollHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
 		List<String> options = new ArrayList<String>();
-		if( mew.quotedTokens.size() > 1 ) {
+		if( mew.quotedTokens.size() > 10 ) {
+			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "You can't have more than 9 options!"));
+		} else if( mew.quotedTokens.size() > 1 ) {
 			for( int f=1; f<mew.quotedTokens.size(); f++ ) {
 				options.add(mew.quotedTokens.get(f));
 			}
-		}
-		if( options.size() == 0 ) {
+		} else if( mew.quotedTokens.size() == 1 ) {
 			options.add("Yes");
 			options.add("No");
+		} else {
+			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "You must specify a question in quotes!"));
 		}
+		
 		Duration timeout = TimeUtilities.stringToTime(mew.notQuoted());
 		if( timeout.asMili() == 0 ) {
 			return new InteractiveCreateReaction(mew.getChannel(), new PollInteractive(mew.quotedTokens.get(0), options.toArray(new String[options.size()]), mew.getAuthor()));
