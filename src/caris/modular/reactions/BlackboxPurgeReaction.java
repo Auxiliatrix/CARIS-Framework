@@ -14,7 +14,7 @@ public class BlackboxPurgeReaction extends Reaction {
 	
 	public BlackboxPurgeReaction(IChannel channel, List<Long> messages) {
 		this.channel = channel;
-		this.messages = messages;
+		this.messages = new ArrayList<Long>(messages);
 	}
 	
 	@Override
