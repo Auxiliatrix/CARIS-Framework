@@ -24,7 +24,6 @@ public class BlackboxRecordHandler extends GeneralHandler<MessageReceivedEvent> 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Reaction process(MessageReceivedEvent typedEvent) {
-		// And here, you can see where my framework utterly crumbles apart.
 		if( Brain.variables.getChannelInfo(typedEvent.getMessage()).channelData.has("blackbox") ) {
 			return new ReactionRunnable(new Runnable() {
 				@Override
