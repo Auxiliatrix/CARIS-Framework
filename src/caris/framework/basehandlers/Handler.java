@@ -19,15 +19,16 @@ import sx.blah.discord.handle.impl.events.guild.GuildEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public abstract class Handler {
+
 	public static List<String> categories = new ArrayList<String>();
 	
 	public String name;
+	public String invocation;
+
 	protected boolean allowBots;
 	protected boolean whitelist;
 	protected boolean root;
-	
-	public String invocation;
-	
+		
 	protected List<Long> disabledGuilds;
 	
 	public Handler() {
@@ -51,39 +52,11 @@ public abstract class Handler {
 		Logger.debug("Handler " + name + " initialized.", 1);
 	}
 	
-	public boolean disabledOn(Long id) {
-		return !whitelist && disabledGuilds.contains(id) || !root && whitelist && !disabledGuilds.contains(id);
-	}
-	
-	public void disableOn(Long id) {
-		if( whitelist ) {
-			disabledGuilds.remove(id);
-		} else {
-			if( !root ) {
-				if( !disabledGuilds.contains(id) ) {
-					disabledGuilds.add(id);
-				}
-			}
-		}
-	}
-	
-	public void enableOn(Long id) {
-		if( whitelist ) {
-			if( !root ) {
-				if( !disabledGuilds.contains(id) ) {
-					disabledGuilds.add(id);
-				}
-			}
-		} else {
-			disabledGuilds.remove(id);
-		}
-	}
-	
-	public boolean isRoot() {
+	public final boolean isRoot() {
 		return root;
 	}
 	
-	protected boolean disableFilter(Event event) {
+	protected final boolean disableFilter(Event event) {
 		if( whitelist ) {
 			return event instanceof GuildEvent && !disabledGuilds.contains(((GuildEvent) event).getGuild().getLongID());
 		} else {
@@ -91,17 +64,45 @@ public abstract class Handler {
 		}
 	}
 	
-	protected boolean botFilter(Event event) {
-		return isBot(event) && !allowBots;
+	public final boolean disabledOn(Long id) {
+		return !whitelist && disabledGuilds.contains(id) || !root && whitelist && !disabledGuilds.contains(id);
 	}
 	
-	protected boolean isBot(Event event) {
+	public final void disableOn(Long id) {
+		if( whitelist ) {
+			disabledGuilds.remove(id);
+		} else {
+			if( !root ) {
+				if( !disabledGuilds.contains(id) ) {
+					disabledGuilds.add(id);
+				}
+			}
+		}
+	}
+	
+	public final void enableOn(Long id) {
+		if( whitelist ) {
+			if( !root ) {
+				if( !disabledGuilds.contains(id) ) {
+					disabledGuilds.add(id);
+				}
+			}
+		} else {
+			disabledGuilds.remove(id);
+		}
+	}
+	
+	protected final boolean isBot(Event event) {
 		if( event instanceof MessageReceivedEvent ) {
 			if( ((MessageReceivedEvent) event).getAuthor().isBot() ) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	protected final boolean botFilter(Event event) {
+		return isBot(event) && !allowBots;
 	}
 	
 	public Reaction onStartup() {
