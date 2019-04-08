@@ -41,7 +41,7 @@ public class MessagePurgeReaction extends Reaction {
 	public void process() {
 		List<IMessage> purgeList = new ArrayList<IMessage>();
 		int purgeCount = 0;
-		for( IMessage message : channel.getMessageHistory() ) {
+		for( IMessage message : new ArrayList<IMessage>(channel.getMessageHistory()) ) {
 			if( user == null || message.getAuthor() == user) {
 				purgeList.add(message);
 				purgeCount++;
