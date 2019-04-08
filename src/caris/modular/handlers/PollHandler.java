@@ -53,6 +53,16 @@ public class PollHandler extends MessageHandler {
 			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "You must specify a question in quotes!"));
 		}
 		
+		if( mew.quotedTokens.get(0).length() > 256 ) {
+			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "The poll question can be at most 256 characters long!"));
+		}
+		
+		for( String option : mew.quotedTokens ) {
+			if( option.length() > 252 ) {
+				return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "A poll option can be at most 252 characters long!"));
+			}
+		}
+		
 		Duration timeout = TimeUtilities.stringToTime(mew.notQuoted());
 		if( timeout.asMili() == 0 ) {
 			return new InteractiveCreateReaction(mew.getChannel(), new PollInteractive(mew.quotedTokens.get(0), options.toArray(new String[options.size()]), mew.getAuthor()));
