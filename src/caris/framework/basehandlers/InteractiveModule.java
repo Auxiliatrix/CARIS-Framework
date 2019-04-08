@@ -71,35 +71,15 @@ public abstract class InteractiveModule {
 		}
 	}
 
-	protected boolean equivalentEmojis(IReaction reaction, Emoji emoji) {
+	protected final boolean equivalentEmojis(IReaction reaction, Emoji emoji) {
 		return reaction.getEmoji().getName().equals(ReactionEmoji.of(emoji.getUnicode()).getName());
 	}
 	
-	public Reaction create(IMessage source) {
-		this.source = source;
-		this.completed = false;
-		return open();
-	}
-	
-	public Reaction destroy() {
-		Brain.interactives.remove(this);
-		this.completed = true;
-		return close();
-	}
-	
-	public abstract Reaction process(ReactionEvent reactionEvent);
-	
-	protected abstract Reaction open();
-	
-	protected abstract Reaction close();
-	
-	public abstract MessageContent getDefault();
-	
-	protected boolean botFilter(Event event) {
+	protected final boolean botFilter(Event event) {
 		return isBot(event) && !allowBots;
 	}
 	
-	protected boolean isBot(Event event) {
+	protected final boolean isBot(Event event) {
 		if( event instanceof ReactionEvent ) {
 			if( ((ReactionEvent) event).getUser().isBot() ) {
 				return true;
@@ -107,6 +87,26 @@ public abstract class InteractiveModule {
 		}
 		return false;
 	}
+		
+	public final Reaction create(IMessage source) {
+		this.source = source;
+		this.completed = false;
+		return open();
+	}
+	
+	public final Reaction destroy() {
+		Brain.interactives.remove(this);
+		this.completed = true;
+		return close();
+	}
+	
+	protected abstract Reaction open();
+	
+	protected abstract Reaction close();
+	
+	public abstract Reaction process(ReactionEvent reactionEvent);
+	
+	public abstract MessageContent getDefault();
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)

@@ -75,7 +75,37 @@ public abstract class MessageHandler extends Handler {
 		}
 	}
 	
-	private MessageEventWrapper wrap(MessageReceivedEvent mre) {
+	protected final boolean accessGranted(MessageEventWrapper mew) {
+		boolean meetsRequirements = true;
+		for( Permissions requirement : requirements ) {
+			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
+		}
+		return meetsRequirements || mew.developerAuthor;
+	}
+	
+	protected final int getBotPosition(MessageEventWrapper mew) {
+		return getPosition(mew, Brain.cli.getOurUser());
+	}
+	
+	protected final int getPosition(MessageEventWrapper mew, IUser user) {
+		int maxPosition = -1;
+		for( IRole role : user.getRolesForGuild(mew.getGuild()) ) {
+			if( role.getPosition() > maxPosition ) {
+				maxPosition = role.getPosition();
+			}
+		}
+		return maxPosition;
+	}
+	
+	protected final boolean mentioned(MessageEventWrapper mew) {
+		return mew.containsWord(Constants.NAME) || mew.getAllMentionedUsers().contains(Brain.cli.getOurUser()) || inContext;
+	}
+	
+	protected final boolean invoked(MessageEventWrapper mew) {
+		return mew.tokens.size() > 0 ? mew.tokens.get(0).equalsIgnoreCase(invocation) : false;
+	}
+	
+	private final MessageEventWrapper wrap(MessageReceivedEvent mre) {
 		MessageEventWrapper mew = new MessageEventWrapper(mre);
 		if( mew.tokens.size() > 0 ) {
 			String token = mew.tokens.get(0);
@@ -101,36 +131,6 @@ public abstract class MessageHandler extends Handler {
 		return mew;
 	}
 	
-	protected boolean mentioned(MessageEventWrapper mew) {
-		return mew.containsWord(Constants.NAME) || mew.getAllMentionedUsers().contains(Brain.cli.getOurUser()) || inContext;
-	}
-	
-	protected boolean invoked(MessageEventWrapper mew) {
-		return mew.tokens.size() > 0 ? mew.tokens.get(0).equalsIgnoreCase(invocation) : false;
-	}
-	
-	protected boolean accessGranted(MessageEventWrapper mew) {
-		boolean meetsRequirements = true;
-		for( Permissions requirement : requirements ) {
-			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
-		}
-		return meetsRequirements || mew.developerAuthor;
-	}
-	
-	protected int getBotPosition(MessageEventWrapper mew) {
-		return getPosition(mew, Brain.cli.getOurUser());
-	}
-	
-	protected int getPosition(MessageEventWrapper mew, IUser user) {
-		int maxPosition = -1;
-		for( IRole role : user.getRolesForGuild(mew.getGuild()) ) {
-			if( role.getPosition() > maxPosition ) {
-				maxPosition = role.getPosition();
-			}
-		}
-		return maxPosition;
-	}
-		
 	protected abstract boolean isTriggered(MessageEventWrapper mew);
 	protected abstract Reaction process(MessageEventWrapper mew);
 
