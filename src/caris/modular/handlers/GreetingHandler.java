@@ -16,7 +16,7 @@ import caris.framework.reactions.MessageReaction;
 		usage = {
 					"Hello, " + Constants.NAME + "!"
 				}
-		)
+	)
 public class GreetingHandler extends MessageHandler {
 	
 	private String[] greetingsInput = new String[] {
