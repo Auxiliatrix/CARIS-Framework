@@ -10,7 +10,13 @@ import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MessageReaction;
 
 @Module(name = "Greeting")
-@Help(category = "Default", description = "Makes " + Constants.NAME + " say hi back to you!", usage = {"Hello, " + Constants.NAME + "!"})
+@Help(
+		category = "Default",
+		description = "Makes " + Constants.NAME + " say hi back to you!",
+		usage = {
+					"Hello, " + Constants.NAME + "!"
+				}
+		)
 public class GreetingHandler extends MessageHandler {
 	
 	private String[] greetingsInput = new String[] {
