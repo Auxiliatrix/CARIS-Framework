@@ -3,6 +3,7 @@ package caris.framework.handlers;
 import caris.configuration.calibration.Constants;
 import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
+import caris.framework.basehandlers.MessageHandler.Command;
 import caris.framework.basereactions.Reaction;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.embedbuilders.TimedQueueBuilder;
@@ -21,6 +22,7 @@ import sx.blah.discord.handle.obj.Permissions;
 					Constants.INVOCATION_PREFIX + "TimeStatus"
 				}
 	)
+@Command(aliases = {"TS"})
 public class TimedHandler extends MessageHandler {
 	
 	public TimedHandler() {
