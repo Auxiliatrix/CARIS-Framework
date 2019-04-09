@@ -32,7 +32,7 @@ public class ReactAddReaction extends Reaction {
 	@Override
 	public void process() {
 		for( Emoji emoji : emojis ) {
-			for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
+			while(true) {
 				try {
 					message.addReaction(emoji);
 					break;
