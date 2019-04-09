@@ -55,8 +55,7 @@ public class HelpBuilder {
 			helpBuilder.withDescription("```yaml\n" + description + "```");
 			pages.add(helpBuilder.build());
 		} else if( pages.isEmpty() ) {
-			description = "No modules were found for this category.";
-			helpBuilder.withDescription("```yaml\n" + description + "```");
+			helpBuilder.withDescription("```yaml\nNo modules were found for this category.```");
 			pages.add(helpBuilder.build());
 		}
 		return pages.toArray(new EmbedObject[pages.size()]);
@@ -92,8 +91,7 @@ public class HelpBuilder {
 			categoryBuilder.withTitle(category.toString() + " Modules:");
 			pages.add(categoryBuilder.build());
 		} else if( pages.isEmpty() ) {
-			description = "```css\nNo modules were found for this category.\n```";
-			categoryBuilder.withDescription("```yaml\n" + description + "```");
+			categoryBuilder.withDescription("```css\nNo modules were found for this category.\n```");
 			categoryBuilder.withTitle(category.toString() + " Modules:");
 			pages.add(categoryBuilder.build());
 		}
@@ -125,13 +123,13 @@ public class HelpBuilder {
 			}
 			commandBuilder.appendField(invocationText, descriptionText, false);
 			commandBuilder.withFooterText(footerText);
-			if( usage.isEmpty() ) {
-				usage = "```css\nNo commands were found for this module.\n```";
-			} else {
-				usage = "```http\n" + usage + "```";
+			if( !usage.isEmpty() ) {
+				commandBuilder.appendField("Usage", "```http\n" + usage + "```", false);
+				pages.add(commandBuilder.build());
+			} else if( pages.isEmpty() ) {
+				commandBuilder.appendField("Usage", "```css\nNo commands were found for this module.\n```", false);
+				pages.add(commandBuilder.build());
 			}
-			commandBuilder.appendField("Usage", usage, false);
-			pages.add(commandBuilder.build());
 		}
 		return pages.toArray(new EmbedObject[pages.size()]);
 	}
