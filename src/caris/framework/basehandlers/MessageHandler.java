@@ -1,5 +1,10 @@
 package caris.framework.basehandlers;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
 import caris.framework.events.MessageEventWrapper;
@@ -102,7 +107,7 @@ public abstract class MessageHandler extends Handler {
 	}
 	
 	protected final boolean invoked(MessageEventWrapper mew) {
-		return mew.tokens.size() > 0 ? mew.tokens.get(0).equalsIgnoreCase(invocation) : false;
+		return mew.tokens.size() > 0 ? StringUtilities.equalsAnyOfIgnoreCase(mew.tokens.get(0), aliases) : false;
 	}
 	
 	private final MessageEventWrapper wrap(MessageReceivedEvent mre) {
@@ -134,4 +139,10 @@ public abstract class MessageHandler extends Handler {
 	protected abstract boolean isTriggered(MessageEventWrapper mew);
 	protected abstract Reaction process(MessageEventWrapper mew);
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public static @interface Command {
+		String[] aliases() default {};
+	}
+	
 }
