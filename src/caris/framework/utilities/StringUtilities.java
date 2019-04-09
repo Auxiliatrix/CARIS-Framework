@@ -336,4 +336,16 @@ public class StringUtilities {
 		}
 		return tokens;
 	}
+	
+	public static String trim(String input, int size, boolean elipses) {
+		if( input.length() > size ) {
+			if( elipses && size > 3) {
+				return input.substring(0, size-3) + "...";
+			} else {
+				return input.substring(0, size);
+			}
+		} else {
+			return input;
+		}
+	}
 }
