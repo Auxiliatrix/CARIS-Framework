@@ -11,6 +11,7 @@ public class Constants {
 	
 	public static final String[] MODULE_PACKAGES = new String[] {
 			"caris.modular.handlers",
+			"caris.fortuna.handlers",
 	};
 	
 	public static final int RETRY_SOCKETEXCEPTION_DELAY = 500;
