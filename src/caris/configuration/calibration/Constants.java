@@ -1,8 +1,8 @@
 package caris.configuration.calibration;
 
 public class Constants {
-	public static final String INVOCATION_PREFIX = "c";	
-	public static final String NAME = "CARIS";
+	public static final String INVOCATION_PREFIX = "%";	
+	public static final String NAME = "FORTUNA";
 
 	public static final long[] DEVELOPER_IDS = new long[] {
 			Long.parseLong("246562987651891200"),
