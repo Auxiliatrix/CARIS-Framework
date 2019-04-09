@@ -118,7 +118,7 @@ public class NicknameHandler extends MessageHandler {
 				} else if( mew.containsAnyWords("set") ) {
 					if( mew.quotedTokens.size() > 0 ) {
 						lockNickname.add(new NicknameSetReaction(mew.getGuild(), Brain.cli.getOurUser(), mew.quotedTokens.get(0)));
-						lockNickname.add(new MessageReaction(mew.getChannel(), "Nickname" + "set successfully!"));
+						lockNickname.add(new MessageReaction(mew.getChannel(), "Nickname set successfully!"));
 					} else {
 						lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.SYNTAX, "You must specify a nickname in quotes!")));
 					}
