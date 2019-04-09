@@ -2,6 +2,8 @@ package caris.framework.embedbuilders;
 
 import java.awt.Color;
 
+import caris.configuration.calibration.Constants;
+import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.util.EmbedBuilder;
 
@@ -60,14 +62,14 @@ public class ErrorBuilder {
 	}
 	
 	public static EmbedObject getErrorEmbed(ErrorType errorType, String errorMessage) {
-		errorBuilder.withAuthorName(ERROR_SYMBOL + errorType.toString());
-		errorBuilder.withDescription(errorMessage);
+		errorBuilder.withAuthorName(ERROR_SYMBOL + StringUtilities.trim(errorType.toString(), Constants.EMBED_AUTHOR_SIZE - 1, true));
+		errorBuilder.withDescription(StringUtilities.trim(errorMessage, Constants.EMBED_DESCRIPTION_SIZE, true));
 		return errorBuilder.build();
 	}
 	
 	public static EmbedObject getErrorEmbed(String errorType, String errorMessage) {
-		errorBuilder.withAuthorName(ERROR_SYMBOL + errorType.toString());
-		errorBuilder.withDescription(errorMessage);
+		errorBuilder.withAuthorName(ERROR_SYMBOL + StringUtilities.trim(errorType, Constants.EMBED_AUTHOR_SIZE - 1, true));
+		errorBuilder.withDescription(StringUtilities.trim(errorMessage, Constants.EMBED_DESCRIPTION_SIZE, true));
 		return errorBuilder.build();
 	}
 }
