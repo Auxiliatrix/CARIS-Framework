@@ -1,5 +1,8 @@
 package caris.framework.basereactions;
 
+import java.net.SocketException;
+
+import caris.configuration.calibration.Constants;
 import caris.framework.main.Brain;
 
 public abstract class Reaction extends Thread implements Comparable<Reaction> {
@@ -17,12 +20,24 @@ public abstract class Reaction extends Thread implements Comparable<Reaction> {
 	@Override
 	public void run() {
 		Brain.threadCount.incrementAndGet();
-		try {
-			process();
-			Brain.threadCount.decrementAndGet();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Brain.threadCount.decrementAndGet();
+		for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
+			try {
+				process();
+				Brain.threadCount.decrementAndGet();
+				break;
+			} catch (Exception e) {
+				e.printStackTrace();
+				if( e instanceof SocketException ) {
+					try {
+						Thread.sleep(Constants.RETRY_SOCKETEXCEPTION_DELAY);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				} else {
+					Brain.threadCount.decrementAndGet();
+					break;
+				}
+			}
 		}
 	}
 	
