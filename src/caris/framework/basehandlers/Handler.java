@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.MessageHandler.Command;
 import caris.framework.basereactions.NullReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.embedbuilders.HelpBuilder.Help;
@@ -24,6 +25,7 @@ public abstract class Handler {
 	
 	public String name;
 	public String invocation;
+	protected List<String> aliases;
 
 	protected boolean allowBots;
 	protected boolean whitelist;
@@ -39,11 +41,20 @@ public abstract class Handler {
 		root = self.root();
 		
 		this.invocation = Constants.INVOCATION_PREFIX + name;
+		this.aliases = new ArrayList<String>();
+		aliases.add(invocation);
 		
 		Help helpAnnotation = this.getClass().getAnnotation(Help.class);
 		if( helpAnnotation != null ) {
 			if( !StringUtilities.containsIgnoreCase(categories, helpAnnotation.category())) {
 				categories.add(helpAnnotation.category());
+			}
+		}
+		
+		Command commandAnnotation = this.getClass().getAnnotation(Command.class);
+		if( commandAnnotation != null ) {
+			for( String alias : commandAnnotation.aliases() ) {
+				aliases.add(Constants.INVOCATION_PREFIX + alias);
 			}
 		}
 		
