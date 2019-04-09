@@ -103,7 +103,7 @@ public class HelpBuilder {
 		commandBuilder.clearFields();
 		Help helpAnnotation = h.getClass().getAnnotation(Help.class);
 		if( helpAnnotation != null ) {
-			String footerText = helpAnnotation.category() + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : "");
+			String footerText = StringUtilities.trim(helpAnnotation.category(), Constants.EMBED_FOOTER_SIZE / 2, true) + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : "");
 			String invocationText = h.disabledOn(guild.getLongID()) ? "~~" + StringUtilities.trim(h.invocation, Constants.EMBED_FIELD_TITLE_SIZE - 15, true) + "~~ (DISABLED)" : "`" + StringUtilities.trim(h.invocation, Constants.EMBED_FIELD_TITLE_SIZE - 2, true) + "`";
 			String descriptionText = h.disabledOn(guild.getLongID()) ? StringUtilities.trim(helpAnnotation.description(), Constants.EMBED_FIELD_VALUE_SIZE, true) : StringUtilities.trim(helpAnnotation.description(), Constants.EMBED_FIELD_VALUE_SIZE, true);
 			
