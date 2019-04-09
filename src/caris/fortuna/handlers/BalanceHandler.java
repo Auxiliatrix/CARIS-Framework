@@ -36,16 +36,9 @@ public class BalanceHandler extends MessageHandler {
 
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
-		IUser user = mew.getAuthor();
-		if( mew.getMessage().getMentions().size() > 0 ) {
-			user = mew.getMessage().getMentions().get(0);
-		}
+		IUser user = mew.getMessage().getMentions().size() > 0 ? mew.getMessage().getMentions().get(0) : mew.getAuthor();
 		JSONObject userData = Brain.variables.getUserInfo(mew.getGuild(), user).userData;
-		if( userData.has("balance") ) {
-			return new MessageReaction(mew.getChannel(), BalanceBuilder.getBalanceEmbed(user.getDisplayName(mew.getGuild()), userData.getInt("balance")));
-		} else {
-			return new MessageReaction(mew.getChannel(), BalanceBuilder.getBalanceEmbed(user.getDisplayName(mew.getGuild()), 0));
-		}
+		return new MessageReaction(mew.getChannel(), BalanceBuilder.getBalanceEmbed(user.getDisplayName(mew.getGuild()), userData.has("balance") ? userData.getInt("balance") : 0));
 	}
 
 }
