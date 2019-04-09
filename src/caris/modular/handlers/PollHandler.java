@@ -40,6 +40,7 @@ public class PollHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
 		List<String> options = new ArrayList<String>();
+		
 		if( mew.quotedTokens.size() > 10 ) {
 			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "You can't have more than 9 options!"));
 		} else if( mew.quotedTokens.size() > 1 ) {
@@ -51,16 +52,6 @@ public class PollHandler extends MessageHandler {
 			options.add("No");
 		} else {
 			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "You must specify a question in quotes!"));
-		}
-		
-		if( mew.quotedTokens.get(0).length() > 256 ) {
-			return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "The poll question can be at most 256 characters long!"));
-		}
-		
-		for( String option : mew.quotedTokens ) {
-			if( option.length() > 252 ) {
-				return new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorType.SYNTAX, "A poll option can be at most 252 characters long!"));
-			}
 		}
 		
 		Duration timeout = TimeUtilities.stringToTime(mew.notQuoted());
