@@ -1,28 +1,16 @@
-# CARIS
+# FORTUNA
 
-### Computerized Auto-Responding Intelligent System
+### An RPG Casino in a Discord Server
 
 #### Developed by Alina Kim
 
 Uses framework: https://github.com/austinv11/Discord4J
 
-## What is CARIS?
+## What is FORTUNA?
 
-### How does CARIS work?
+Fortuna is an in-development Discord RPG / Casino bot, designed to integrate the best parts of Discord Bot facilitated gameplay and standard Discord Bot gambling commands.
 
-CARIS is an extension of the Discord4J Framework, and uses a thread queue/priority system to run its tasks. Essentially, CARIS runs through the `Handlers` in the `caris.framework.handlers` and `caris.modular.handlers` packages, and produces `Reactions` as specified by the `caris.framework.reactions` and `caris.modular.reactions` packages. `Reactions` are just `Runnable` objects with a priority value (all reactions produces from an event with a priority of -1 are always executed, and all other reactions produced from the same event-- with a priority of 0 or more-- only have the lowest priority value reaction executed).
-
-### What makes CARIS special?
-
-CARIS comes with pre-built tools specifically designed for message-activated Discord bots (which is basically all of them). The `MessageHandler` class is an extension of the `Handler` class, and creates `MessageEventWrapper` objects which contain useful features such as token parsing for integers, longs, and quoted strings.
-
-Another example is the `caris.framework.utilities` package, which comes with String and Token utility classes for all your parsing needs.
-
-### How do I use CARIS?
-
-To develop CARIS for your own purposes, create `Handler` objects in the `caris.modular.handlers` package, and associated `Reaction` objects as needed in the `caris.modular.reactions` package. Nothing else is necessary; CARIS automatically detects the classes and processes them during runtime.
-
-## How to run CARIS:
+## How to run FORTUNA:
 
 ### Quick Method
 
