@@ -13,6 +13,8 @@ public class Constants {
 			"caris.modular.handlers",
 	};
 	
+	public static final int RETRY_SOCKETEXCEPTION_DELAY = 500;
+	
 	public static final int REACTION_EXECUTE_DELAY = 250;
 
 	public final static int STUBBORNNESS = 2;
