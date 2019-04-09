@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import caris.configuration.calibration.Constants;
 import caris.framework.tokens.Duration;
+import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
@@ -20,10 +22,10 @@ public class PollBuilder {
 	public static EmbedObject getPollEmbed(String question, String[] options, HashMap<String, Integer> votes, IUser owner, Duration timeout) {
 		pollBuilder.clearFields();
 		pollBuilder.withAuthorIcon(owner.getAvatarURL());
-		pollBuilder.withAuthorName("Poll [created by " + owner.getName() + "]");
-		pollBuilder.withTitle(question);
+		pollBuilder.withAuthorName(StringUtilities.trim(owner.getName(), Constants.EMBED_AUTHOR_SIZE - 7, true) + "'s Poll");
+		pollBuilder.withTitle(StringUtilities.trim(question, Constants.EMBED_TITLE_SIZE, true));
 		for( int f=0; f<Math.min(10, options.length); f++ ) {
-			pollBuilder.appendField("[" + (f+1) + "] " + options[f], votes.get(options[f]) + (votes.get(options[f]) == 1 ? " vote" : " votes"), false);
+			pollBuilder.appendField("[" + (f+1) + "] " + StringUtilities.trim(options[f], Constants.EMBED_FIELD_TITLE_SIZE - 4, true), votes.get(options[f]) + (votes.get(options[f]) == 1 ? " vote" : " votes"), false);
 		}
 		if( timeout != null ) {
 			pollBuilder.withFooterText("Poll will last for: " + timeout.asString());
@@ -48,12 +50,12 @@ public class PollBuilder {
 			}
 		});
 		total = Math.max(total, 1);
-		resultBuilder.withTitle(sortedVotes[0] + " [" + votes.get(sortedVotes[0]) + " " + (votes.get(sortedVotes[0]) == 1 ? "vote" : "votes") + " | " + (votes.get(sortedVotes[0]) * 100) / total + "%]");
+		resultBuilder.withTitle(StringUtilities.trim(sortedVotes[0], Constants.EMBED_TITLE_SIZE - 26, true) + " [" + votes.get(sortedVotes[0]) + " " + (votes.get(sortedVotes[0]) == 1 ? "vote" : "votes") + " | " + (votes.get(sortedVotes[0]) * 100) / total + "%]");
 		String content = "";	
 		for( String option : sortedVotes ) {
-			content += votes.get(option) + " " + (votes.get(option) == 1 ? "vote" : "votes") + " for " + option + "\n";
+			content += votes.get(option) + " " + (votes.get(option) == 1 ? "vote" : "votes") + " for " + StringUtilities.trim(option, 180, true) + "\n";
 		}
-		resultBuilder.appendField("Results", "```http\n" + content + "```", true);
+		resultBuilder.withDescription("```http\n" + content + "```");
 		return resultBuilder.build();
 	}
 

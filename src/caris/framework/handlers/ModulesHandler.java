@@ -11,13 +11,16 @@ import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.embedbuilders.ModulesBuilder;
 import caris.framework.events.MessageEventWrapper;
+import caris.framework.interactives.PagedInteractive;
 import caris.framework.main.Brain;
+import caris.framework.reactions.InteractiveCreateReaction;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.ModuleDisableReaction;
 import caris.framework.reactions.ModuleEnableReaction;
 import caris.framework.reactions.UpdateGuildReaction;
 import caris.framework.utilities.Verifier;
 import caris.framework.utilities.Verifier.Verification;
+import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.Permissions;
 
@@ -79,7 +82,12 @@ public class ModulesHandler extends MessageHandler {
 				modules.add(new MessageReaction(mew.getChannel(), "Module Enabled!"));
 			}
 		} else {
-			modules.add(new MessageReaction(mew.getChannel(), ModulesBuilder.getModulesEmbed(mew.getGuild())));
+			EmbedObject[] modulePages = ModulesBuilder.getModulesEmbed(mew.getGuild());
+			if( modulePages.length == 1 ) {
+				modules.add(new MessageReaction(mew.getChannel(), modulePages[0]));
+			} else {
+				modules.add(new InteractiveCreateReaction(mew.getChannel(), new PagedInteractive(modulePages)));
+			}
 		}
 		return modules;
 	}

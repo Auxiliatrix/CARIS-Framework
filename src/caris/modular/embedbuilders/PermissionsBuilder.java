@@ -20,8 +20,10 @@ public class PermissionsBuilder {
 	
 	public static EmbedObject getPermissionsEmbed(IRole role) {
 		permissionsBuilder.clearFields();
+		permissionsBuilder.withDescription("");
 		permissionsBuilder.withAuthorIcon(role.getGuild().getIconURL());
-		permissionsBuilder.withTitle(role.getName() + " Permissions:");
+		permissionsBuilder.withAuthorName(role.getName());
+		permissionsBuilder.withTitle("Permissions Viewer");
 		for( Permissions permission : role.getPermissions() ) {
 			permissionsBuilder.appendDescription(PermissionsString.PERMISSIONS_STRING.get(permission) + "\n");
 		}
@@ -30,8 +32,10 @@ public class PermissionsBuilder {
 	
 	public static EmbedObject getPermissionsEmbed(IUser user, IGuild guild) {
 		permissionsBuilder.clearFields();
+		permissionsBuilder.withDescription("");
 		permissionsBuilder.withAuthorIcon(user.getAvatarURL());
-		permissionsBuilder.withTitle(user.getName() + " Permissions:");
+		permissionsBuilder.withAuthorName(guild.getName());
+		permissionsBuilder.withTitle("Permissions Viewer");
 		for( Permissions permission : user.getPermissionsForGuild(guild) ) {
 			permissionsBuilder.appendDescription(PermissionsString.PERMISSIONS_STRING.get(permission) + "\n");
 		}
