@@ -9,14 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caris.configuration.calibration.Constants;
-import caris.configuration.reference.PermissionsString;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.main.Brain;
 import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.Permissions;
 import sx.blah.discord.util.EmbedBuilder;
 
 public class HelpBuilder {
@@ -103,7 +101,7 @@ public class HelpBuilder {
 		commandBuilder.clearFields();
 		Help helpAnnotation = h.getClass().getAnnotation(Help.class);
 		if( helpAnnotation != null ) {
-			String footerText = StringUtilities.trim(helpAnnotation.category(), Constants.EMBED_FOOTER_SIZE / 2, true) + (h instanceof MessageHandler ? formatRequirements(((MessageHandler) h).requirements) : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : "");
+			String footerText = StringUtilities.trim(helpAnnotation.category(), Constants.EMBED_FOOTER_SIZE / 2, true) + (h instanceof MessageHandler ? ((MessageHandler) h).getFormattedRequirements() : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : "");
 			String invocationText = h.disabledOn(guild.getLongID()) ? "~~" + StringUtilities.trim(h.invocation, Constants.EMBED_FIELD_TITLE_SIZE - 15, true) + "~~ (DISABLED)" : "`" + StringUtilities.trim(h.invocation, Constants.EMBED_FIELD_TITLE_SIZE - 2, true) + "`";
 			String descriptionText = h.disabledOn(guild.getLongID()) ? StringUtilities.trim(helpAnnotation.description(), Constants.EMBED_FIELD_VALUE_SIZE, true) : StringUtilities.trim(helpAnnotation.description(), Constants.EMBED_FIELD_VALUE_SIZE, true);
 			
@@ -132,18 +130,6 @@ public class HelpBuilder {
 			}
 		}
 		return pages.toArray(new EmbedObject[pages.size()]);
-	}
-	
-	private static String formatRequirements(Permissions[] requirements) {
-		String requirementsString = " | ";
-		for( Permissions requirement : requirements ) {
-			requirementsString += PermissionsString.PERMISSIONS_STRING.get(requirement) + ", ";
-		}
-		if( requirementsString.length() > 4 ) {
-			return requirementsString.substring(0, requirementsString.length()-2);
-		} else {
-			return "";
-		}
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
