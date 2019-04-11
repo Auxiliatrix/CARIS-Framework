@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.reflections.Reflections;
 
 import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.ScriptModule;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.InteractiveModule;
@@ -44,6 +45,7 @@ public class Brain {
 	public static ConcurrentHashMap<Reaction, Long> timedQueue = new ConcurrentHashMap<Reaction, Long>();
 	public static AtomicInteger threadCount = new AtomicInteger(0);
 	public static List<InteractiveModule> interactives = Collections.synchronizedList(new ArrayList<InteractiveModule>());
+	public static ConcurrentHashMap<String, ScriptModule> scripts = new ConcurrentHashMap<String, ScriptModule>();
 	
 	public static void main(String[] args) {
 		if (!(args.length >= 1)) {
