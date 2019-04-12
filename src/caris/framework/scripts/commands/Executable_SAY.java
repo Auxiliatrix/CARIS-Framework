@@ -16,7 +16,7 @@ public class Executable_SAY extends Executable {
 	}
 	
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		return new MessageReaction(mew.getChannel(), ScriptCompiler.resolveStringVariable(mew, context, message));
 	}
 

@@ -16,7 +16,7 @@ public class Executable_WAIT extends Executable {
 	}
 
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		return new WaitReaction(ScriptCompiler.resolveIntVariable(mew, context, time));
 	}
 	
