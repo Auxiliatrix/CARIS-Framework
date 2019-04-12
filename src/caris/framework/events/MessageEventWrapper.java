@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import caris.configuration.calibration.Constants;
 import caris.framework.utilities.TokenUtilities;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IRole;
@@ -17,9 +16,7 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 	public List<String> quotedTokens;
 	public List<Integer> integerTokens;
 	public List<Long> longTokens;
-	
-	public boolean developerAuthor;
-	
+		
 	public MessageEventWrapper(MessageReceivedEvent mew) {
 		super(mew.getMessage());
 		message = mew.getMessage().getContent();
@@ -27,12 +24,6 @@ public class MessageEventWrapper extends MessageReceivedEvent {
 		quotedTokens = TokenUtilities.parseQuoted(message);
 		integerTokens = TokenUtilities.parseIntegers(message);
 		longTokens = TokenUtilities.parseLongs(message);	
-		
-		for( Long id : Constants.DEVELOPER_IDS ) {
-			if( mew.getAuthor().getLongID() == id ) {
-				developerAuthor = true;
-			}
-		}
 	}
 	
 	public List<IUser> getAllMentionedUsers() {

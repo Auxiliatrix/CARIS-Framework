@@ -107,12 +107,21 @@ public abstract class MessageHandler extends Handler {
 		return maxPosition;
 	}
 	
+	public static final boolean developerAuthor(IUser user) {
+		for( Long id : Constants.DEVELOPER_IDS ) {
+			if( user.getLongID() == id ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected final boolean accessGranted(MessageEventWrapper mew) {
 		boolean meetsRequirements = true;
 		for( Permissions requirement : requirements ) {
 			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
 		}
-		return meetsRequirements || mew.developerAuthor;
+		return meetsRequirements || developerAuthor(mew.getAuthor());
 	}
 	
 	protected final boolean mentioned(MessageEventWrapper mew) {
