@@ -28,6 +28,9 @@ HEADER - First line in file. Invocations are done using the prefix + the command
 	+Command+					|	Creates a new custom invoked command called "Command" exclusive to the current Guild
 	-Command-					|	Creates a new custom passive command called "Command" exclusive to the current Guild
 ***************************************************************************************************************************
+COMMENTS - These are not compiled with the rest of the code.
+	| This is an example of a comment
+***************************************************************************************************************************
 ***************************************************************************************************************************
 COMMANDS - Executable actions. Will only run if the author has the ability to so themselves unless specified as "~Command".
 	Say "<string>"				|	Sends a message with content <string>
@@ -52,8 +55,16 @@ COMMANDS - Executable actions. Will only run if the author has the ability to so
 		Kick @Author			|		Kicks @Author
 	Ban <user>					|	Bans the user <user>
 		Ban @Author				|		Bans @Author
-	Unban <user>				|	Unbans the user <user>
-		Unban @Author			|		Unbans @AUthor
+---------------------------------------------------------------------------------------------------------------------------
+CONTROL STRUCTURES - Control structures. See examples for more information.
+	If <boolean>				|	Executes body if expression is true
+	Body						|
+	For .#<name> 5				|	Loops through 5 times. The counter is an accessible variable #<name> in the body
+	Body						|
+	Each .*<iterable>			|	Loops through each element in .*<iterable> as the accessible variable *<iterable>
+	Body						|
+	End							|	Designates the end of the current control structure
+	Stop						|	Cuts a control structure short, preventing further iterations
 ---------------------------------------------------------------------------------------------------------------------------
 ACCESSIBLE VARIABLES - Variable arguments. Can be used in strings in the format "$[Variable]".
 	$Content					|	The entire message content
@@ -75,17 +86,6 @@ ACCESSIBLE ITERATORS - Variables that can be used in Each control structures.
 	.@Users{@role}				|	The iterable containing each user for the given role
 	.@Roles{@user}				|	The iterable containing each role for the given user
 ---------------------------------------------------------------------------------------------------------------------------
-BOOLEAN EXPRESSIONS - Expressions that resolve as either true or false.
-	?Developer					|	Whether the author is a developer
-	?Admin						|	Whether the author is an admin
-	?'<text>'					|	Whether the message content contains the substring <text> (ignores case)
-		?'Hello'				|		Whether the message content contains the substring "Hello" ignoring case
-	?"<text>"					|	Whether the message content contains the substring <text> (case-sensitive)
-		?"Hello"				|		Whether the message content contains the case-sensitive substring "Hello"
-	?<role>						|	Whether the author has the given role
-		?@Admin					|		Whether the author has the @Admin role
-		?@"Mod"					|		Whether the author has a role with the name "Mod"
----------------------------------------------------------------------------------------------------------------------------
 INTEGER EXPRESSIONS - Expressions that resolve to a numerical value. Numbers round down.
 	<A> / <B>					|	The quotient of <A> and <B>
 		$Quoted{} / 2			|		The number of quoted substrings in the message content divided by 2
@@ -96,6 +96,19 @@ INTEGER EXPRESSIONS - Expressions that resolve to a numerical value. Numbers rou
 	<A> + <B>					|	The sum of <A> and <B>
 		$Quoted{} + 2			|		The number of quoted substrings in the message content + 2
 ---------------------------------------------------------------------------------------------------------------------------
+BOOLEAN EXPRESSIONS - Expressions that resolve as either true or false.
+	?Developer					|	Whether the author is a developer
+	?Admin						|	Whether the author is an admin
+	?BotMention					|	Whether the bot was mentioned in the message content
+	?BotName					|	Whether the bot name was included in the message content
+	?'<text>'					|	Whether the message content contains the substring <text> (ignores case)
+		?'Hello'				|		Whether the message content contains the substring "Hello" ignoring case
+	?"<text>"					|	Whether the message content contains the substring <text> (case-sensitive)
+		?"Hello"				|		Whether the message content contains the case-sensitive substring "Hello"
+	?<role>						|	Whether the author has the given role
+		?@Admin					|		Whether the author has the @Admin role
+		?@"Mod"					|		Whether the author has a role with the name "Mod"
+---------------------------------------------------------------------------------------------------------------------------
 COMPARATORS - Boolean comparison operations that resolve as either true or false.
 	<A> == <B>					|	Whether <A> is equal to <B> (does string comparison if A and B are different types).
 		$Quoted{1} == "Hello"	|		Whether the first quoted string in the message content is "Hello"
@@ -104,14 +117,5 @@ COMPARATORS - Boolean comparison operations that resolve as either true or false
 	(<A> or <B>) and <C>		|	Whether either of <A> or <B> is true, and <C> is also true
 	<A> and <B>					|	Whether <A> and <B> are true
 	<A> or <B>					|	Whether <A> or <B> is true
----------------------------------------------------------------------------------------------------------------------------
-CONTROL STRUCTURES - Control structures. See examples for more information.
-	If <boolean>				|	Executes body if expression is true
-		Body					|
-	For .#<name> 5				|	Loops through 5 times. The counter is an accessible variable #<name> in the body
-		Body					|
-	Each .*<iterable>			|	Loops through each element in .*<iterable> as the accessible variable *<iterable>
-		Body					|
-	End							|	Designates the end of the current control structure
 ***************************************************************************************************************************
 ***************************************************************************************************************************
