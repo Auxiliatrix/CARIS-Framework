@@ -32,8 +32,8 @@ public class ScriptBuilder {
 		String description = "";
 		try {
 			for( Object key : Brain.variables.atomicVariableData.get().getJSONObject("scripts").keySet() ) {
-				String name = StringUtilities.trim((String) key, Constants.EMBED_DESCRIPTION_SIZE - 23, true);
-				if( description.length() + name.length() > Constants.EMBED_DESCRIPTION_SIZE - 23 ) {
+				String name = StringUtilities.trim((String) key, Constants.EMBED_DESCRIPTION_SIZE - 32, true);
+				if( description.length() + name.length() > Constants.EMBED_DESCRIPTION_SIZE - 32 ) {
 					scriptListBuilder.withDescription("```yaml\n" + description + "\n```");
 					pages.add(scriptListBuilder.build());
 					scriptListBuilder.clearFields();
@@ -46,8 +46,8 @@ public class ScriptBuilder {
 		}
 		try {
 			for( Object key : Brain.variables.getGuildInfo(guild).guildData.getJSONObject("scripts").keySet() ) {
-				String name = StringUtilities.trim((String) key, Constants.EMBED_DESCRIPTION_SIZE - 14, true);
-				if( description.length() + name.length() > Constants.EMBED_DESCRIPTION_SIZE - 14 ) {
+				String name = StringUtilities.trim((String) key, Constants.EMBED_DESCRIPTION_SIZE - 16, true);
+				if( description.length() + name.length() > Constants.EMBED_DESCRIPTION_SIZE - 16 ) {
 					scriptListBuilder.withDescription("```yaml\n" + description + "\n```");
 					pages.add(scriptListBuilder.build());
 					scriptListBuilder.clearFields();

@@ -2,19 +2,19 @@ package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
 import caris.framework.utilities.Logger;
-import sx.blah.discord.handle.impl.obj.Role;
+import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 public class RoleRemoveReaction extends Reaction {
 
 	public IUser user;
-	public Role role;
+	public IRole role;
 	
-	public RoleRemoveReaction( IUser user, Role role ) {
+	public RoleRemoveReaction( IUser user, IRole role ) {
 		this(user, role, 1);
 	}
 	
-	public RoleRemoveReaction( IUser user, Role role, int priority ) {
+	public RoleRemoveReaction( IUser user, IRole role, int priority ) {
 		super(priority);
 		this.user = user;
 		this.role = role;
