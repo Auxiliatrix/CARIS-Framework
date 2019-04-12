@@ -37,6 +37,8 @@ COMMANDS - Executable actions. Will only run if the author has the ability to so
 		Say "Hello, world!"		|		Sends a message with content "Hello, world!"
 	Wait <number>				|	Waits for <number> seconds before doing anything
 		Wait 5					|		Waits for 5 seconds before doing anything
+	Nick <user> "<name>"		|	Sets the display name of <user> to <name>
+		Nick @Author "Bob"		|		Sets @Author's display name to "Bob"
 	Promote <user> <role>		|	Gives the role <role> to the user <user>
 		Promote @Author @Admin	|		Gives @Admin to @Author
 		Promote @Author @"Mod"	|		Gives the role with name "Mod" to @Author
@@ -94,6 +96,8 @@ ACCESSIBLE VARIABLES - Variable arguments. Can be used in strings in the format 
 	@Author						|	The message author user
 		Mute @Author			|		Mutes @Author
 		Say "Hi, $[@Author]!"	|		Sends a message in the form "Hi, Auxiliatrix#7280!"
+	@Bot						|	The Discord Bot
+		Nick @Bot $Quoted{1}	|		Sets the bot's display name to the first quoted substring in the message content
 ---------------------------------------------------------------------------------------------------------------------------
 ACCESSIBLE ITERATORS - Variables that can be used in Each control structures.
 		Indexing 	|	<name>{<index>}		|	Accesses an item in the given iterable as a variable
