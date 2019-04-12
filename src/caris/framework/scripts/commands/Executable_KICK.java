@@ -17,7 +17,7 @@ public class Executable_KICK extends Executable {
 	
 	@Override
 	public Reaction execute(MessageEventWrapper mew, Context context) {
-		return new KickReaction(mew.getGuild(), ScriptCompiler.compileUserVariable(mew, context, user));
+		return new KickReaction(mew.getGuild(), ScriptCompiler.resolveUserVariable(mew, context, user));
 	}
 
 }

@@ -111,7 +111,7 @@ public class ScriptHandler extends MessageHandler {
 			}
 		} else if( mew.getMessage().getContent().startsWith("```CARIS\n") && mew.getMessage().getContent().endsWith("\n```") ) {
 			try {
-				ScriptModule d = ScriptCompiler.compileScript(mew.getMessage().getContent().substring(10, mew.getMessage().getContent().length()-5), mew.getGuild());
+				ScriptModule d = ScriptCompiler.compileScript(mew.getMessage().getContent().substring(9, mew.getMessage().getContent().length()-4), mew.getGuild());
 				customReaction.add(new ScriptCreateReaction(d));
 				customReaction.add(new MessageReaction(mew.getChannel(), "Script successfully created!"));
 			} catch (ScriptCompilationException e) {

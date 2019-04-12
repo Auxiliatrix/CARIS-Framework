@@ -17,7 +17,7 @@ public class Executable_MUTE extends Executable {
 	
 	@Override
 	public Reaction execute(MessageEventWrapper mew, Context context) {
-		return new MuteReaction(mew.getGuild(), ScriptCompiler.compileUserVariable(mew, context, user), true);
+		return new MuteReaction(mew.getGuild(), ScriptCompiler.resolveUserVariable(mew, context, user), true);
 	}
 
 }

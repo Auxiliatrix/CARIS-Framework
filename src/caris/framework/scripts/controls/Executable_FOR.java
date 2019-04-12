@@ -22,10 +22,14 @@ public class Executable_FOR extends Executable {
 	@Override
 	public Reaction execute(MessageEventWrapper mew, Context context) {
 		QueueReaction execution = new QueueReaction();
-		for( int f=0; f<ScriptCompiler.compileIntVariable(mew, context, range); f++ ) {
+		for( int f=0; f<ScriptCompiler.resolveIntVariable(mew, context, range); f++ ) {
 			Context newContext = new Context(context);
 			newContext.putInt(counter, f+1);
-			execution.add(body.execute(mew, context));
+			Reaction reaction = body.execute(mew, newContext);
+			if( reaction == null ) {
+				break;
+			}
+			execution.add(reaction);
 		}
 		return execution;
 	}

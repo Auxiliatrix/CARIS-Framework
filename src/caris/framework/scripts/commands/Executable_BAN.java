@@ -17,7 +17,7 @@ public class Executable_BAN extends Executable {
 	
 	@Override
 	public Reaction execute(MessageEventWrapper mew, Context context) {
-		return new BanReaction(mew.getGuild(), ScriptCompiler.compileUserVariable(mew, context, user));
+		return new BanReaction(mew.getGuild(), ScriptCompiler.resolveUserVariable(mew, context, user));
 	}
 
 }

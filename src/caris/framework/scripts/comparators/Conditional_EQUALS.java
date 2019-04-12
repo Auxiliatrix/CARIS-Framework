@@ -17,8 +17,8 @@ public class Conditional_EQUALS extends Conditional {
 
 	@Override
 	public boolean resolve(MessageEventWrapper mew, Context context) {
-		String compiledVariable1 = ScriptCompiler.compileStringVariable(mew, context, variable1);
-		String compiledVariable2 = ScriptCompiler.compileStringVariable(mew, context, variable2);
+		String compiledVariable1 = ScriptCompiler.resolveStringVariable(mew, context, variable1);
+		String compiledVariable2 = ScriptCompiler.resolveStringVariable(mew, context, variable2);
 		return compiledVariable1.equalsIgnoreCase(compiledVariable2);
 	}
 	

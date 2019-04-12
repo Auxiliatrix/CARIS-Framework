@@ -24,31 +24,47 @@ public class Executable_EACH extends Executable {
 		QueueReaction execution = new QueueReaction();
 		switch(iterable.charAt(1)) {
 			case '$':
-				for( String element : ScriptCompiler.compileStringIterable(mew, context, iterable) ) {
+				for( String element : ScriptCompiler.resolveStringIterable(mew, context, iterable) ) {
 					Context newContext = new Context(context);
 					newContext.putString(iterable.substring(1, iterable.indexOf("{")), element);
-					execution.add(body.execute(mew, newContext));
+					Reaction reaction = body.execute(mew, newContext);
+					if( reaction == null ) {
+						break;
+					}
+					execution.add(reaction);
 				}
 				break;
 			case '#':
-				for( int element : ScriptCompiler.compileIntIterable(mew, context, iterable) ) {
+				for( int element : ScriptCompiler.resolveIntIterable(mew, context, iterable) ) {
 					Context newContext = new Context(context);
 					newContext.putInt(iterable.substring(1, iterable.indexOf("{")), element);
-					execution.add(body.execute(mew, newContext));
+					Reaction reaction = body.execute(mew, newContext);
+					if( reaction == null ) {
+						break;
+					}
+					execution.add(reaction);
 				}
 				break;
 			case '@':
 				if( iterable.charAt(2) == 'R' ) {
-					for( IRole element : ScriptCompiler.compileRoleIterable(mew, context, iterable) ) {
+					for( IRole element : ScriptCompiler.resolveRoleIterable(mew, context, iterable) ) {
 						Context newContext = new Context(context);
 						newContext.putRole(iterable.substring(1, iterable.indexOf("{")), element);
-						execution.add(body.execute(mew, newContext));
+						Reaction reaction = body.execute(mew, newContext);
+						if( reaction == null ) {
+							break;
+						}
+						execution.add(reaction);
 					}
 				} else {
-					for( IUser element : ScriptCompiler.compileUserIterable(mew, context, iterable) ) {
+					for( IUser element : ScriptCompiler.resolveUserIterable(mew, context, iterable) ) {
 						Context newContext = new Context(context);
 						newContext.putUser(iterable.substring(1, iterable.indexOf("{")), element);
-						execution.add(body.execute(mew, newContext));
+						Reaction reaction = body.execute(mew, newContext);
+						if( reaction == null ) {
+							break;
+						}
+						execution.add(reaction);
 					}
 				}
 				break;

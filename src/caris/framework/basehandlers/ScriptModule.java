@@ -5,41 +5,20 @@ import caris.framework.events.MessageEventWrapper;
 import caris.framework.scripts.Context;
 import caris.framework.scripts.Executable;
 import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.Permissions;
 
 public class ScriptModule extends MessageHandler {
 
-	private String source;
-	private Executable code;
-	
-	private IGuild guild;
 	private boolean passive;
-	
-	public ScriptModule(String header, Executable code, String source, IGuild guild, Permissions[] requirements) {
-		super(header.substring(1, header.length()-1), true, false, false, requirements);
+	private IGuild guild;
+	private Executable code;
+	private String source;
 		
+	public ScriptModule(String name, boolean passive, IGuild guild, Executable code, String source) {
+		super(name, true, false, false);
+		this.passive = passive;
+		this.guild = guild;
+		this.code = code;
 		this.source = source;
-		
-		switch (header.charAt(0)) {
-			case '%':
-				this.guild = null;
-				passive = false;
-				break;
-			case '=':
-				this.guild = null;
-				passive = true;
-				break;
-			case '+':
-				this.guild = guild;
-				passive = false;
-				break;
-			case '-':
-				this.guild = guild;
-				passive = true;
-				break;
-			default:
-				throw new AssertionError("Invalid header!");
-		}
 	}
 	
 	@Override

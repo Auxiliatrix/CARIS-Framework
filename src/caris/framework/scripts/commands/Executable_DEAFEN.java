@@ -17,7 +17,7 @@ public class Executable_DEAFEN extends Executable {
 	
 	@Override
 	public Reaction execute(MessageEventWrapper mew, Context context) {
-		return new DeafenReaction(mew.getGuild(), ScriptCompiler.compileUserVariable(mew, context, user), true);
+		return new DeafenReaction(mew.getGuild(), ScriptCompiler.resolveUserVariable(mew, context, user), true);
 	}
 
 }
