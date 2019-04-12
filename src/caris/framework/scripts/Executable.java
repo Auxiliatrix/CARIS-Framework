@@ -19,11 +19,11 @@ public abstract class Executable {
 	protected void breakIfIllegal(IGuild guild, IUser invoker, IUser target, boolean override, Permissions permission, String action) throws ScriptExecutionException {
 		if( !Brain.cli.getOurUser().getPermissionsForGuild(guild).contains(permission) ) {
 			throw new ScriptExecutionException("I don't have permission to " + action + " others!");
-		} if( MessageHandler.getBotPosition(guild) <= MessageHandler.getPosition(guild, target) ) {
+		} if( MessageHandler.getBotPosition(guild) <= MessageHandler.getPosition(guild, target) && Brain.cli.getOurUser() != target) {
 			throw new ScriptExecutionException("I don't have permission to " + action + " " + target.getName() + "!");
 		} else if( !target.getPermissionsForGuild(guild).contains(permission) && !override ) {
 			throw new ScriptExecutionException("You don't have permission to " + action + " others!");
-		} else if( MessageHandler.getPosition(guild, invoker) <= MessageHandler.getPosition(guild, target) && !override ) {
+		} else if( MessageHandler.getPosition(guild, invoker) <= MessageHandler.getPosition(guild, target) && !override && invoker != target) {
 			throw new ScriptExecutionException("You don't have permission to " + action + " " + target.getName() + "!");
 		}
 	}
