@@ -60,6 +60,9 @@ public class ScriptCompiler {
 		List<Executable> compiledCode = new ArrayList<Executable>();
 		for( int f=0; f<code.length; f++ ) {
 			String line = code[f];
+			if( line.startsWith("|") ) {
+				continue;
+			}
 			boolean override = line.startsWith("~") && line.length() > 1;
 			if( override ) {
 				line = line.substring(1);
@@ -86,7 +89,7 @@ public class ScriptCompiler {
 							if( tokens.length < 2 ) {
 								throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": If structure must specify a Condition!");
 							}
-							compiledCode.add(new Executable_IF(compileConditional(line.substring(3)), body));
+							compiledCode.add(new Executable_IF(line.substring(3), body));
 							break;
 						case "For":
 							if( tokens.length < 3 ) {
@@ -168,13 +171,7 @@ public class ScriptCompiler {
 				throw new ScriptCompilationException(ErrorType.SYNTAX, " Line " + (f+1) + ": unrecognized command!");
 			}
 		}
-		// TODO: nick case
 		return new Executable_MULTI(compiledCode.toArray(new Executable[compiledCode.size()]));
-	}
-	
-	public static final Conditional compileConditional(String line) throws ScriptCompilationException {
-		// TODO: actual compilation
-		return null;
 	}
 	
 	public static final String resolveFormattedString(MessageEventWrapper mew, Context context, String string) {
