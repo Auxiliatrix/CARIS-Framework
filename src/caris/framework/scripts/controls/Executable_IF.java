@@ -18,7 +18,7 @@ public class Executable_IF extends Executable {
 	}
 	
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		if( condition.resolve(mew, context) ) {
 			return body.execute(mew, context);
 		} else {

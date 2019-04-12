@@ -66,6 +66,28 @@ CONTROL STRUCTURES - Control structures. See examples for more information.
 	End							|	Designates the end of the current control structure
 	Stop						|	Cuts a control structure short, preventing further iterations
 ---------------------------------------------------------------------------------------------------------------------------
+COMPARATORS - Boolean comparison operations that resolve as either true or false.
+	<A> == <B>					|	Whether <A> is equal to <B> (does string comparison if A and B are different types).
+		$Quoted{1} == "Hello"	|		Whether the first quoted string in the message content is "Hello"
+		@Author == "Alina#0001"	|		Whether the author's username is "Alina#0001"
+	<A> != <B>					|	Whether <A> isn't equal to <B> (does string comparison if A and B are different types).
+	(<A> or <B>) and <C>		|	Whether either of <A> or <B> is true, and <C> is also true
+	<A> and <B>					|	Whether <A> and <B> are true
+	<A> or <B>					|	Whether <A> or <B> is true
+---------------------------------------------------------------------------------------------------------------------------
+BOOLEAN EXPRESSIONS - Expressions that resolve as either true or false.
+	?Developer					|	Whether the author is a developer
+	?Admin						|	Whether the author is an admin
+	?BotMention					|	Whether the bot was mentioned in the message content
+	?BotName					|	Whether the bot name was included in the message content
+	?'<text>'					|	Whether the message content contains the substring <text> (ignores case)
+		?'Hello'				|		Whether the message content contains the substring "Hello" ignoring case
+	?"<text>"					|	Whether the message content contains the substring <text> (case-sensitive)
+		?"Hello"				|		Whether the message content contains the case-sensitive substring "Hello"
+	?<role>						|	Whether the author has the given role
+		?@Admin					|		Whether the author has the @Admin role
+		?@"Mod"					|		Whether the author has a role with the name "Mod"
+---------------------------------------------------------------------------------------------------------------------------
 ACCESSIBLE VARIABLES - Variable arguments. Can be used in strings in the format "$[Variable]".
 	$Content					|	The entire message content
 		Say "$[$Content]"		|		Sends a message containing the entire message content
@@ -95,27 +117,5 @@ INTEGER EXPRESSIONS - Expressions that resolve to a numerical value. Numbers rou
 		$Quoted{} - 2			|		The number of quoted substrings in the message content - 2
 	<A> + <B>					|	The sum of <A> and <B>
 		$Quoted{} + 2			|		The number of quoted substrings in the message content + 2
----------------------------------------------------------------------------------------------------------------------------
-BOOLEAN EXPRESSIONS - Expressions that resolve as either true or false.
-	?Developer					|	Whether the author is a developer
-	?Admin						|	Whether the author is an admin
-	?BotMention					|	Whether the bot was mentioned in the message content
-	?BotName					|	Whether the bot name was included in the message content
-	?'<text>'					|	Whether the message content contains the substring <text> (ignores case)
-		?'Hello'				|		Whether the message content contains the substring "Hello" ignoring case
-	?"<text>"					|	Whether the message content contains the substring <text> (case-sensitive)
-		?"Hello"				|		Whether the message content contains the case-sensitive substring "Hello"
-	?<role>						|	Whether the author has the given role
-		?@Admin					|		Whether the author has the @Admin role
-		?@"Mod"					|		Whether the author has a role with the name "Mod"
----------------------------------------------------------------------------------------------------------------------------
-COMPARATORS - Boolean comparison operations that resolve as either true or false.
-	<A> == <B>					|	Whether <A> is equal to <B> (does string comparison if A and B are different types).
-		$Quoted{1} == "Hello"	|		Whether the first quoted string in the message content is "Hello"
-		@Author == "Alina#0001"	|		Whether the author's username is "Alina#0001"
-	<A> != <B>					|	Whether <A> isn't equal to <B> (does string comparison if A and B are different types).
-	(<A> or <B>) and <C>		|	Whether either of <A> or <B> is true, and <C> is also true
-	<A> and <B>					|	Whether <A> and <B> are true
-	<A> or <B>					|	Whether <A> or <B> is true
 ***************************************************************************************************************************
 ***************************************************************************************************************************

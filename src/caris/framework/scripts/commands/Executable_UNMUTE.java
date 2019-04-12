@@ -4,20 +4,25 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.reactions.MuteReaction;
 import caris.framework.scripts.Context;
-import caris.framework.scripts.ScriptCompiler;
 import caris.framework.scripts.Executable;
+import caris.framework.scripts.ScriptCompiler;
+import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.handle.obj.Permissions;
 
 public class Executable_UNMUTE extends Executable {
 
 	private String user;
+	private boolean override;
 	
-	public Executable_UNMUTE(String user) {
+	public Executable_UNMUTE(String user, boolean override) {
 		this.user = user;
+		this.override = override;
 	}
 	
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
-		return new MuteReaction(mew.getGuild(), ScriptCompiler.resolveUserVariable(mew, context, user), false);
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
+		IUser target = ScriptCompiler.resolveUserVariable(mew, context, user);
+		breakIfIllegal(mew.getGuild(), mew.getAuthor(), target, override, Permissions.VOICE_MUTE_MEMBERS, "mute");
+		return new MuteReaction(mew.getGuild(), target, false);
 	}
-
 }

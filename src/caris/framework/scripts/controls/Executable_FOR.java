@@ -20,7 +20,7 @@ public class Executable_FOR extends Executable {
 	}
 
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		QueueReaction execution = new QueueReaction();
 		for( int f=0; f<ScriptCompiler.resolveIntVariable(mew, context, range); f++ ) {
 			Context newContext = new Context(context);

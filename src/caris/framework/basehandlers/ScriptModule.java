@@ -2,8 +2,10 @@ package caris.framework.basehandlers;
 
 import caris.framework.basereactions.Reaction;
 import caris.framework.events.MessageEventWrapper;
+import caris.framework.reactions.MessageReaction;
 import caris.framework.scripts.Context;
 import caris.framework.scripts.Executable;
+import caris.framework.scripts.Executable.ScriptExecutionException;
 import sx.blah.discord.handle.obj.IGuild;
 
 public class ScriptModule extends MessageHandler {
@@ -28,7 +30,11 @@ public class ScriptModule extends MessageHandler {
 
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
-		return code.execute(mew, new Context());
+		try {
+			return code.execute(mew, new Context());
+		} catch (ScriptExecutionException e) {
+			return new MessageReaction(mew.getChannel(), e.getErrorEmbed());
+		}
 	}
 	
 	public final IGuild getGuild() {

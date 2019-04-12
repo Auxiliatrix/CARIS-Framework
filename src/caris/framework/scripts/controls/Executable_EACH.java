@@ -20,7 +20,7 @@ public class Executable_EACH extends Executable {
 	}
 	
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		QueueReaction execution = new QueueReaction();
 		switch(iterable.charAt(1)) {
 			case '$':

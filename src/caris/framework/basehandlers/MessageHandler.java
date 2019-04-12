@@ -93,26 +93,26 @@ public abstract class MessageHandler extends Handler {
 		}
 	}
 	
+	public static final int getBotPosition(IGuild guild) {
+		return getPosition(guild, Brain.cli.getOurUser());
+	}
+	
+	public static final int getPosition(IGuild guild, IUser user) {
+		int maxPosition = -1;
+		for( IRole role : user.getRolesForGuild(guild) ) {
+			if( role.getPosition() > maxPosition ) {
+				maxPosition = role.getPosition();
+			}
+		}
+		return maxPosition;
+	}
+	
 	protected final boolean accessGranted(MessageEventWrapper mew) {
 		boolean meetsRequirements = true;
 		for( Permissions requirement : requirements ) {
 			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
 		}
 		return meetsRequirements || mew.developerAuthor;
-	}
-	
-	protected final int getBotPosition(MessageEventWrapper mew) {
-		return getPosition(mew, Brain.cli.getOurUser());
-	}
-	
-	protected final int getPosition(MessageEventWrapper mew, IUser user) {
-		int maxPosition = -1;
-		for( IRole role : user.getRolesForGuild(mew.getGuild()) ) {
-			if( role.getPosition() > maxPosition ) {
-				maxPosition = role.getPosition();
-			}
-		}
-		return maxPosition;
 	}
 	
 	protected final boolean mentioned(MessageEventWrapper mew) {

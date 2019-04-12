@@ -15,7 +15,7 @@ public class Executable_MULTI extends Executable {
 	}
 	
 	@Override
-	public Reaction execute(MessageEventWrapper mew, Context context) {
+	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		QueueReaction execution = new QueueReaction();
 		for( Executable executable : body ) {
 			execution.add(executable.execute(mew, context));

@@ -59,6 +59,10 @@ public class ScriptCompiler {
 		List<Executable> compiledCode = new ArrayList<Executable>();
 		for( int f=0; f<code.length; f++ ) {
 			String line = code[f];
+			boolean override = line.startsWith("~") && line.length() > 1;
+			if( override ) {
+				line = line.substring(1);
+			}
 			if( line.length() == 0 ) {
 				continue;
 			}
@@ -116,42 +120,42 @@ public class ScriptCompiler {
 				if( tokens.length < 3 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Promote Command must specify a User and a Role!" );
 				}
-				compiledCode.add(new Executable_PROMOTE(tokens[1], tokens[2]));
+				compiledCode.add(new Executable_PROMOTE(tokens[1], tokens[2], override));
 			} else if( tokens[0].equals("Demote") ) {
 				if( tokens.length < 3 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Demote Command must specify a User and a Role!" );
 				}
-				compiledCode.add(new Executable_DEMOTE(tokens[1], tokens[2]));
+				compiledCode.add(new Executable_DEMOTE(tokens[1], tokens[2], override));
 			} else if( tokens[0].equals("Mute") ) {
 				if( tokens.length < 2 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Mute Command must specify a User!" );
 				}
-				compiledCode.add(new Executable_MUTE(tokens[1]));
+				compiledCode.add(new Executable_MUTE(tokens[1], override));
 			} else if( tokens[0].equals("Unmute") ) {
 				if( tokens.length < 2 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Unmute Command must specify a User!" );
 				}
-				compiledCode.add(new Executable_UNMUTE(tokens[1]));
+				compiledCode.add(new Executable_UNMUTE(tokens[1], override));
 			} else if( tokens[0].equals("Deafen") ) {
 				if( tokens.length < 2 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Deafen Command must specify a User!" );
 				}
-				compiledCode.add(new Executable_DEAFEN(tokens[1]));
+				compiledCode.add(new Executable_DEAFEN(tokens[1], override));
 			} else if( tokens[0].equals("Undeafen") ) {
 				if( tokens.length < 2 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Undeafen Command must specify a User!" );
 				}
-				compiledCode.add(new Executable_UNDEAFEN(tokens[1]));
+				compiledCode.add(new Executable_UNDEAFEN(tokens[1], override));
 			} else if( tokens[0].equals("Kick") ) {
 				if( tokens.length < 2 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Kick Command must specify a User!" );
 				}
-				compiledCode.add(new Executable_KICK(tokens[1]));
+				compiledCode.add(new Executable_KICK(tokens[1], override));
 			} else if( tokens[0].equals("Ban") ) {
 				if( tokens.length < 2 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Ban Command must specify a User!" );
 				}
-				compiledCode.add(new Executable_BAN(tokens[1]));
+				compiledCode.add(new Executable_BAN(tokens[1], override));
 			}
 			else {
 				throw new ScriptCompilationException(ErrorType.SYNTAX, " Line " + (f+1) + ": unrecognized command!");
@@ -166,56 +170,56 @@ public class ScriptCompiler {
 	}
 	
 	public static final String resolveFormattedString(MessageEventWrapper mew, Context context, String string) {
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return "";
 	}
 	
 	public static final String resolveStringVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return "";
 	}
 	
 	public static final int resolveIntVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return 0;
 	}
 	
 	public static final IUser resolveUserVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return null;
 	}
 	
 	public static final IRole resolveRoleVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return null;
 	}
 	
 	public static final boolean resolveBooleanVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return false;
 	}
 	
 	public static final List<String> resolveStringIterable(MessageEventWrapper mew, Context context, String iterable) {
 		List<String> stringIterable = new ArrayList<String>();
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return stringIterable;
 	}
 	
 	public static final List<Integer> resolveIntIterable(MessageEventWrapper mew, Context context, String iterable) {
 		List<Integer> intIterable = new ArrayList<Integer>();
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return intIterable;
 	}
 	
 	public static final List<IUser> resolveUserIterable(MessageEventWrapper mew, Context context, String iterable) {
 		List<IUser> userIterable = new ArrayList<IUser>();
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return userIterable;
 	}
 	
 	public static final List<IRole> resolveRoleIterable(MessageEventWrapper mew, Context context, String iterable) {
 		List<IRole> roleIterable = new ArrayList<IRole>();
-		// TODO: actual compilation
+		// TODO: actual resolution
 		return roleIterable;
 	}
 	
