@@ -13,6 +13,7 @@ import caris.framework.scripts.commands.Executable_DEAFEN;
 import caris.framework.scripts.commands.Executable_DEMOTE;
 import caris.framework.scripts.commands.Executable_KICK;
 import caris.framework.scripts.commands.Executable_MUTE;
+import caris.framework.scripts.commands.Executable_NICK;
 import caris.framework.scripts.commands.Executable_PROMOTE;
 import caris.framework.scripts.commands.Executable_SAY;
 import caris.framework.scripts.commands.Executable_STOP;
@@ -116,7 +117,13 @@ public class ScriptCompiler {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Wait Command must specify a time!" );
 				}
 				compiledCode.add(new Executable_WAIT(line.substring(5)));
-			} else if( tokens[0].equals("Promote") ) {
+			} else if( tokens[0].equals("Nick") ) {
+				if( tokens.length < 3 ) {
+					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Nick Command must specify a User and a string!");
+				}
+				compiledCode.add(new Executable_NICK(tokens[1], line.substring(line.indexOf(tokens[1]) + tokens[1].length() + 1),override));
+			}
+			else if( tokens[0].equals("Promote") ) {
 				if( tokens.length < 3 ) {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Promote Command must specify a User and a Role!" );
 				}
@@ -161,6 +168,7 @@ public class ScriptCompiler {
 				throw new ScriptCompilationException(ErrorType.SYNTAX, " Line " + (f+1) + ": unrecognized command!");
 			}
 		}
+		// TODO: nick case
 		return new Executable_MULTI(compiledCode.toArray(new Executable[compiledCode.size()]));
 	}
 	
