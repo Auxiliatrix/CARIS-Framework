@@ -23,9 +23,9 @@ public class BanReaction extends Reaction {
 	@Override
 	public void process() {
 		if( reason.isEmpty() ) {
-			guild.kickUser(user);			
+			guild.banUser(user);			
 		} else {
-			guild.kickUser(user, reason);
+			guild.banUser(user, reason);
 		}
 	}
 	
