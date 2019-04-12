@@ -174,11 +174,6 @@ public class ScriptCompiler {
 		return new Executable_MULTI(compiledCode.toArray(new Executable[compiledCode.size()]));
 	}
 	
-	public static final String resolveFormattedString(MessageEventWrapper mew, Context context, String string) {
-		// TODO: actual resolution
-		return "";
-	}
-	
 	public static final String resolveStringVariable(MessageEventWrapper mew, Context context, String variable) {
 		// TODO: actual resolution
 		return "";
