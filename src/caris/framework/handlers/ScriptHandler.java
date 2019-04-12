@@ -102,7 +102,7 @@ public class ScriptHandler extends MessageHandler {
 			if( customVerification.get(1).equalsIgnoreCase("view") ) {
 				customReaction.add(new MessageReaction(mew.getChannel(), ScriptBuilder.getScriptEmbed(script.name, script.getSource(), script.getGuild(), script.getFormattedRequirements())));
 			} else if( customVerification.get(1).equalsIgnoreCase("remove") ) {
-				if( script.getGuild() != null || mew.developerAuthor ) {
+				if( script.getGuild() != null || developerAuthor(mew.getAuthor()) ) {
 					customReaction.add(new ScriptDestroyReaction(script));
 					customReaction.add(new MessageReaction(mew.getChannel(), "Script successfully deleted!"));
 				} else {
