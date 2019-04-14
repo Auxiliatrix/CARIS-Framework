@@ -39,7 +39,7 @@ public class ScriptBuilder {
 					scriptListBuilder.clearFields();
 					description = "";
 				}
-				description += name + " [Global]";
+				description += name + " [Global]\n";
 			}
 		} catch (JSONException e) {
 			Logger.error(e.getMessage());
@@ -53,7 +53,7 @@ public class ScriptBuilder {
 					scriptListBuilder.clearFields();
 					description = "";
 				}
-				description += name;
+				description += name + "\n";
 			}
 		} catch (JSONException e) {
 			Logger.error(e.getMessage());
