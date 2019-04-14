@@ -14,7 +14,7 @@ End
 Wait (5 + 5) * (3 - 2) / (1 + 4)
 Say "Awkward silence."
 Mute @Bot
-Nick @Bot $Author
+Nick @Bot @Author
 If ?Developer
 Say "$[@Author] is a dev!"
 End
