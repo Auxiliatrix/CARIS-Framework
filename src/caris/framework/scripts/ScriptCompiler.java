@@ -2,12 +2,21 @@ package caris.framework.scripts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import caris.configuration.calibration.Constants;
+import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basehandlers.ScriptModule;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.ErrorBuilder.ErrorType;
 import caris.framework.events.MessageEventWrapper;
+import caris.framework.main.Brain;
+import caris.framework.scripts.Executable.ScriptExecutionException;
 import caris.framework.scripts.commands.Executable_BAN;
 import caris.framework.scripts.commands.Executable_DEAFEN;
 import caris.framework.scripts.commands.Executable_DEMOTE;
@@ -28,8 +37,15 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.handle.obj.Permissions;
 
 public class ScriptCompiler {
+	
+	public static void main(String[] args) throws ScriptExecutionException {
+		Scanner sc = new Scanner(System.in);
+		String line = sc.nextLine();
+		System.out.println(resolveIntVariable(null, new Context(), line));
+	}
 	
 	public static final ScriptModule compileScript(String script, IGuild guild) throws ScriptCompilationException {
 		String[] lines = script.split("\n");
@@ -174,50 +190,247 @@ public class ScriptCompiler {
 		return new Executable_MULTI(compiledCode.toArray(new Executable[compiledCode.size()]));
 	}
 	
-	public static final String resolveStringVariable(MessageEventWrapper mew, Context context, String variable) {
+	public static final String resolveStringVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
 		// TODO: actual resolution
 		return "";
 	}
 	
-	public static final int resolveIntVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual resolution
-		return 0;
+	public static final int resolveIntVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
+		// Parenthetical Resolution
+		int open = variable.lastIndexOf("(");
+		if( open == variable.length() - 1 ) {
+			throw new ScriptExecutionException("Missing parenthesis in number expression \"" + variable + "\"!");
+		} else if( open != -1 ) {
+			int close = variable.substring(open).indexOf(")");
+			if( close != -1 ) {
+				close += open;
+				return resolveIntVariable(mew, context, (open == 0 ? "" : variable.substring(0, open)) + resolveIntVariable(mew, context, variable.substring(open+1, close)) + (close == variable.length() - 1 ? "" : variable.substring(close + 1)));
+			} else {
+				throw new ScriptExecutionException("Missing parenthesis in number expression \"" + variable + "\"!");
+			}
+		} else if( variable.indexOf(")") != -1 ) {
+			throw new ScriptExecutionException("Missing parenthesis in number expression \"" + variable + "\"!");
+		}
+		
+		// Arithmetic Resolution
+		int index_div = variable.indexOf(" / ");
+		int index_mul = variable.indexOf(" * ");
+		int index_sub = variable.indexOf(" - ");
+		int index_add = variable.indexOf(" + ");
+		if( index_div != -1 && index_div + 3 == variable.length() || index_mul != -1 && index_mul + 3 == variable.length() || index_sub != -1 && index_sub + 3 == variable.length() || index_add != -1 && index_add + 3 == variable.length() ) {
+			throw new ScriptExecutionException("Missing operand in number expression \"" + variable + "\"!");
+		} else if( index_sub != -1 || index_sub != index_add ) {
+			int index = index_sub != -1 && (index_sub > index_add || index_add == -1) ? index_sub : index_add;
+			return resolveIntVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveIntVariable(mew, context,variable.substring(index+3));
+		} else if( index_div != -1 || index_mul != -1 ) {
+			int index = index_div != -1 && (index_div > index_mul || index_mul == -1) ? index_div : index_mul;
+			if( index == index_div ) {
+				return resolveIntVariable(mew, context, variable.substring(0, index)) / resolveIntVariable(mew, context,variable.substring(index+3));
+			} else {
+				return resolveIntVariable(mew, context, variable.substring(0, index)) * resolveIntVariable(mew, context,variable.substring(index+3));
+			}
+		}
+		
+		// Substitutive Resolution
+		Matcher tokenMatcher = Pattern.compile("^#Number\\{(?<index>\\d+)\\}$").matcher(variable);
+		Matcher lengthMatcher = Pattern.compile("^#(?<iterable>.+)\\{\\}$").matcher(variable);
+		if( context.hasInt(variable) ) {
+			return context.getInt(variable);
+		} else if( variable.matches("^[-+]?\\d+$") ) {
+			return Integer.parseInt(variable);
+		} else if( tokenMatcher.matches() ) {
+			try {
+				return mew.integerTokens.get(Integer.parseInt(tokenMatcher.group("index")));
+			} catch (NumberFormatException e) {
+				throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
+			} catch (IndexOutOfBoundsException e) {
+				throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
+			}
+		} else if( lengthMatcher.matches() ) {
+			switch (lengthMatcher.group("iterable").charAt(1)) {
+				case '$':
+					return resolveStringIterable(mew, context, lengthMatcher.group("iterable")).size();
+				case '#':
+					return resolveIntIterable(mew, context, lengthMatcher.group("iterable")).size();
+				case '@':
+					if( variable.charAt(2) == 'R' ) {
+						return resolveRoleIterable(mew, context, lengthMatcher.group("iterable")).size();
+					} else {
+						return resolveUserIterable(mew, context, lengthMatcher.group("iterable")).size();
+					}
+				default:
+					throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
+			}
+		}
+		
+		// Resolution Failure
+		throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
 	}
 	
-	public static final IUser resolveUserVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual resolution
-		return null;
+	public static final IUser resolveUserVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
+		Pattern mentioned = Pattern.compile("^(@Mentioned\\{(?<index>\\d+)\\})$");
+		Matcher mentionMatcher = mentioned.matcher(variable);
+		Pattern roster = Pattern.compile("^(@Users\\{@(?<role>.+)\\}\\{(?<index>\\d+)\\})$");
+		Matcher rosterMatcher = roster.matcher(variable);
+		if( context.hasUser(variable) ) {
+			return context.getUser(variable);
+		} else if( variable.equals("@Author") ) {
+			return mew.getAuthor();
+		} else if( variable.equals("@Bot") ) {
+			return Brain.cli.getOurUser();
+		} else if( mentionMatcher.matches() ) {
+			String indexString = mentionMatcher.group("index");
+			try {
+				int index = Integer.parseInt(indexString) - 1;
+				return mew.getMessage().getMentions().get(index);
+			} catch (NumberFormatException e) {
+				throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
+			} catch (IndexOutOfBoundsException e) {
+				throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
+			}
+		} else if( rosterMatcher.matches() ) {
+			String roleString = rosterMatcher.group("role");
+			String indexString = rosterMatcher.group("index");
+			IRole role = resolveRoleVariable(mew, context, roleString);
+			try {
+				int index = Integer.parseInt(indexString) - 1;
+				return mew.getGuild().getUsersByRole(role).get(index);
+			} catch (NumberFormatException e) {
+				throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
+			} catch (IndexOutOfBoundsException e) {
+				throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
+			}
+		} else {
+			throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
+		}
 	}
 	
-	public static final IRole resolveRoleVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual resolution
-		return null;
+	public static final IRole resolveRoleVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
+		Pattern mentioned = Pattern.compile("^(@RoleMentioned\\{(?<index>\\d+)\\})$");
+		Matcher mentionMatcher = mentioned.matcher(variable);
+		Pattern roster = Pattern.compile("^(@Role\\{@(?<user>.+)\\}\\{(?<index>\\d+)\\})$");
+		Matcher rosterMatcher = roster.matcher(variable);
+		if( context.hasUser(variable) ) {
+			return context.getRole(variable);
+		} else if( mentionMatcher.matches() ) {
+			String indexString = mentionMatcher.group("index");
+			try {
+				int index = Integer.parseInt(indexString) - 1;
+				return mew.getMessage().getRoleMentions().get(index);
+			} catch (NumberFormatException e) {
+				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
+			} catch (IndexOutOfBoundsException e) {
+				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
+			}
+		} else if( rosterMatcher.matches() ) {
+			String userString = rosterMatcher.group("user");
+			String indexString = rosterMatcher.group("index");
+			IUser user = resolveUserVariable(mew, context, userString);
+			try {
+				int index = Integer.parseInt(indexString) - 1;
+				return user.getRolesForGuild(mew.getGuild()).get(index);
+			} catch (NumberFormatException e) {
+				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
+			} catch (IndexOutOfBoundsException e) {
+				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
+			}
+		} else {
+			throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
+		}
 	}
 	
-	public static final boolean resolveBooleanVariable(MessageEventWrapper mew, Context context, String variable) {
-		// TODO: actual resolution
-		return false;
+	public static final boolean resolveBooleanVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
+		// Parenthetical Resolution
+		int open = variable.lastIndexOf("(");
+		if( open == variable.length() - 1 ) {
+			throw new ScriptExecutionException("Missing parenthesis in boolean expression \"" + variable + "\"!");
+		} else if( open != -1 ) {
+			int close = variable.substring(open).indexOf(")");
+			if( close != -1 ) {
+				close += open;
+				return resolveBooleanVariable(mew, context, (open == 0 ? "" : variable.substring(0, open)) + resolveBooleanVariable(mew, context, variable.substring(open+1, close)) + (close == variable.length() - 1 ? "" : variable.substring(close + 1)));
+			} else {
+				throw new ScriptExecutionException("Missing parenthesis in boolean expression \"" + variable + "\"!");
+			}
+		} else if( variable.indexOf(")") != -1 ) {
+			throw new ScriptExecutionException("Missing parenthesis in boolean expression \"" + variable + "\"!");
+		}
+		
+		// Comparator Resolution
+		int index_and = variable.indexOf(" and ");
+		int index_or = variable.indexOf(" or ");
+		int index_eq = variable.indexOf(" == ");
+		int index_ne = variable.indexOf(" != ");
+		int index_lt = variable.indexOf(" < ");
+		int index_gt = variable.indexOf(" > ");
+		int index_le = variable.indexOf(" <= ");
+		int index_ge = variable.indexOf(" >= ");
+		if( index_and != -1 && index_and + 3 == variable.length() || index_or != -1 && index_or + 3 == variable.length() ) {
+			throw new ScriptExecutionException("Missing operand in boolean expression \"" + variable + "\"!");
+		} else if( index_or != -1 ) {
+			return resolveBooleanVariable(mew, context, variable.substring(0, index_or)) || resolveBooleanVariable(mew, context,variable.substring(index_or+3));
+		} else if( index_and != -1 ) {
+			return resolveBooleanVariable(mew, context, variable.substring(0, index_and)) && resolveBooleanVariable(mew, context,variable.substring(index_and+3));
+		} else if( index_eq != -1 || index_ne != -1 || index_lt != -1 || index_gt != -1 || index_le != -1 || index_ge != -1 ) {
+			int priority = Collections.max(Arrays.asList( new Integer[] {index_eq, index_ne, index_lt, index_gt, index_le, index_ge}));
+			if( priority == index_eq ) {
+				return resolveStringVariable(mew, context, variable.substring(0, index_eq)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_eq+3)));
+			} else if( priority == index_ne ) {
+				return !resolveStringVariable(mew, context, variable.substring(0, index_ne)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_ne+3)));
+			} else if( priority == index_lt ) {
+				return resolveIntVariable(mew, context, variable.substring(0, index_lt)) < resolveIntVariable(mew, context,variable.substring(index_lt+3));
+			} else if( priority == index_gt ) {
+				return resolveIntVariable(mew, context, variable.substring(0, index_gt)) > resolveIntVariable(mew, context,variable.substring(index_gt+3));
+			} else if( priority == index_le ) {
+				return resolveIntVariable(mew, context, variable.substring(0, index_le)) <= resolveIntVariable(mew, context,variable.substring(index_le+3));
+			} else if( priority == index_ge ) {
+				return resolveIntVariable(mew, context, variable.substring(0, index_ge)) <= resolveIntVariable(mew, context,variable.substring(index_ge+3));				
+			}
+		}
+		
+		// Substitutive Resolution
+		Matcher containMatcher = Pattern.compile("^\\?'(?<quote>.*)'$").matcher(variable);
+		Matcher containExactMatcher = Pattern.compile("^\\?\"(?<quote>.*)\"$").matcher(variable);
+		Matcher roleMatcher = Pattern.compile("^\\?(?<role>@.*)$").matcher(variable);
+		if( variable.equals("?Developer") ) {
+			return MessageHandler.developerAuthor(mew.getAuthor());
+		} else if( variable.equals("?Admin") ) {
+			return mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(Permissions.ADMINISTRATOR);
+		} else if( variable.equals("?BotMention") ) {
+			return mew.getMessage().getMentions().contains(Brain.cli.getOurUser());
+		} else if( variable.equals("?BotName") ) {
+			mew.containsWord(Constants.NAME);
+		} else if( containMatcher.matches() ) {
+			return mew.containsPhrase(resolveStringVariable(mew, context, "\"" + containMatcher.group("quote") + "\""));
+		} else if( containExactMatcher.matches() ) {
+			return mew.getMessage().getContent().contains(resolveStringVariable(mew, context, "\"" + containMatcher.group("quote") + "\""));
+		} else if( roleMatcher.matches() ) {
+			return mew.getAuthor().hasRole(resolveRoleVariable(mew, context, roleMatcher.group("role")));
+		}
+		
+		// Resolution Failure
+		throw new ScriptExecutionException("Couldn't resolve boolean \"" + variable + "\"!");
 	}
 	
-	public static final List<String> resolveStringIterable(MessageEventWrapper mew, Context context, String iterable) {
+	public static final List<String> resolveStringIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
 		List<String> stringIterable = new ArrayList<String>();
 		// TODO: actual resolution
 		return stringIterable;
 	}
 	
-	public static final List<Integer> resolveIntIterable(MessageEventWrapper mew, Context context, String iterable) {
+	public static final List<Integer> resolveIntIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
 		List<Integer> intIterable = new ArrayList<Integer>();
 		// TODO: actual resolution
 		return intIterable;
 	}
 	
-	public static final List<IUser> resolveUserIterable(MessageEventWrapper mew, Context context, String iterable) {
+	public static final List<IUser> resolveUserIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
 		List<IUser> userIterable = new ArrayList<IUser>();
 		// TODO: actual resolution
 		return userIterable;
 	}
 	
-	public static final List<IRole> resolveRoleIterable(MessageEventWrapper mew, Context context, String iterable) {
+	public static final List<IRole> resolveRoleIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
 		List<IRole> roleIterable = new ArrayList<IRole>();
 		// TODO: actual resolution
 		return roleIterable;
