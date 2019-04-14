@@ -67,11 +67,18 @@ public abstract class Handler {
 	
 	/* For dynamic Handler construction */
 	protected Handler(String name, boolean allowBots, boolean whitelist, boolean root) {
-		this();
 		this.name = name;
 		this.allowBots = allowBots;
 		this.whitelist = whitelist;
 		this.root = root;
+		
+		this.invocation = Constants.INVOCATION_PREFIX + name;
+		this.aliases = new ArrayList<String>();
+		aliases.add(invocation);
+		
+		disabledGuilds = new ArrayList<Long>();
+		
+		Logger.debug("Handler " + name + " initialized.", 1);
 	}
 	
 	public final boolean isRoot() {

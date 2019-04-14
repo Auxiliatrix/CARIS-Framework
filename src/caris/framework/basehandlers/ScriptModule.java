@@ -30,6 +30,7 @@ public class ScriptModule extends MessageHandler {
 
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
+		System.out.println("triggered");
 		try {
 			return code.execute(mew, new Context());
 		} catch (ScriptExecutionException e) {
