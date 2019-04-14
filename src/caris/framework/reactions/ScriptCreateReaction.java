@@ -16,11 +16,10 @@ public class ScriptCreateReaction extends Reaction {
 	public void process() {
 		Brain.scripts.put(script.name, script);
 		if( script.getGuild() == null ) {
-			if( script.getGuild() == null ) {
-				Brain.variables.atomicVariableData.get().getJSONObject("scripts").put(script.name, script.getSource());
-			} else {
-				Brain.variables.getGuildInfo(script.getGuild()).guildData.getJSONObject("scripts").put(script.name, script.getSource());
-			}
+			Brain.variables.atomicVariableData.get().getJSONObject("scripts").put(script.name, script.getSource());
+		} else {
+			System.out.print("stored");
+			Brain.variables.getGuildInfo(script.getGuild()).guildData.getJSONObject("scripts").put(script.name, script.getSource());
 		}
 	}
 	

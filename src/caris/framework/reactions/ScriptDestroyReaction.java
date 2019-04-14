@@ -16,11 +16,9 @@ public class ScriptDestroyReaction extends Reaction {
 	public void process() {
 		Brain.scripts.remove(script.name);
 		if( script.getGuild() == null ) {
-			if( script.getGuild() == null ) {
-				Brain.variables.atomicVariableData.get().getJSONObject("scripts").remove(script.name);
-			} else {
-				Brain.variables.getGuildInfo(script.getGuild()).guildData.getJSONObject("scripts").remove(script.name);
-			}
+			Brain.variables.atomicVariableData.get().getJSONObject("scripts").remove(script.name);
+		} else {
+			Brain.variables.getGuildInfo(script.getGuild()).guildData.getJSONObject("scripts").remove(script.name);
 		}
 	}
 	
