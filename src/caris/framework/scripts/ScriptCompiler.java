@@ -114,7 +114,7 @@ public class ScriptCompiler {
 						default:
 							throw new ScriptCompilationException();
 					}
-					f = end+1;
+					f = end;
 				} else {
 					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": no End specified!");
 				}
@@ -176,7 +176,7 @@ public class ScriptCompiler {
 				compiledCode.add(new Executable_BAN(tokens[1], override));
 			}
 			else {
-				throw new ScriptCompilationException(ErrorType.SYNTAX, " Line " + (f+1) + ": unrecognized command!");
+				throw new ScriptCompilationException(ErrorType.SYNTAX, " Line " + (f+1) + ": unrecognized command:\"" + line + "\"!");
 			}
 		}
 		return new Executable_MULTI(compiledCode.toArray(new Executable[compiledCode.size()]));
@@ -343,6 +343,13 @@ public class ScriptCompiler {
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
 			}
+		} else if( variable.startsWith("@") && variable.length() > 1 ) {
+			List<IRole> roleMatches = mew.getGuild().getRolesByName(variable.substring(1));
+			if( roleMatches.size() > 0 ) {
+				return roleMatches.get(0);
+			} else {
+				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
+			}
 		} else {
 			throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
 		}
@@ -408,11 +415,11 @@ public class ScriptCompiler {
 		} else if( variable.equals("?BotMention") ) {
 			return mew.getMessage().getMentions().contains(Brain.cli.getOurUser());
 		} else if( variable.equals("?BotName") ) {
-			mew.containsWord(Constants.NAME);
+			return mew.containsWord(Constants.NAME);
 		} else if( containMatcher.matches() ) {
 			return mew.containsPhrase(resolveStringVariable(mew, context, "\"" + containMatcher.group("quote") + "\""));
 		} else if( containExactMatcher.matches() ) {
-			return mew.getMessage().getContent().contains(resolveStringVariable(mew, context, "\"" + containMatcher.group("quote") + "\""));
+			return mew.getMessage().getContent().contains(resolveStringVariable(mew, context, "\"" + containExactMatcher.group("quote") + "\""));
 		} else if( roleMatcher.matches() ) {
 			return mew.getAuthor().hasRole(resolveRoleVariable(mew, context, roleMatcher.group("role")));
 		}
