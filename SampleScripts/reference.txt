@@ -70,7 +70,7 @@ CONTROL STRUCTURES - Control structures. See examples for more information.
 ---------------------------------------------------------------------------------------------------------------------------
 ACCESSIBLE VARIABLES - Variable arguments. Can be used in strings in the format "$[Variable]".
 	$Content					|	The entire message content
-		Say "$[$Content]"		|		Sends a message containing the entire message content
+		Say $Content			|		Sends a message containing the entire message content
 	@Author						|	The message author user
 		Mute @Author			|		Mutes @Author
 		Say "Hi, $[@Author]!"	|		Sends a message in the form "Hi, Auxiliatrix#7280!"
@@ -81,7 +81,7 @@ ACCESSIBLE ITERATORS - Variables that can be used in Each control structures.
 		Indexing 	|	<name>{<index>}		|	Accesses an item in the given iterable as a variable
 					|		$Quoted{1}		|		A variable containing the first quoted substring in the message content
 		Length		|	#<iterable>{}		|	Indicates the number of elements in the given iterable
-					|		#$Word{}		|		A variable containing the number of words in the message content
+					|		#.$Word{}		|		A variable containing the number of words in the message content
 	.$Quoted					|	The iterable containing each quoted substring in the message content		
 	.$Word						|	The iterable containing each word in the message content
 	.#Number					|	The iterable containing each number in the message content
