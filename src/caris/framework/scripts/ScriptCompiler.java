@@ -193,7 +193,7 @@ public class ScriptCompiler {
 			Matcher intFormat = Pattern.compile("\\$\\[\\#[^\\[\\]]+\\]").matcher(variable);
 			Matcher mentionFormat = Pattern.compile("\\$\\[\\@[^\\[\\]]+\\]").matcher(variable);
 			Matcher booleanFormat = Pattern.compile("\\$\\[\\?[^\\[\\]]+\\]").matcher(variable);
-			
+						
 			while( stringFormat.find() ) {
 				String match = stringFormat.group();
 				variable = variable.replace(match, resolveStringVariable(mew, context, match.substring(2, match.length()-1)));
@@ -210,7 +210,7 @@ public class ScriptCompiler {
 				String match = booleanFormat.group();
 				variable = variable.replace(match, resolveStringVariable(mew, context, match.substring(2, match.length()-1)));
 			}
-			
+
 			return variable;
 		} else {
 			switch (variable.charAt(0)) {
