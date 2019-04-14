@@ -1,0 +1,26 @@
++Test+
+If ?BotMention
+Say "I was pinged!"
+End
+If ?BotName
+Say "That's my name!"
+End
+If ?'uwu'
+Say "That's disgusting!"
+End
+If ?"UWU"
+Say "That's so disgusting!"
+End
+Wait (5 + 5) * (3 - 2) / (1 + 4)
+Say "Awkward silence."
+Mute @Bot
+Nick @Bot $Author
+If ?Developer
+Say "$[@Author] is a dev!"
+End
+If ?Admin
+Say "$[@Author] is an admin!"
+End
+If ?@God-Ruler
+Say "What a pretentious role."
+End
