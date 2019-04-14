@@ -25,7 +25,7 @@ public class Executable_NICK extends Executable {
 	public Reaction execute(MessageEventWrapper mew, Context context) throws ScriptExecutionException {
 		IUser target = ScriptCompiler.resolveUserVariable(mew, context, user);
 		breakIfIllegal(mew.getGuild(), mew.getAuthor(), target, override, Permissions.MANAGE_NICKNAMES, "nickname");
-		return new NicknameSetReaction(mew.getGuild(), target, name);
+		return new NicknameSetReaction(mew.getGuild(), target, ScriptCompiler.resolveStringVariable(mew, context, name));
 	}
 
 }
