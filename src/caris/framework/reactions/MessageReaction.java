@@ -1,7 +1,6 @@
 package caris.framework.reactions;
 
 import caris.framework.basereactions.Reaction;
-import caris.framework.utilities.BotUtils;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
@@ -40,15 +39,15 @@ public class MessageReaction extends Reaction {
 		if( message != "" && embed != null ) {
 			Logger.say(message, channel);
 			Logger.say(embed.toString(), channel);
-			BotUtils.sendMessage(channel, message, embed);
+			channel.sendMessage(message, embed);
 		} else if( message == "" && embed == null ) {
 			Logger.error("Message sent with no content.");
 		} else if( message.isEmpty() ) {
 			Logger.say(embed.toString(), channel);
-			BotUtils.sendMessage(channel, embed);
+			channel.sendMessage(embed);
 		} else {
 			Logger.say(message, channel);
-			BotUtils.sendMessage(channel, message);
+			channel.sendMessage(message);
 		}
 	}
 	

@@ -28,11 +28,6 @@ public class QueueReaction extends MultiReaction {
 			} catch ( Exception e ){
 				e.printStackTrace();
 			}
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
