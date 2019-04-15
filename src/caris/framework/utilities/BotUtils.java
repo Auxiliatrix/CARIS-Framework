@@ -4,11 +4,7 @@ import caris.framework.library.GuildInfo;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.internal.json.objects.EmbedObject;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.util.RequestBuffer;
 
 public class BotUtils {
 	
@@ -25,30 +21,12 @@ public class BotUtils {
 				.withRecommendedShardCount()
 				.build();
 	}
-
-	public static IMessage sendMessage(IChannel channel, String message, EmbedObject embed) {
-		return RequestBuffer.request(() -> {
-			return channel.sendMessage(message, embed);
-		}).get();
-	}
-	
-	public static IMessage sendMessage(IChannel channel, String message) {
-		return RequestBuffer.request(() -> {
-			return channel.sendMessage(message);
-		}).get();
-	}
-
-	public static IMessage sendMessage( IChannel channel, EmbedObject embed ) {
-		return RequestBuffer.request(() -> {
-			return channel.sendMessage(embed);
-		}).get();
-	}
 	
 	public static void sendLog( IGuild guild, String message ) {
 		// Send the message to the guild's log channel, if it exists
 		try {
 			if( Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG) != null ) {
-				sendMessage( guild.getChannelByID(Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG)), message );
+				guild.getChannelByID(Brain.variables.getGuildInfo(guild).specialChannels.get(GuildInfo.SpecialChannel.LOG)).sendMessage(message);
 			}
 		} catch( NullPointerException e ) {
 			
