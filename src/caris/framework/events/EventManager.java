@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import caris.framework.basehandlers.ScriptModule;
 import caris.framework.basehandlers.Handler;
 import caris.framework.basehandlers.InteractiveModule;
 import caris.framework.basereactions.MultiReaction;
@@ -25,27 +26,36 @@ public class EventManager extends SuperEvent {
 			public void run() {
 				List<Reaction> reactions = new ArrayList<Reaction>();
 				MultiReaction passiveQueue = new MultiReaction();
-				for( Handler h : Brain.modules.values() ) {
-					Reaction r = h.handle(event);
-					if( r != null && !(r instanceof NullReaction) ) {
-						if( r.priority == -1 ) {
-							passiveQueue.add(r);
+				for( Handler handler : Brain.modules.values() ) {
+					Reaction reaction = handler.handle(event);
+					if( reaction != null && !(reaction instanceof NullReaction) ) {
+						if( reaction.priority == -1 ) {
+							passiveQueue.add(reaction);
 						} else {
-							reactions.add(r);
+							reactions.add(reaction);
 						}
 					}
 				}
-				for( InteractiveModule i : Brain.interactives ) {
-					Reaction r = i.handle(event);
-					if( r != null && !(r instanceof NullReaction) ) {
-						if( r.priority == -1 ) {
-							passiveQueue.add(r);
+				for( InteractiveModule interactive : Brain.interactives ) {
+					Reaction reaction = interactive.handle(event);
+					if( reaction != null && !(reaction instanceof NullReaction) ) {
+						if( reaction.priority == -1 ) {
+							passiveQueue.add(reaction);
 						} else {
-							reactions.add(r);
+							reactions.add(reaction);
 						}
 					}
 				}
-				
+				for( ScriptModule scripts : Brain.scripts.values() ) {
+					Reaction reaction = scripts.handle(event);
+					if( reaction != null && !(reaction instanceof NullReaction) ) {
+						if( reaction.priority == -1 ) {
+							passiveQueue.add(reaction);
+						} else {
+							reactions.add(reaction);
+						}
+					}
+				}
 				while( !Brain.cli.isReady() || !Brain.cli.isLoggedIn() ) {
 					try {
 						Logger.error("Client disconnected. Waiting for reconnect.");

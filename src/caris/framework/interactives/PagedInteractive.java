@@ -3,7 +3,7 @@ package caris.framework.interactives;
 import caris.configuration.reference.EmojiSet;
 import caris.framework.basehandlers.InteractiveModule;
 import caris.framework.basehandlers.InteractiveModule.Interactive;
-import caris.framework.basereactions.MultiReaction;
+import caris.framework.basereactions.QueueReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.reactions.MessageEditReaction;
 import caris.framework.reactions.ReactAddReaction;
@@ -31,7 +31,7 @@ public class PagedInteractive extends InteractiveModule {
 		if( !(reactionEvent instanceof ReactionAddEvent) ) {
 			return null;
 		}
-		MultiReaction interaction = new MultiReaction(-1);
+		QueueReaction interaction = new QueueReaction(-1);
 		if( equivalentEmojis(reactionEvent.getReaction(), EmojiSet.LEFT ) ) {
 			page -= 1;
 			while( page < 0 ) {
@@ -55,7 +55,10 @@ public class PagedInteractive extends InteractiveModule {
 
 	@Override
 	protected Reaction open() {
-		return new ReactAddReaction(source, EmojiSet.LEFT, EmojiSet.RIGHT);
+		QueueReaction openReaction = new QueueReaction();
+		openReaction.add(new ReactAddReaction(source, EmojiSet.LEFT));
+		openReaction.add(new ReactAddReaction(source, EmojiSet.RIGHT));
+		return openReaction;
 	}
 
 	@Override

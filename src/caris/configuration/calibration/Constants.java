@@ -14,10 +14,8 @@ public class Constants {
 			"caris.fortuna.handlers",
 	};
 	
-	public static final int RETRY_SOCKETEXCEPTION_DELAY = 500;
+	public static final int RETRY_SOCKETEXCEPTION_DELAY = 1000;
 	
-	public static final int REACTION_EXECUTE_DELAY = 250;
-
 	public final static int STUBBORNNESS = 2;
 	
 	public final static int EMBED_AUTHOR_SIZE = 32;

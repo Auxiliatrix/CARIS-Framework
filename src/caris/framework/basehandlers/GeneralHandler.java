@@ -10,6 +10,10 @@ public abstract class GeneralHandler<T extends Event> extends Handler {
 		super();
 	}
 	
+	protected GeneralHandler(String name, boolean allowBots, boolean whitelist, boolean root) {
+		super(name, allowBots, whitelist, root);
+	}
+	
 	@Override
 	public Reaction handle(Event event) {
 		Logger.debug("Checking " + name, 0, true);
