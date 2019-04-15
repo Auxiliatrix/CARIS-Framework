@@ -26,7 +26,7 @@ public class Executable_EACH extends Executable {
 			case '$':
 				for( String element : ScriptCompiler.resolveStringIterable(mew, context, iterable) ) {
 					Context newContext = new Context(context);
-					newContext.putString(iterable.substring(1, iterable.indexOf("{")), element);
+					newContext.putString(iterable.substring(1), element);
 					Reaction reaction = body.execute(mew, newContext);
 					if( reaction == null ) {
 						break;
@@ -37,7 +37,7 @@ public class Executable_EACH extends Executable {
 			case '#':
 				for( int element : ScriptCompiler.resolveNumberIterable(mew, context, iterable) ) {
 					Context newContext = new Context(context);
-					newContext.putInt(iterable.substring(1, iterable.indexOf("{")), element);
+					newContext.putInt(iterable.substring(1), element);
 					Reaction reaction = body.execute(mew, newContext);
 					if( reaction == null ) {
 						break;
@@ -49,7 +49,7 @@ public class Executable_EACH extends Executable {
 				if( iterable.charAt(2) == 'R' ) {
 					for( IRole element : ScriptCompiler.resolveRoleIterable(mew, context, iterable) ) {
 						Context newContext = new Context(context);
-						newContext.putRole(iterable.substring(1, iterable.indexOf("{")), element);
+						newContext.putRole(iterable.substring(1), element);
 						Reaction reaction = body.execute(mew, newContext);
 						if( reaction == null ) {
 							break;
@@ -59,7 +59,7 @@ public class Executable_EACH extends Executable {
 				} else {
 					for( IUser element : ScriptCompiler.resolveUserIterable(mew, context, iterable) ) {
 						Context newContext = new Context(context);
-						newContext.putUser(iterable.substring(1, iterable.indexOf("{")), element);
+						newContext.putUser(iterable.substring(1), element);
 						Reaction reaction = body.execute(mew, newContext);
 						if( reaction == null ) {
 							break;
