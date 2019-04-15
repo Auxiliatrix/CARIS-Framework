@@ -4,6 +4,7 @@ import java.net.SocketException;
 
 import caris.configuration.calibration.Constants;
 import caris.framework.main.Brain;
+import sx.blah.discord.util.RequestBuffer;
 
 public abstract class Reaction extends Thread implements Comparable<Reaction> {
 	
@@ -19,29 +20,25 @@ public abstract class Reaction extends Thread implements Comparable<Reaction> {
 	
 	@Override
 	public void run() {
-		Brain.threadCount.incrementAndGet();
-		for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
-			try {
-				process();
-				Brain.threadCount.decrementAndGet();
-				break;
-			} catch (Exception e) {
-				e.printStackTrace();
-				if( e instanceof SocketException ) {
+		RequestBuffer.request(() -> {
+			Brain.threadCount.incrementAndGet();
+			for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
+				try {
+					process();
+					Brain.threadCount.decrementAndGet();
+					break;
+				} catch (SocketException e) {
 					try {
 						Thread.sleep(Constants.RETRY_SOCKETEXCEPTION_DELAY);
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
-				} else {
-					Brain.threadCount.decrementAndGet();
-					break;
 				}
 			}
-		}
+		});
 	}
 	
-	public abstract void process();
+	public abstract void process() throws SocketException;
 	
 	@Override
 	public int compareTo(Reaction r) {

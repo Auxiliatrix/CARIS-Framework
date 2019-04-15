@@ -1,6 +1,5 @@
 package caris.framework.utilities;
 
-import caris.configuration.calibration.Constants;
 import caris.framework.library.GuildInfo;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.ClientBuilder;
@@ -9,7 +8,6 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
 
 public class BotUtils {
@@ -30,82 +28,19 @@ public class BotUtils {
 
 	public static IMessage sendMessage(IChannel channel, String message, EmbedObject embed) {
 		return RequestBuffer.request(() -> {
-			try {
-				int attempts = 0;
-				while(attempts < Constants.STUBBORNNESS) {
-					attempts++;
-					try {
-						return channel.sendMessage(message, embed);
-					} catch (Exception e) {
-						Logger.error("Reconnect failed. Retrying...");
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-				throw new DiscordException("Ran out of attempts!");
-			}
-			catch (DiscordException e) {
-				Logger.error("Message could not be sent with error: ");
-				e.printStackTrace();
-				return null;
-			}
+			return channel.sendMessage(message, embed);
 		}).get();
 	}
 	
 	public static IMessage sendMessage(IChannel channel, String message) {
 		return RequestBuffer.request(() -> {
-			try {
-				int attempts = 0;
-				while(attempts < Constants.STUBBORNNESS) {
-					attempts++;
-					try {
-						return channel.sendMessage(message);
-					} catch (Exception e) {
-						Logger.error("Reconnect failed. Retrying...");
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-				throw new DiscordException("Ran out of attempts!");
-			}
-			catch (DiscordException e) {
-				Logger.error("Message could not be sent with error: ");
-				e.printStackTrace();
-				return null;
-			}
+			return channel.sendMessage(message);
 		}).get();
 	}
 
 	public static IMessage sendMessage( IChannel channel, EmbedObject embed ) {
 		return RequestBuffer.request(() -> {
-			try {
-				int attempts = 0;
-				while(attempts < Constants.STUBBORNNESS) {
-					attempts++;
-					try {
-						return channel.sendMessage(embed);
-					} catch (Exception e) {
-						Logger.error("Reconnect failed. Retrying...");
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-				throw new DiscordException("Ran out of attempts!");
-			}
-			catch (DiscordException e) {
-				Logger.error("Message could not be sent with error: ");
-				e.printStackTrace();
-				return null;
-			}
+			return channel.sendMessage(embed);
 		}).get();
 	}
 	
