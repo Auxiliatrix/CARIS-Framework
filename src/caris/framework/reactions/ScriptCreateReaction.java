@@ -18,7 +18,6 @@ public class ScriptCreateReaction extends Reaction {
 		if( script.getGuild() == null ) {
 			Brain.variables.atomicVariableData.get().getJSONObject("scripts").put(script.name, script.getSource());
 		} else {
-			System.out.print("stored");
 			Brain.variables.getGuildInfo(script.getGuild()).guildData.getJSONObject("scripts").put(script.name, script.getSource());
 		}
 	}
