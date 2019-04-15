@@ -20,7 +20,8 @@ public abstract class Reaction extends Thread implements Comparable<Reaction> {
 	
 	@Override
 	public void run() {
-		RequestBuffer.request(() -> {
+		@SuppressWarnings("unused")
+		boolean confirmation = RequestBuffer.request(() -> {
 			Brain.threadCount.incrementAndGet();
 			for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
 				try {
@@ -35,7 +36,8 @@ public abstract class Reaction extends Thread implements Comparable<Reaction> {
 					}
 				}
 			}
-		});
+			return true;
+		}).get();
 	}
 	
 	public abstract void process() throws SocketException;
