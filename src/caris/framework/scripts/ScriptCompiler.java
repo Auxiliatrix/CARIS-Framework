@@ -36,7 +36,6 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
-
 public class ScriptCompiler {
 	
 	public static final ScriptModule compileScript(String script, IGuild guild) throws ScriptCompilationException {
@@ -452,7 +451,7 @@ public class ScriptCompiler {
 		Matcher rosterMatcher = Pattern.compile("^\\.@Users\\{(?<role>.+)\\}$").matcher(iterable);
 		if( rosterMatcher.matches() ) {
 			return mew.getGuild().getUsersByRole(resolveRoleVariable(mew, context, rosterMatcher.group("role")));
-		} else if( iterable.equals(".@GuildUsers") ) {
+		} else if( iterable.equals(".@UsersGuild") ) {
 			return mew.getGuild().getUsers();
 		} else if( iterable.equals(".@Mentioned") ) {
 			return mew.getMessage().getMentions();
@@ -465,7 +464,7 @@ public class ScriptCompiler {
 		Matcher rosterMatcher = Pattern.compile("^\\.@Roles\\{(?<user>.+)\\}$").matcher(iterable);
 		if( rosterMatcher.matches() ) {
 			return resolveUserVariable(mew, context, rosterMatcher.group("user")).getRolesForGuild(mew.getGuild());
-		} else if( iterable.equals(".@GuildRoles") ) {
+		} else if( iterable.equals(".@RolesGuild") ) {
 			return mew.getGuild().getRoles();
 		} else if( iterable.equals(".@RoleMentioned") ) {
 			return mew.getMessage().getRoleMentions();
