@@ -33,15 +33,7 @@ public class UpdateChannelReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( Brain.variables.getChannelInfo(channel).channelData.has(key) ) {
-			if( override ) {
-				if( value == null ) {
-					Brain.variables.getChannelInfo(channel).channelData.remove(key);
-				} else {
-					Brain.variables.getChannelInfo(channel).channelData.put(key, value);
-				}
-			}
-		} else {
+		if( !Brain.variables.getChannelInfo(channel).channelData.has(key) || override ) {
 			if( value == null ) {
 				Brain.variables.getChannelInfo(channel).channelData.remove(key);
 			} else {

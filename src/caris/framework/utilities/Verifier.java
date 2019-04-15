@@ -116,7 +116,7 @@ public class Verifier {
 					message += "valid ";
 				}
 				message += failName;
-				return message;
+				return message + "!";
 			}
 		}
 		

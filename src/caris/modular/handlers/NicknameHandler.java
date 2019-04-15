@@ -40,9 +40,9 @@ public class NicknameHandler extends MessageHandler {
 	protected Reaction process(MessageEventWrapper mew) {
 		MultiReaction lockNickname = new MultiReaction(1);
 		if( mew.getMessage().getMentions().size() > 0 ) {
-			if( getPosition(mew, mew.getAuthor()) <= getPosition(mew, mew.getMessage().getMentions().get(0)) && !mew.developerAuthor) {
+			if( getPosition(mew.getGuild(), mew.getAuthor()) <= getPosition(mew.getGuild(), mew.getMessage().getMentions().get(0)) && !developerAuthor(mew.getAuthor())) {
 				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!")));
-			} else if( !Brain.cli.getOurUser().getPermissionsForGuild(mew.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getBotPosition(mew) <= getPosition(mew, mew.getMessage().getMentions().get(0)) ) {
+			} else if( !Brain.cli.getOurUser().getPermissionsForGuild(mew.getGuild()).contains(Permissions.MANAGE_NICKNAMES) || getBotPosition(mew.getGuild()) <= getPosition(mew.getGuild(), mew.getMessage().getMentions().get(0)) ) {
 				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify this user's nickname!")));
 			} else {
 				if( mew.containsAnyWords("unlock") ) {
@@ -72,10 +72,10 @@ public class NicknameHandler extends MessageHandler {
 				}
 			}
 		} else if( mew.containsAnyWords("my") ) {
-			if( !mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(Permissions.CHANGE_NICKNAME) && !mew.developerAuthor ) {
+			if( !mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(Permissions.CHANGE_NICKNAME) && !developerAuthor(mew.getAuthor()) ) {
 				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify your nickname!")));
 			}
-			if( !Brain.cli.getOurUser().getPermissionsForGuild(mew.getGuild()).contains(Permissions.CHANGE_NICKNAME) || getBotPosition(mew) <= getPosition(mew, mew.getAuthor()) ) {
+			if( !Brain.cli.getOurUser().getPermissionsForGuild(mew.getGuild()).contains(Permissions.CHANGE_NICKNAME) || getBotPosition(mew.getGuild()) <= getPosition(mew.getGuild(), mew.getAuthor()) ) {
 				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify your nickname!")));
 			} else {
 				if( mew.containsAnyWords("unlock") ) {
@@ -99,7 +99,7 @@ public class NicknameHandler extends MessageHandler {
 				}
 			}
 		} else if( mew.containsAnyWords("your") ) {
-			if( getPosition(mew, mew.getAuthor()) <= getPosition(mew, Brain.cli.getOurUser()) && !mew.developerAuthor) {
+			if( getPosition(mew.getGuild(), mew.getAuthor()) <= getPosition(mew.getGuild(), Brain.cli.getOurUser()) && !developerAuthor(mew.getAuthor())) {
 				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.ACCESS, "You don't have permission to modify this user's nickname!")));
 			} else if( !Brain.cli.getOurUser().getPermissionsForGuild(mew.getGuild()).contains(Permissions.CHANGE_NICKNAME) ) {
 				lockNickname.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I don't have permission to modify this user's nickname!")));

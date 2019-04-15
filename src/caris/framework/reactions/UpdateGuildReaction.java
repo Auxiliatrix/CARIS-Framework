@@ -33,15 +33,7 @@ public class UpdateGuildReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( Brain.variables.getGuildInfo(guild).guildData.has(key) ) {
-			if( override ) {
-				if( value == null ) {
-					Brain.variables.getGuildInfo(guild).guildData.remove(key);
-				} else {
-					Brain.variables.getGuildInfo(guild).guildData.put(key, value);
-				}
-			}
-		} else {
+		if( !Brain.variables.getGuildInfo(guild).guildData.has(key) || override ) {
 			if( value == null ) {
 				Brain.variables.getGuildInfo(guild).guildData.remove(key);
 			} else {

@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import caris.configuration.calibration.Constants;
+import caris.configuration.reference.PermissionsString;
 import caris.framework.basereactions.Reaction;
 import caris.framework.events.MessageEventWrapper;
 import caris.framework.main.Brain;
@@ -22,7 +23,8 @@ import sx.blah.discord.handle.obj.Permissions;
 
 public abstract class MessageHandler extends Handler {
 		
-	public Permissions[] requirements;
+	protected Permissions[] requirements;
+	
 	public boolean inContext;
 	
 	public MessageHandler() {
@@ -31,6 +33,17 @@ public abstract class MessageHandler extends Handler {
 	
 	public MessageHandler(Permissions...requirements) {
 		super();
+		
+		this.requirements = requirements;
+		this.inContext = false;
+	}
+	
+	protected MessageHandler(String name, boolean allowBots, boolean whitelist, boolean root) {
+		this(name, allowBots, whitelist, root, new Permissions[] {});
+	}
+	
+	protected MessageHandler(String name, boolean allowBots, boolean whitelist, boolean root, Permissions...requirements) {
+		super(name, allowBots, whitelist, root);
 		
 		this.requirements = requirements;
 		this.inContext = false;
@@ -80,26 +93,35 @@ public abstract class MessageHandler extends Handler {
 		}
 	}
 	
-	protected final boolean accessGranted(MessageEventWrapper mew) {
-		boolean meetsRequirements = true;
-		for( Permissions requirement : requirements ) {
-			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
-		}
-		return meetsRequirements || mew.developerAuthor;
+	public static final int getBotPosition(IGuild guild) {
+		return getPosition(guild, Brain.cli.getOurUser());
 	}
 	
-	protected final int getBotPosition(MessageEventWrapper mew) {
-		return getPosition(mew, Brain.cli.getOurUser());
-	}
-	
-	protected final int getPosition(MessageEventWrapper mew, IUser user) {
+	public static final int getPosition(IGuild guild, IUser user) {
 		int maxPosition = -1;
-		for( IRole role : user.getRolesForGuild(mew.getGuild()) ) {
+		for( IRole role : user.getRolesForGuild(guild) ) {
 			if( role.getPosition() > maxPosition ) {
 				maxPosition = role.getPosition();
 			}
 		}
 		return maxPosition;
+	}
+	
+	public static final boolean developerAuthor(IUser user) {
+		for( Long id : Constants.DEVELOPER_IDS ) {
+			if( user.getLongID() == id ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected final boolean accessGranted(MessageEventWrapper mew) {
+		boolean meetsRequirements = true;
+		for( Permissions requirement : requirements ) {
+			meetsRequirements &= mew.getAuthor().getPermissionsForGuild(mew.getGuild()).contains(requirement);
+		}
+		return meetsRequirements || developerAuthor(mew.getAuthor());
 	}
 	
 	protected final boolean mentioned(MessageEventWrapper mew) {
@@ -134,6 +156,18 @@ public abstract class MessageHandler extends Handler {
 			}
 		}
 		return mew;
+	}
+	
+	public String getFormattedRequirements() {
+		String requirementsString = " | ";
+		for( Permissions requirement : requirements ) {
+			requirementsString += PermissionsString.PERMISSIONS_STRING.get(requirement) + ", ";
+		}
+		if( requirementsString.length() > 4 ) {
+			return requirementsString.substring(0, requirementsString.length()-2);
+		} else {
+			return "";
+		}
 	}
 	
 	protected abstract boolean isTriggered(MessageEventWrapper mew);

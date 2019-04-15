@@ -36,14 +36,6 @@ public class UpdateUserReaction extends Reaction {
 	@Override
 	public void process() {
 		if( Brain.variables.getUserInfo(guild, user).userData.has(key) ) {
-			if( override ) {
-				if( value == null ) {
-					Brain.variables.getUserInfo(guild, user).userData.remove(key);
-				} else {
-					Brain.variables.getUserInfo(guild, user).userData.put(key, value);
-				}
-			}
-		} else {
 			if( value == null ) {
 				Brain.variables.getUserInfo(guild, user).userData.remove(key);
 			} else {
