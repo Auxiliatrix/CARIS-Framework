@@ -85,6 +85,8 @@ ACCESSIBLE ITERATORS - Variables that can be used in Each control structures.
 	.$Quoted					|	The iterable containing each quoted substring in the message content		
 	.$Word						|	The iterable containing each word in the message content
 	.#Number					|	The iterable containing each number in the message content
+	.@GuildUsers				|	The iterable containing each user in the guild
+	.@GuildRoles				|	The iterable containing each role in the guild
 	.@Mentioned					|	The iterable containing each user mention in the message content
 	.@RoleMentioned				|	The iterable containing each role mention in the message content
 	.@Users{@role}				|	The iterable containing each user for the given role

@@ -120,17 +120,17 @@ public class ScriptCompiler {
 				}
 			} else if( tokens[0].equals("Say") ) {
 				if( tokens.length < 2 ) {
-					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Say Command must specify a message!" );
+					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Say Command must specify a String message!" );
 				}
 				compiledCode.add(new Executable_SAY(line.substring(4)));
 			} else if( tokens[0].equals("Wait") ) {
 				if( tokens.length < 2 ) {
-					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Wait Command must specify a time!" );
+					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Wait Command must specify a Number wait time!" );
 				}
 				compiledCode.add(new Executable_WAIT(line.substring(5)));
 			} else if( tokens[0].equals("Nick") ) {
 				if( tokens.length < 3 ) {
-					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Nick Command must specify a User and a string!");
+					throw new ScriptCompilationException(ErrorType.SYNTAX, "Line " + (f+1) + ": Nick Command must specify a User and a String name!");
 				}
 				compiledCode.add(new Executable_NICK(tokens[1], line.substring(line.indexOf(tokens[1]) + tokens[1].length() + 1),override));
 			}
@@ -215,7 +215,7 @@ public class ScriptCompiler {
 		} else {
 			switch (variable.charAt(0)) {
 				case '#':
-					return "" + resolveIntVariable(mew, context, variable);
+					return "" + resolveNumberVariable(mew, context, variable);
 				case '?':
 					return resolveBooleanVariable(mew, context, variable) ? "true" : "false";
 				case '@':
@@ -231,7 +231,7 @@ public class ScriptCompiler {
 						return context.getString(variable);
 					} else if( tokenMatcher.matches() ) {
 						try {
-							return resolveStringIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveIntVariable(mew, context, tokenMatcher.group("index")));
+							return resolveStringIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
 						} catch (IndexOutOfBoundsException e) {
 							throw new ScriptExecutionException("Couldn't resolve String \"" + variable + "\"!");
 						}
@@ -244,21 +244,21 @@ public class ScriptCompiler {
 		}
 	}
 	
-	public static final int resolveIntVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
+	public static final int resolveNumberVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
 		// Parenthetical Resolution
 		int open = variable.lastIndexOf("(");
 		if( open == variable.length() - 1 ) {
-			throw new ScriptExecutionException("Missing parenthesis in number expression \"" + variable + "\"!");
+			throw new ScriptExecutionException("Missing parenthesis in Number expression \"" + variable + "\"!");
 		} else if( open != -1 ) {
 			int close = variable.substring(open).indexOf(")");
 			if( close != -1 ) {
 				close += open;
-				return resolveIntVariable(mew, context, (open == 0 ? "" : variable.substring(0, open)) + resolveIntVariable(mew, context, variable.substring(open+1, close)) + (close == variable.length() - 1 ? "" : variable.substring(close + 1)));
+				return resolveNumberVariable(mew, context, (open == 0 ? "" : variable.substring(0, open)) + resolveNumberVariable(mew, context, variable.substring(open+1, close)) + (close == variable.length() - 1 ? "" : variable.substring(close + 1)));
 			} else {
-				throw new ScriptExecutionException("Missing parenthesis in number expression \"" + variable + "\"!");
+				throw new ScriptExecutionException("Missing parenthesis in Number expression \"" + variable + "\"!");
 			}
 		} else if( variable.indexOf(")") != -1 ) {
-			throw new ScriptExecutionException("Missing parenthesis in number expression \"" + variable + "\"!");
+			throw new ScriptExecutionException("Missing parenthesis in Number expression \"" + variable + "\"!");
 		}
 		
 		// Arithmetic Resolution
@@ -267,16 +267,16 @@ public class ScriptCompiler {
 		int index_sub = variable.indexOf(" - ");
 		int index_add = variable.indexOf(" + ");
 		if( index_div != -1 && index_div + 3 == variable.length() || index_mul != -1 && index_mul + 3 == variable.length() || index_sub != -1 && index_sub + 3 == variable.length() || index_add != -1 && index_add + 3 == variable.length() ) {
-			throw new ScriptExecutionException("Missing operand in number expression \"" + variable + "\"!");
+			throw new ScriptExecutionException("Missing operand in Number expression \"" + variable + "\"!");
 		} else if( index_sub != -1 || index_sub != index_add ) {
 			int index = index_sub != -1 && (index_sub > index_add || index_add == -1) ? index_sub : index_add;
-			return resolveIntVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveIntVariable(mew, context,variable.substring(index+3));
+			return resolveNumberVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveNumberVariable(mew, context,variable.substring(index+3));
 		} else if( index_div != -1 || index_mul != -1 ) {
 			int index = index_div != -1 && (index_div > index_mul || index_mul == -1) ? index_div : index_mul;
 			if( index == index_div ) {
-				return resolveIntVariable(mew, context, variable.substring(0, index)) / resolveIntVariable(mew, context,variable.substring(index+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index)) / resolveNumberVariable(mew, context,variable.substring(index+3));
 			} else {
-				return resolveIntVariable(mew, context, variable.substring(0, index)) * resolveIntVariable(mew, context,variable.substring(index+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index)) * resolveNumberVariable(mew, context,variable.substring(index+3));
 			}
 		}
 		
@@ -289,7 +289,7 @@ public class ScriptCompiler {
 			return Integer.parseInt(variable);
 		} else if( tokenMatcher.matches() ) {
 			try {
-				return resolveIntIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveIntVariable(mew, context, tokenMatcher.group("index")));
+				return resolveNumberIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
 			}
@@ -298,7 +298,7 @@ public class ScriptCompiler {
 				case '$':
 					return resolveStringIterable(mew, context, lengthMatcher.group("iterable")).size();
 				case '#':
-					return resolveIntIterable(mew, context, lengthMatcher.group("iterable")).size();
+					return resolveNumberIterable(mew, context, lengthMatcher.group("iterable")).size();
 				case '@':
 					if( variable.charAt(2) == 'R' ) {
 						return resolveRoleIterable(mew, context, lengthMatcher.group("iterable")).size();
@@ -306,12 +306,12 @@ public class ScriptCompiler {
 						return resolveUserIterable(mew, context, lengthMatcher.group("iterable")).size();
 					}
 				default:
-					throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
+					throw new ScriptExecutionException("Couldn't resolve Number \"" + variable + "\"!");
 			}
 		}
 		
 		// Resolution Failure
-		throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
+		throw new ScriptExecutionException("Couldn't resolve Number\"" + variable + "\"!");
 	}
 	
 	public static final IUser resolveUserVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
@@ -320,7 +320,7 @@ public class ScriptCompiler {
 			return context.getUser(variable);
 		} else if( tokenMatcher.matches() ) {
 			try {
-				return resolveUserIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveIntVariable(mew, context, tokenMatcher.group("index")));
+				return resolveUserIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
 			}
@@ -339,7 +339,7 @@ public class ScriptCompiler {
 			return context.getRole(variable);
 		} else if( tokenMatcher.matches() ) {
 			try {
-				return resolveRoleIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveIntVariable(mew, context, tokenMatcher.group("index")));
+				return resolveRoleIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
 			}
@@ -359,17 +359,17 @@ public class ScriptCompiler {
 		// Parenthetical Resolution
 		int open = variable.lastIndexOf("(");
 		if( open == variable.length() - 1 ) {
-			throw new ScriptExecutionException("Missing parenthesis in boolean expression \"" + variable + "\"!");
+			throw new ScriptExecutionException("Missing parenthesis in Boolean expression \"" + variable + "\"!");
 		} else if( open != -1 ) {
 			int close = variable.substring(open).indexOf(")");
 			if( close != -1 ) {
 				close += open;
 				return resolveBooleanVariable(mew, context, (open == 0 ? "" : variable.substring(0, open)) + resolveBooleanVariable(mew, context, variable.substring(open+1, close)) + (close == variable.length() - 1 ? "" : variable.substring(close + 1)));
 			} else {
-				throw new ScriptExecutionException("Missing parenthesis in boolean expression \"" + variable + "\"!");
+				throw new ScriptExecutionException("Missing parenthesis in Boolean expression \"" + variable + "\"!");
 			}
 		} else if( variable.indexOf(")") != -1 ) {
-			throw new ScriptExecutionException("Missing parenthesis in boolean expression \"" + variable + "\"!");
+			throw new ScriptExecutionException("Missing parenthesis in Boolean expression \"" + variable + "\"!");
 		}
 		
 		// Comparator Resolution
@@ -382,7 +382,7 @@ public class ScriptCompiler {
 		int index_le = variable.indexOf(" <= ");
 		int index_ge = variable.indexOf(" >= ");
 		if( index_and != -1 && index_and + 3 == variable.length() || index_or != -1 && index_or + 3 == variable.length() ) {
-			throw new ScriptExecutionException("Missing operand in boolean expression \"" + variable + "\"!");
+			throw new ScriptExecutionException("Missing operand in Boolean expression \"" + variable + "\"!");
 		} else if( index_or != -1 ) {
 			return resolveBooleanVariable(mew, context, variable.substring(0, index_or)) || resolveBooleanVariable(mew, context,variable.substring(index_or+3));
 		} else if( index_and != -1 ) {
@@ -394,13 +394,13 @@ public class ScriptCompiler {
 			} else if( priority == index_ne ) {
 				return !resolveStringVariable(mew, context, variable.substring(0, index_ne)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_ne+3)));
 			} else if( priority == index_lt ) {
-				return resolveIntVariable(mew, context, variable.substring(0, index_lt)) < resolveIntVariable(mew, context,variable.substring(index_lt+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index_lt)) < resolveNumberVariable(mew, context,variable.substring(index_lt+3));
 			} else if( priority == index_gt ) {
-				return resolveIntVariable(mew, context, variable.substring(0, index_gt)) > resolveIntVariable(mew, context,variable.substring(index_gt+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index_gt)) > resolveNumberVariable(mew, context,variable.substring(index_gt+3));
 			} else if( priority == index_le ) {
-				return resolveIntVariable(mew, context, variable.substring(0, index_le)) <= resolveIntVariable(mew, context,variable.substring(index_le+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index_le)) <= resolveNumberVariable(mew, context,variable.substring(index_le+3));
 			} else if( priority == index_ge ) {
-				return resolveIntVariable(mew, context, variable.substring(0, index_ge)) <= resolveIntVariable(mew, context,variable.substring(index_ge+3));				
+				return resolveNumberVariable(mew, context, variable.substring(0, index_ge)) <= resolveNumberVariable(mew, context,variable.substring(index_ge+3));				
 			}
 		}
 		
@@ -425,31 +425,53 @@ public class ScriptCompiler {
 		}
 		
 		// Resolution Failure
-		throw new ScriptExecutionException("Couldn't resolve boolean \"" + variable + "\"!");
+		throw new ScriptExecutionException("Couldn't resolve Boolean \"" + variable + "\"!");
 	}
 	
 	public static final List<String> resolveStringIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
-		List<String> stringIterable = new ArrayList<String>();
-		// TODO: actual resolution
-		return stringIterable;
+		switch (iterable) {
+			case ".$Quoted":
+				return mew.quotedTokens;
+			case ".$Word":
+				return mew.tokens;
+			default:
+				throw new ScriptExecutionException("Couldn't resolve String Iterable \"" + iterable + "\"!");
+		}
 	}
 	
-	public static final List<Integer> resolveIntIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
-		List<Integer> intIterable = new ArrayList<Integer>();
-		// TODO: actual resolution
-		return intIterable;
+	public static final List<Integer> resolveNumberIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
+		switch (iterable) {
+		case ".#Number":
+			return mew.integerTokens;
+		default:
+			throw new ScriptExecutionException("Couldn't resolve Number Iterable \"" + iterable + "\"!");
+		}
 	}
 	
 	public static final List<IUser> resolveUserIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
-		List<IUser> userIterable = new ArrayList<IUser>();
-		// TODO: actual resolution
-		return userIterable;
+		Matcher rosterMatcher = Pattern.compile("^\\.@Users\\{(?<role>.+)\\}$").matcher(iterable);
+		if( rosterMatcher.matches() ) {
+			return mew.getGuild().getUsersByRole(resolveRoleVariable(mew, context, rosterMatcher.group("role")));
+		} else if( iterable.equals(".@GuildUsers") ) {
+			return mew.getGuild().getUsers();
+		} else if( iterable.equals(".@Mentioned") ) {
+			return mew.getMessage().getMentions();
+		} else {
+			throw new ScriptExecutionException("Couldn't resolve User Iterable \"" + iterable + "\"!");
+		}
 	}
 	
 	public static final List<IRole> resolveRoleIterable(MessageEventWrapper mew, Context context, String iterable) throws ScriptExecutionException {
-		List<IRole> roleIterable = new ArrayList<IRole>();
-		// TODO: actual resolution
-		return roleIterable;
+		Matcher rosterMatcher = Pattern.compile("^\\.@Roles\\{(?<user>.+)\\}$").matcher(iterable);
+		if( rosterMatcher.matches() ) {
+			return resolveUserVariable(mew, context, rosterMatcher.group("user")).getRolesForGuild(mew.getGuild());
+		} else if( iterable.equals(".@GuildRoles") ) {
+			return mew.getGuild().getRoles();
+		} else if( iterable.equals(".@RoleMentioned") ) {
+			return mew.getMessage().getRoleMentions();
+		} else {
+			throw new ScriptExecutionException("Couldn't resolve Role Iterable \"" + iterable + "\"!");
+		}
 	}
 	
 	@SuppressWarnings("serial")

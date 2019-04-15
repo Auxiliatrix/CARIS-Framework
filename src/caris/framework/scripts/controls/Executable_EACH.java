@@ -35,7 +35,7 @@ public class Executable_EACH extends Executable {
 				}
 				break;
 			case '#':
-				for( int element : ScriptCompiler.resolveIntIterable(mew, context, iterable) ) {
+				for( int element : ScriptCompiler.resolveNumberIterable(mew, context, iterable) ) {
 					Context newContext = new Context(context);
 					newContext.putInt(iterable.substring(1, iterable.indexOf("{")), element);
 					Reaction reaction = body.execute(mew, newContext);
