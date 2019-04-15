@@ -55,7 +55,10 @@ public class PagedInteractive extends InteractiveModule {
 
 	@Override
 	protected Reaction open() {
-		return new ReactAddReaction(source, EmojiSet.LEFT, EmojiSet.RIGHT);
+		MultiReaction openReaction = new MultiReaction();
+		openReaction.add(new ReactAddReaction(source, EmojiSet.LEFT));
+		openReaction.add(new ReactAddReaction(source, EmojiSet.RIGHT));
+		return openReaction;
 	}
 
 	@Override
