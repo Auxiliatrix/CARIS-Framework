@@ -230,7 +230,7 @@ public class ScriptCompiler {
 						return context.getString(variable);
 					} else if( tokenMatcher.matches() ) {
 						try {
-							return resolveStringIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
+							return resolveStringIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index"))-1);
 						} catch (IndexOutOfBoundsException e) {
 							throw new ScriptExecutionException("Couldn't resolve String \"" + variable + "\"!");
 						}
@@ -288,18 +288,19 @@ public class ScriptCompiler {
 			return Integer.parseInt(variable);
 		} else if( tokenMatcher.matches() ) {
 			try {
-				return resolveNumberIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
+				return resolveNumberIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index"))-1);
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve int \"" + variable + "\"!");
 			}
 		} else if( lengthMatcher.matches() ) {
-			switch (lengthMatcher.group("iterable").charAt(1)) {
+			String iterable = lengthMatcher.group("iterable");
+			switch (iterable.charAt(1)) {
 				case '$':
 					return resolveStringIterable(mew, context, lengthMatcher.group("iterable")).size();
 				case '#':
 					return resolveNumberIterable(mew, context, lengthMatcher.group("iterable")).size();
 				case '@':
-					if( variable.charAt(2) == 'R' ) {
+					if( iterable.charAt(2) == 'R' ) {
 						return resolveRoleIterable(mew, context, lengthMatcher.group("iterable")).size();
 					} else {
 						return resolveUserIterable(mew, context, lengthMatcher.group("iterable")).size();
@@ -319,7 +320,7 @@ public class ScriptCompiler {
 			return context.getUser(variable);
 		} else if( tokenMatcher.matches() ) {
 			try {
-				return resolveUserIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
+				return resolveUserIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index"))-1);
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve User \"" + variable + "\"!");
 			}
@@ -334,11 +335,11 @@ public class ScriptCompiler {
 	
 	public static final IRole resolveRoleVariable(MessageEventWrapper mew, Context context, String variable) throws ScriptExecutionException {
 		Matcher tokenMatcher = Pattern.compile("^(?<iterable>@[^ ]+)\\{(?<index>.+)\\}$").matcher(variable);
-		if( context.hasUser(variable) ) {
+		if( context.hasRole(variable) ) {
 			return context.getRole(variable);
 		} else if( tokenMatcher.matches() ) {
 			try {
-				return resolveRoleIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index")));
+				return resolveRoleIterable(mew, context, "." + tokenMatcher.group("iterable")).get(resolveNumberVariable(mew, context, tokenMatcher.group("index"))-1);
 			} catch (IndexOutOfBoundsException e) {
 				throw new ScriptExecutionException("Couldn't resolve Role \"" + variable + "\"!");
 			}
@@ -465,7 +466,9 @@ public class ScriptCompiler {
 		if( rosterMatcher.matches() ) {
 			return resolveUserVariable(mew, context, rosterMatcher.group("user")).getRolesForGuild(mew.getGuild());
 		} else if( iterable.equals(".@Roles") ) {
-			return mew.getGuild().getRoles();
+			List<IRole> roles = mew.getGuild().getRoles();
+			roles.remove(mew.getGuild().getEveryoneRole());
+			return roles;
 		} else if( iterable.equals(".@RoleMentioned") ) {
 			return mew.getMessage().getRoleMentions();
 		} else {

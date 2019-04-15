@@ -24,7 +24,7 @@ public class Executable_FOR extends Executable {
 		QueueReaction execution = new QueueReaction();
 		for( int f=0; f<ScriptCompiler.resolveNumberVariable(mew, context, range); f++ ) {
 			Context newContext = new Context(context);
-			newContext.putInt(counter, f+1);
+			newContext.putInt(counter.substring(1), f+1);
 			Reaction reaction = body.execute(mew, newContext);
 			if( reaction == null ) {
 				break;
