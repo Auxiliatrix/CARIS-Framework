@@ -24,7 +24,7 @@ public class QueueReaction extends MultiReaction {
 	public void process() {
 		for( Reaction reaction : reactions ) {
 			try {
-				reaction.run();
+				reaction.run(); // Intentional; these reactions should be executed sequentially.
 			} catch ( Exception e ){
 				e.printStackTrace();
 			}
