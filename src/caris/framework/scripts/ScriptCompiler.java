@@ -451,7 +451,7 @@ public class ScriptCompiler {
 		Matcher rosterMatcher = Pattern.compile("^\\.@Users\\{(?<role>.+)\\}$").matcher(iterable);
 		if( rosterMatcher.matches() ) {
 			return mew.getGuild().getUsersByRole(resolveRoleVariable(mew, context, rosterMatcher.group("role")));
-		} else if( iterable.equals(".@UsersGuild") ) {
+		} else if( iterable.equals(".@Users") ) {
 			return mew.getGuild().getUsers();
 		} else if( iterable.equals(".@Mentioned") ) {
 			return mew.getMessage().getMentions();
@@ -464,7 +464,7 @@ public class ScriptCompiler {
 		Matcher rosterMatcher = Pattern.compile("^\\.@Roles\\{(?<user>.+)\\}$").matcher(iterable);
 		if( rosterMatcher.matches() ) {
 			return resolveUserVariable(mew, context, rosterMatcher.group("user")).getRolesForGuild(mew.getGuild());
-		} else if( iterable.equals(".@RolesGuild") ) {
+		} else if( iterable.equals(".@Roles") ) {
 			return mew.getGuild().getRoles();
 		} else if( iterable.equals(".@RoleMentioned") ) {
 			return mew.getMessage().getRoleMentions();

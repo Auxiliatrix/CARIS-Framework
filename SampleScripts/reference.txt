@@ -85,12 +85,12 @@ ACCESSIBLE ITERATORS - Variables that can be used in Each control structures.
 	.$Quoted					|	The iterable containing each quoted substring in the message content		
 	.$Word						|	The iterable containing each word in the message content
 	.#Number					|	The iterable containing each number in the message content
-	.@UsersGuild				|	The iterable containing each user in the guild
-	.@RolesGuild				|	The iterable containing each role in the guild
-	.@Mentioned					|	The iterable containing each user mention in the message content
-	.@RoleMentioned				|	The iterable containing each role mention in the message content
+	.@Users						|	The iterable containing each user in the guild
 	.@Users{@role}				|	The iterable containing each user for the given role
+	.@Mentioned					|	The iterable containing each user mention in the message content
+	.@Roles						|	The iterable containing each role in the guild
 	.@Roles{@user}				|	The iterable containing each role for the given user
+	.@RoleMentioned				|	The iterable containing each role mention in the message content
 ---------------------------------------------------------------------------------------------------------------------------
 INTEGER EXPRESSIONS - Expressions that resolve to a numerical value. Numbers round down to nearest integer.
 	<A> / <B>					|	The quotient of <A> and <B>
