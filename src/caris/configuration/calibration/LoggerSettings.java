@@ -1,5 +1,10 @@
 package caris.configuration.calibration;
 
+/**
+ * The LoggerSettings file contains settings that affect how and what events are displayed in the log.
+ * @author Alina Kim
+ *
+ */
 public class LoggerSettings {
 
 	/* Display Settings */
