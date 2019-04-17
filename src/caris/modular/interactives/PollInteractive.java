@@ -11,6 +11,7 @@ import com.vdurmont.emoji.Emoji;
 import caris.configuration.reference.EmojiSet;
 import caris.framework.basehandlers.InteractiveModule;
 import caris.framework.basehandlers.InteractiveModule.Interactive;
+import caris.framework.basereactions.MultiReaction;
 import caris.framework.basereactions.QueueReaction;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
@@ -101,7 +102,7 @@ public class PollInteractive extends InteractiveModule {
 	
 	@Override
 	protected Reaction close() {
-		QueueReaction closePoll = new QueueReaction();
+		MultiReaction closePoll = new MultiReaction();
 		closePoll.add(new MessageReaction(source.getChannel(), PollBuilder.getResultEmbed(question, votes)));
 		closePoll.add(new ReactClearReaction(source));
 		completed = true;

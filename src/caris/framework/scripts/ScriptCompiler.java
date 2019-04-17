@@ -82,10 +82,18 @@ public class ScriptCompiler {
 				compiledCode.add(new Executable_STOP());
 			} else if( tokens[0].equals("If") || tokens[0].equals("For") || tokens[0].equals("Each") ) {
 				int end = -1;
+				int controls = 0;
 				for( int g=f+1; g<code.length; g++ ) {
+					if( code[g].startsWith("If ") || code[g].startsWith("For ") || code[g].startsWith("Each ") ) {
+						controls++;
+					}
 					if( code[g].equals("End") ) {
-						end = g;
-						break;
+						if( controls == 0 ) {
+							end = g;
+							break;
+						} else {
+							controls--;
+						}
 					}
 				}
 				if( end != -1 ) {
