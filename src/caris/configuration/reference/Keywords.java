@@ -2,8 +2,16 @@ package caris.configuration.reference;
 
 import caris.framework.utilities.TokenUtilities;
 
+/**
+ * The Keywords file contains words that should be used synonymously in reference to specific actions.
+ * @author Alina Kim
+ *
+ */
 public class Keywords {
 	
+	/**
+	 * The keywords that represent creation.
+	 */
 	public static final String[] CREATE = new String[] {
 			"create",
 			"make",
@@ -20,6 +28,9 @@ public class Keywords {
 			"set up",
 	};
 	
+	/**
+	 * The keywords that represent initialization.
+	 */
 	public static final String[] START = new String[] {
 			"start",
 			"commence",
@@ -29,6 +40,9 @@ public class Keywords {
 			"initiate"
 	};
 	
+	/**
+	 * The keywords that represent activation.
+	 */
 	public static final String[] ENABLE = new String[] {
 			"enable",
 			"activate",
@@ -37,8 +51,14 @@ public class Keywords {
 			"start up",
 	};
 	
+	/**
+	 * The keywords that denote positive action.
+	 */
 	public static final String[] POSITIVE = TokenUtilities.combineStringArrays(CREATE, START, ENABLE);
 	
+	/**
+	 * The keywords that represent destruction.
+	 */
 	public static final String[] DESTROY = new String[] {
 			"remove",
 			"delete",
@@ -53,6 +73,9 @@ public class Keywords {
 			"raze",
 	};
 	
+	/**
+	 * The keywords that represent cessation.
+	 */
 	public static final String[] END = new String[] {
 			"end",
 			"finish",
@@ -65,6 +88,9 @@ public class Keywords {
 			"wrap up",
 	};
 	
+	/**
+	 * The keywords that represent deactivation.
+	 */
 	public static final String[] DISABLE = new String[] {
 			"disable",
 			"deactivate",
@@ -73,8 +99,14 @@ public class Keywords {
 			"shut down",
 	};
 	
+	/**
+	 * The keywords that denote negative action.
+	 */
 	public static final String[] NEGATIVE = TokenUtilities.combineStringArrays(DESTROY, END, DISABLE);
 	
+	/**
+	 * The keywords that represent cancellation.
+	 */
 	public static final String[] CANCEL = new String[] {
 			"cancel",
 			"abort",
@@ -82,6 +114,9 @@ public class Keywords {
 			"dismiss"
 	};
 	
+	/**
+	 * The keywords that indicate affirmation.
+	 */
 	public static final String[] YES_INPUT = new String[] {
 			"y",
 			"ye",
@@ -100,6 +135,9 @@ public class Keywords {
 			"sure"
 	};
 	
+	/**
+	 * The keywords that indicate negation.
+	 */
 	public static final String[] NO_INPUT = new String[] {
 			"n",
 			"no",
