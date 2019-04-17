@@ -40,8 +40,8 @@ public class HelpBuilder {
 		helpBuilder.clearFields();
 		String description = "";
 		for( String category : Handler.categories ) {
-			category = StringUtilities.trim(category, Constants.EMBED_DESCRIPTION_SIZE - 16, true);
-			if( description.length() + category.length() > Constants.EMBED_DESCRIPTION_SIZE - 16 ) {
+			category = StringUtilities.trim(category, EmbedBuilder.DESCRIPTION_CONTENT_LIMIT - 16, true);
+			if( description.length() + category.length() > EmbedBuilder.DESCRIPTION_CONTENT_LIMIT - 16 ) {
 				helpBuilder.withDescription("```yaml\n" + description + "```");
 				pages.add(helpBuilder.build());
 				helpBuilder.clearFields();
@@ -61,7 +61,7 @@ public class HelpBuilder {
 	
 	public static EmbedObject[] getHelpEmbed(String category, IGuild guild) {
 		List<EmbedObject> pages = new ArrayList<EmbedObject>();
-		category = StringUtilities.trim(category, Constants.EMBED_TITLE_SIZE - 9, true);
+		category = StringUtilities.trim(category, EmbedBuilder.TITLE_LENGTH_LIMIT - 9, true);
 		categoryBuilder.clearFields();
 		String description = "";
 		for( String name : Brain.modules.keySet() ) {
@@ -69,8 +69,8 @@ public class HelpBuilder {
 			Help helpAnnotation = h.getClass().getAnnotation(Help.class);
 			if( helpAnnotation != null ) {
 				if( helpAnnotation.category().equalsIgnoreCase(category) ) {
-					name = StringUtilities.trim(name, Constants.EMBED_DESCRIPTION_SIZE - 32, true);
-					if( description.length() + name.length() > Constants.EMBED_DESCRIPTION_SIZE - 32 ) {
+					name = StringUtilities.trim(name, EmbedBuilder.DESCRIPTION_CONTENT_LIMIT - 32, true);
+					if( description.length() + name.length() > EmbedBuilder.DESCRIPTION_CONTENT_LIMIT - 32 ) {
 						categoryBuilder.withDescription("```yaml\n" + description + "```");
 						categoryBuilder.withTitle(category + " Modules:");
 						pages.add(categoryBuilder.build());
@@ -102,14 +102,14 @@ public class HelpBuilder {
 		commandBuilder.clearFields();
 		Help helpAnnotation = h.getClass().getAnnotation(Help.class);
 		if( helpAnnotation != null ) {
-			String footerText = StringUtilities.trim(helpAnnotation.category(), Constants.EMBED_FOOTER_SIZE / 2, true) + (h instanceof MessageHandler ? ((MessageHandler) h).getFormattedRequirements() : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : "");
-			String invocationText = h.disabledOn(guild.getLongID()) ? "~~" + StringUtilities.trim(h.invocation, Constants.EMBED_FIELD_TITLE_SIZE - 15, true) + "~~ (DISABLED)" : "`" + StringUtilities.trim(h.invocation, Constants.EMBED_FIELD_TITLE_SIZE - 2, true) + "`";
-			String descriptionText = h.disabledOn(guild.getLongID()) ? StringUtilities.trim(helpAnnotation.description(), Constants.EMBED_FIELD_VALUE_SIZE, true) : StringUtilities.trim(helpAnnotation.description(), Constants.EMBED_FIELD_VALUE_SIZE, true);
+			String footerText = StringUtilities.trim(helpAnnotation.category(), EmbedBuilder.FOOTER_CONTENT_LIMIT / 2, true) + (h instanceof MessageHandler ? ((MessageHandler) h).getFormattedRequirements() : "") + (h.disabledOn(guild.getLongID()) ? " | DISABLED" : "");
+			String invocationText = h.disabledOn(guild.getLongID()) ? "~~" + StringUtilities.trim(h.invocation, EmbedBuilder.TITLE_LENGTH_LIMIT - 15, true) + "~~ (DISABLED)" : "`" + StringUtilities.trim(h.invocation, EmbedBuilder.TITLE_LENGTH_LIMIT - 2, true) + "`";
+			String descriptionText = h.disabledOn(guild.getLongID()) ? StringUtilities.trim(helpAnnotation.description(), EmbedBuilder.FIELD_CONTENT_LIMIT, true) : StringUtilities.trim(helpAnnotation.description(), EmbedBuilder.FIELD_CONTENT_LIMIT, true);
 			
 			String usage = "";
 			for( String example : helpAnnotation.usage() ) {
-				example = StringUtilities.trim(example, Constants.EMBED_FIELD_VALUE_SIZE - 14, true);
-				if( usage.length() + example.length() > Constants.EMBED_FIELD_VALUE_SIZE - 14 ) {
+				example = StringUtilities.trim(example, EmbedBuilder.FIELD_CONTENT_LIMIT - 14, true);
+				if( usage.length() + example.length() > EmbedBuilder.FIELD_CONTENT_LIMIT - 14 ) {
 					commandBuilder.appendField(invocationText, descriptionText, false);
 					usage = "```http\n" + usage + "```";
 					commandBuilder.appendField("Usage", usage, false);

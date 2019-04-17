@@ -26,8 +26,8 @@ public class ModulesBuilder {
 		for( Handler h : Brain.modules.values() ) {
 			if( !h.isRoot() ) {
 				if( h.disabledOn(guild.getLongID()) ) {
-					String name = StringUtilities.trim(h.name, Constants.EMBED_DESCRIPTION_SIZE - 4, true);
-					if( disabled.length() + name.length() > Constants.EMBED_DESCRIPTION_SIZE - 4 ) {
+					String name = StringUtilities.trim(h.name, EmbedBuilder.DESCRIPTION_CONTENT_LIMIT - 4, true);
+					if( disabled.length() + name.length() > EmbedBuilder.DESCRIPTION_CONTENT_LIMIT - 4 ) {
 						modulesBuilder.withAuthorIcon(guild.getIconURL());
 						modulesBuilder.withAuthorName(guild.getName());
 						modulesBuilder.appendField("Disabled Modules:", disabled, false);
