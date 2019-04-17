@@ -2,9 +2,9 @@ package caris.framework.utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class StringUtilities {
 	
@@ -167,7 +167,7 @@ public class StringUtilities {
 		return equalsAnyOfIgnoreCase(a, Arrays.asList(b));
 	}
 	
-	public static boolean equalsAnyOfIgnoreCase( String a, List<String> b ) {
+	public static boolean equalsAnyOfIgnoreCase( String a, Collection<String> b ) {
 		for( String token : b ) {
 			if( a.equalsIgnoreCase(token) ) {
 				return true;
@@ -180,16 +180,7 @@ public class StringUtilities {
 		return hasIgnoreCase(Arrays.asList(a), b);
 	}
 	
-	public static boolean hasIgnoreCase(List<String> a, String b) {
-		for( String token: a ) {
-			if( token.equalsIgnoreCase(b) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean hasIgnoreCase(Set<String> a, String b) {
+	public static boolean hasIgnoreCase(Collection<String> a, String b) {
 		for( String token: a ) {
 			if( token.equalsIgnoreCase(b) ) {
 				return true;
@@ -202,15 +193,15 @@ public class StringUtilities {
 		return hasAnyOfIgnoreCase(Arrays.asList(a), b);
 	}
 	
-	public static boolean hasAnyOfIgnoreCase(String[] a, List<String> b) {
+	public static boolean hasAnyOfIgnoreCase(String[] a, Collection<String> b) {
 		return hasAnyOfIgnoreCase(Arrays.asList(a), b);
 	}
 	
-	public static boolean hasAnyOfIgnoreCase(List<String> a, String... b) {
+	public static boolean hasAnyOfIgnoreCase(Collection<String> a, String... b) {
 		return hasAnyOfIgnoreCase(a, Arrays.asList(b));
 	}
 	
-	public static boolean hasAnyOfIgnoreCase(List<String> a, List<String> b) {
+	public static boolean hasAnyOfIgnoreCase(Collection<String> a, Collection<String> b) {
 		for( String token : b ) {
 			if( hasIgnoreCase(a, token) ) {
 				return true;
@@ -223,15 +214,15 @@ public class StringUtilities {
 		return hasAllOfIgnoreCase(Arrays.asList(a), b);
 	}
 	
-	public static boolean hasAllOfIgnoreCase(String[] a, List<String> b) {
+	public static boolean hasAllOfIgnoreCase(String[] a, Collection<String> b) {
 		return hasAllOfIgnoreCase(Arrays.asList(a), b);
 	}
 	
-	public static boolean hasAllOfIgnoreCase(List<String> a, String... b) {
+	public static boolean hasAllOfIgnoreCase(Collection<String> a, String... b) {
 		return hasAllOfIgnoreCase(a, Arrays.asList(b));
 	}
 	
-	public static boolean hasAllOfIgnoreCase(List<String> a, List<String> b) {
+	public static boolean hasAllOfIgnoreCase(Collection<String> a, Collection<String> b) {
 		for( String token : b ) {
 			if( !hasIgnoreCase(a, token) ) {
 				return false;
@@ -248,16 +239,7 @@ public class StringUtilities {
 		return containsIgnoreCase(Arrays.asList(a), b);
 	}
 	
-	public static boolean containsIgnoreCase(List<String> a, String b) {
-		for( String token : a ) {
-			if( token.equalsIgnoreCase(b) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static Boolean containsIgnoreCase(Set<String> a, String b) {
+	public static boolean containsIgnoreCase(Collection<String> a, String b) {
 		for( String token : a ) {
 			if( token.equalsIgnoreCase(b) ) {
 				return true;
@@ -270,7 +252,7 @@ public class StringUtilities {
 		return containsAnyOfIgnoreCase(a, Arrays.asList(b));
 	}
 	
-	public static boolean containsAnyOfIgnoreCase(String a, List<String> b) {
+	public static boolean containsAnyOfIgnoreCase(String a, Collection<String> b) {
 		for( String token : b ) {
 			if( containsIgnoreCase(a, token) ) {
 				return true;
@@ -283,7 +265,7 @@ public class StringUtilities {
 		return containsAllOfIgnoreCase(a, Arrays.asList(b));
 	}
 
-	public static boolean containsAllOfIgnoreCase(String a, List<String> b) {
+	public static boolean containsAllOfIgnoreCase(String a, Collection<String> b) {
 		for( String token : b ) {
 			if( !containsIgnoreCase(a, token) ) {
 				return false;

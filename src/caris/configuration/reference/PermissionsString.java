@@ -5,8 +5,16 @@ import java.util.Map;
 
 import sx.blah.discord.handle.obj.Permissions;
 
+/**
+ * The PermissionsString file contains String representations of the {@link sx.blah.discord.handle.obj.Permissions} Enum.
+ * @author Alina Kim
+ *
+ */
 public class PermissionsString {
 
+	/**
+	 * A map that maps {@link sx.blah.discord.handle.obj.Permissions} elements to their String representations. 
+	 */
 	@SuppressWarnings("serial")
 	public static final Map<Permissions, String> PERMISSIONS_STRING = new HashMap<Permissions, String>() {{
 		put(Permissions.ADD_REACTIONS, "RXTN");
