@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import com.mashape.unirest.http.Unirest;
 
 import caris.configuration.calibration.Constants;
+import caris.configuration.calibration.OperationalConstants;
 import caris.framework.basehandlers.Handler.Module;
 import caris.framework.basehandlers.MessageHandler;
 import caris.framework.basereactions.MultiReaction;
@@ -107,7 +108,7 @@ public class FeedHandler extends MessageHandler {
 										CreateChannelReaction createChannel = new CreateChannelReaction(mew.getGuild(), "TBA Feeds", queueVerification.get(2) + "_" + queueVerification.get(3));
 										createChannel.run();
 									}
-									for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
+									for( int f=0; f<OperationalConstants.STUBBORNNESS; f++ ) {
 										for( IChannel channel : mew.getGuild().getChannelsByName(queueVerification.get(2) + "_" + queueVerification.get(3)) ) {
 											if( channel.getCategory() == null ) {
 												continue;

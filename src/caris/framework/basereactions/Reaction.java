@@ -2,7 +2,7 @@ package caris.framework.basereactions;
 
 import java.net.SocketException;
 
-import caris.configuration.calibration.Constants;
+import caris.configuration.calibration.OperationalConstants;
 import caris.framework.main.Brain;
 import sx.blah.discord.util.RequestBuffer;
 
@@ -23,14 +23,14 @@ public abstract class Reaction extends Thread implements Comparable<Reaction> {
 		@SuppressWarnings("unused")
 		boolean confirmation = RequestBuffer.request(() -> {
 			Brain.threadCount.incrementAndGet();
-			for( int f=0; f<Constants.STUBBORNNESS; f++ ) {
+			for( int f=0; f<OperationalConstants.STUBBORNNESS; f++ ) {
 				try {
 					process();
 					Brain.threadCount.decrementAndGet();
 					break;
 				} catch (SocketException e) {
 					try {
-						Thread.sleep(Constants.RETRY_SOCKETEXCEPTION_DELAY);
+						Thread.sleep(OperationalConstants.RETRY_SOCKETEXCEPTION_DELAY);
 					} catch (InterruptedException e1) {
 						e1.printStackTrace();
 					}
