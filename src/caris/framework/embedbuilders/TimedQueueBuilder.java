@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import caris.configuration.calibration.Constants;
 import caris.framework.basereactions.Reaction;
 import caris.framework.main.Brain;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
@@ -24,7 +23,7 @@ public class TimedQueueBuilder {
 		String footerText = Brain.timedQueue.size() + " item(s) in queue";
 		timedQueueBuilder.withFooterText(footerText);
 		for( Reaction r : Brain.timedQueue.keySet() ) {
-			if( timedQueueBuilder.getFieldCount() >= Constants.EMBED_FIELDS_SIZE ) {
+			if( timedQueueBuilder.getFieldCount() >= EmbedBuilder.FIELD_COUNT_LIMIT ) {
 				timedQueueBuilder.withFooterText(footerText);
 				pages.add(timedQueueBuilder.build());
 				timedQueueBuilder.clearFields();

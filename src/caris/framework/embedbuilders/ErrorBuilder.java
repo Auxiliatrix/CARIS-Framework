@@ -2,7 +2,6 @@ package caris.framework.embedbuilders;
 
 import java.awt.Color;
 
-import caris.configuration.calibration.Constants;
 import caris.framework.utilities.StringUtilities;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.util.EmbedBuilder;
@@ -62,14 +61,14 @@ public class ErrorBuilder {
 	}
 	
 	public static EmbedObject getErrorEmbed(ErrorType errorType, String errorMessage) {
-		errorBuilder.withAuthorName(ERROR_SYMBOL + StringUtilities.trim(errorType.toString(), Constants.EMBED_AUTHOR_SIZE - 1, true));
-		errorBuilder.withDescription(StringUtilities.trim(errorMessage, Constants.EMBED_DESCRIPTION_SIZE, true));
+		errorBuilder.withAuthorName(ERROR_SYMBOL + StringUtilities.trim(errorType.toString(), EmbedBuilder.AUTHOR_NAME_LIMIT - 1, true));
+		errorBuilder.withDescription(StringUtilities.trim(errorMessage, EmbedBuilder.DESCRIPTION_CONTENT_LIMIT, true));
 		return errorBuilder.build();
 	}
 	
 	public static EmbedObject getErrorEmbed(String errorType, String errorMessage) {
-		errorBuilder.withAuthorName(ERROR_SYMBOL + StringUtilities.trim(errorType, Constants.EMBED_AUTHOR_SIZE - 1, true));
-		errorBuilder.withDescription(StringUtilities.trim(errorMessage, Constants.EMBED_DESCRIPTION_SIZE, true));
+		errorBuilder.withAuthorName(ERROR_SYMBOL + StringUtilities.trim(errorType, EmbedBuilder.AUTHOR_NAME_LIMIT - 1, true));
+		errorBuilder.withDescription(StringUtilities.trim(errorMessage, EmbedBuilder.DESCRIPTION_CONTENT_LIMIT, true));
 		return errorBuilder.build();
 	}
 }
