@@ -21,7 +21,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 /**
  * The Handler class represents the base Module class used throughout the CARIS Framework.
  * Handlers are referenced in the case of a specific Event in the {@link caris.framework.events.EventManager#onEvent(Event)} function.
- * Extensions of this object include a {@link #handle(Event)} function, which returns an executable {@link caris.basereactions.Reaction} object.
+ * Extensions of this object include a {@link #handle(Event)} function, which returns an executable {@link caris.framework.basereactions.Reaction} object.
  * In addition, Handler classes should be annotated with the {@link caris.framework.basehandlers.Handler.Module} annotation.
  * @author Alina Kim
  *
