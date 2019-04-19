@@ -31,7 +31,6 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 		usage = {
 					Constants.INVOCATION_PREFIX + "TBA matches <event_key>",
 					Constants.INVOCATION_PREFIX + "TBA queue <event_key> <team_number>",
-					Constants.INVOCATION_PREFIX + "TBA team <team_number> [event_key]" // TODO
 				}
 	)
 public class TBAHandler extends MessageHandler {
