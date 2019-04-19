@@ -23,7 +23,7 @@ public abstract class Executable {
 			throw new ScriptExecutionException("I don't have permission to " + action + " " + target.getName() + "!");
 		} else if( !target.getPermissionsForGuild(guild).contains(permission) && !override && !MessageHandler.developerAuthor(invoker) ) {
 			throw new ScriptExecutionException("You don't have permission to " + action + " others!");
-		} else if( MessageHandler.getPosition(guild, invoker) <= MessageHandler.getPosition(guild, target) && !override && invoker != target && !MessageHandler.developerAuthor(invoker) ) {
+		} else if( MessageHandler.getPosition(guild, invoker) <= MessageHandler.getPosition(guild, target) && invoker != target && !MessageHandler.developerAuthor(invoker) ) {
 			throw new ScriptExecutionException("You don't have permission to " + action + " " + target.getName() + "!");
 		}
 	}
@@ -32,7 +32,7 @@ public abstract class Executable {
 		breakIfIllegal(guild, invoker, target, override, Permissions.MANAGE_ROLES, action);
 		if( MessageHandler.getBotPosition(guild) <= role.getPosition() ) {
 			throw new ScriptExecutionException("I don't have permission to manage that role!");
-		} else if( MessageHandler.getPosition(guild, invoker) <= role.getPosition() && !override && !MessageHandler.developerAuthor(invoker) ) {
+		} else if( MessageHandler.getPosition(guild, invoker) <= role.getPosition() && !MessageHandler.developerAuthor(invoker) ) {
 			throw new ScriptExecutionException("You don't have permission to manage that role!");
 		}
 	}
