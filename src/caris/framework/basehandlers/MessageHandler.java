@@ -21,11 +21,17 @@ import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
 
+/**
+ * The MessageHandler is an extension of the {@link caris.framework.basehandlers.Handler} class.
+ * It is designed to specifically handle {@link sx.blah.discord.api.events.MessageReceivedEvent} objects.
+ * It serves as a template class, and provides functions that can be used to process Permissions and invocation types.
+ * 
+ * @author Alina Kim
+ *
+ */
 public abstract class MessageHandler extends Handler {
-		
-	protected Permissions[] requirements;
 	
-	public boolean inContext;
+	protected Permissions[] requirements;
 	
 	public MessageHandler() {
 		this(new Permissions[] {});
@@ -35,7 +41,6 @@ public abstract class MessageHandler extends Handler {
 		super();
 		
 		this.requirements = requirements;
-		this.inContext = false;
 	}
 	
 	protected MessageHandler(String name, boolean allowBots, boolean whitelist, boolean root) {
@@ -46,7 +51,6 @@ public abstract class MessageHandler extends Handler {
 		super(name, allowBots, whitelist, root);
 		
 		this.requirements = requirements;
-		this.inContext = false;
 	}
 	
 	@Override
@@ -56,12 +60,6 @@ public abstract class MessageHandler extends Handler {
 			MessageReceivedEvent mre = (MessageReceivedEvent) event;
 			if( !mre.getChannel().isPrivate() ) {
 				MessageEventWrapper messageEventWrapper = wrap(mre);
-				inContext = false;
-				if( mre.getMessage().getMentions().contains(Brain.cli.getOurUser()) || Brain.variables.getUserInfo(mre.getMessage()).userData.has("lastMessage_" + mre.getChannel().getLongID()) ) {
-					if( StringUtilities.containsIgnoreCase(Brain.variables.getUserInfo(mre.getMessage()).userData.get("lastMessage_" + mre.getChannel().getLongID()).toString(), Constants.NAME) ) {
-						inContext = true;
-					}
-				}
 				if( botFilter(event) ) {
 					Logger.debug("Event from a bot. Aborting.", 1, true);
 					return null;
@@ -125,7 +123,16 @@ public abstract class MessageHandler extends Handler {
 	}
 	
 	protected final boolean mentioned(MessageEventWrapper mew) {
-		return mew.containsWord(Constants.NAME) || mew.getAllMentionedUsers().contains(Brain.cli.getOurUser()) || inContext;
+		return mew.containsWord(Constants.NAME) || mew.getAllMentionedUsers().contains(Brain.cli.getOurUser()) || inContext(mew);
+	}
+	
+	protected final boolean inContext(MessageEventWrapper mew) {
+		if( mew.getMessage().getMentions().contains(Brain.cli.getOurUser()) || Brain.variables.getUserInfo(mew.getMessage()).userData.has("lastMessage_" + mew.getChannel().getLongID()) ) {
+			if( StringUtilities.containsIgnoreCase(Brain.variables.getUserInfo(mew.getMessage()).userData.get("lastMessage_" + mew.getChannel().getLongID()).toString(), Constants.NAME) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	protected final boolean invoked(MessageEventWrapper mew) {
