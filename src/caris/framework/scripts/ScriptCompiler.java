@@ -389,7 +389,11 @@ public class ScriptCompiler {
 		int index_gt = variable.indexOf(" > ");
 		int index_le = variable.indexOf(" <= ");
 		int index_ge = variable.indexOf(" >= ");
-		if( index_and != -1 && index_and + 3 == variable.length() || index_or != -1 && index_or + 3 == variable.length() ) {
+		if( index_and != -1 && index_and + 5 == variable.length() || index_or != -1 && index_or + 4 == variable.length()
+				|| index_eq != -1 && index_eq + 4 == variable.length() || index_ne != -1 && index_ne + 4 == variable.length()
+				|| index_lt != -1 && index_lt + 3 == variable.length() || index_gt != -1 && index_gt + 3 == variable.length()
+				|| index_le != -1 && index_le + 4 == variable.length() || index_ge != -1 && index_ge + 4 == variable.length()
+		) {
 			throw new ScriptExecutionException("Missing operand in Boolean expression \"" + variable + "\"!");
 		} else if( index_or != -1 ) {
 			return resolveBooleanVariable(mew, context, variable.substring(0, index_or)) || resolveBooleanVariable(mew, context,variable.substring(index_or+4));
