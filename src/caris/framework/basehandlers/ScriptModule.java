@@ -25,7 +25,7 @@ public class ScriptModule extends MessageHandler {
 	
 	@Override
 	protected boolean isTriggered(MessageEventWrapper mew) {
-		return invoked(mew) || passive;
+		return (invoked(mew) || passive) && (mew.getGuild() == guild || guild == null);
 	}
 
 	@Override

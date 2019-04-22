@@ -269,21 +269,21 @@ public class ScriptCompiler {
 		}
 		
 		// Arithmetic Resolution
-		int index_div = variable.indexOf(" / ");
-		int index_mul = variable.indexOf(" * ");
-		int index_sub = variable.indexOf(" - ");
-		int index_add = variable.indexOf(" + ");
-		if( index_div != -1 && index_div + 3 == variable.length() || index_mul != -1 && index_mul + 3 == variable.length() || index_sub != -1 && index_sub + 3 == variable.length() || index_add != -1 && index_add + 3 == variable.length() ) {
+		int index_div = variable.indexOf("/");
+		int index_mul = variable.indexOf("*");
+		int index_sub = variable.indexOf("-");
+		int index_add = variable.indexOf("+");
+		if( index_div != -1 && index_div + 1 == variable.length() || index_mul != -1 && index_mul + 1 == variable.length() || index_sub != -1 && index_sub + 1 == variable.length() || index_add != -1 && index_add + 1 == variable.length() ) {
 			throw new ScriptExecutionException("Missing operand in Number expression \"" + variable + "\"!");
 		} else if( index_sub != -1 || index_sub != index_add ) {
 			int index = index_sub != -1 && (index_sub > index_add || index_add == -1) ? index_sub : index_add;
-			return resolveNumberVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveNumberVariable(mew, context,variable.substring(index+3));
+			return resolveNumberVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveNumberVariable(mew, context,variable.substring(index+1));
 		} else if( index_div != -1 || index_mul != -1 ) {
 			int index = index_div != -1 && (index_div > index_mul || index_mul == -1) ? index_div : index_mul;
 			if( index == index_div ) {
-				return resolveNumberVariable(mew, context, variable.substring(0, index)) / resolveNumberVariable(mew, context,variable.substring(index+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index)) / resolveNumberVariable(mew, context,variable.substring(index+1));
 			} else {
-				return resolveNumberVariable(mew, context, variable.substring(0, index)) * resolveNumberVariable(mew, context,variable.substring(index+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index)) * resolveNumberVariable(mew, context,variable.substring(index+1));
 			}
 		}
 		
@@ -389,26 +389,30 @@ public class ScriptCompiler {
 		int index_gt = variable.indexOf(" > ");
 		int index_le = variable.indexOf(" <= ");
 		int index_ge = variable.indexOf(" >= ");
-		if( index_and != -1 && index_and + 3 == variable.length() || index_or != -1 && index_or + 3 == variable.length() ) {
+		if( index_and != -1 && index_and + 5 == variable.length() || index_or != -1 && index_or + 4 == variable.length()
+				|| index_eq != -1 && index_eq + 4 == variable.length() || index_ne != -1 && index_ne + 4 == variable.length()
+				|| index_lt != -1 && index_lt + 3 == variable.length() || index_gt != -1 && index_gt + 3 == variable.length()
+				|| index_le != -1 && index_le + 4 == variable.length() || index_ge != -1 && index_ge + 4 == variable.length()
+		) {
 			throw new ScriptExecutionException("Missing operand in Boolean expression \"" + variable + "\"!");
 		} else if( index_or != -1 ) {
-			return resolveBooleanVariable(mew, context, variable.substring(0, index_or)) || resolveBooleanVariable(mew, context,variable.substring(index_or+3));
+			return resolveBooleanVariable(mew, context, variable.substring(0, index_or)) || resolveBooleanVariable(mew, context,variable.substring(index_or+4));
 		} else if( index_and != -1 ) {
-			return resolveBooleanVariable(mew, context, variable.substring(0, index_and)) && resolveBooleanVariable(mew, context,variable.substring(index_and+3));
+			return resolveBooleanVariable(mew, context, variable.substring(0, index_and)) && resolveBooleanVariable(mew, context,variable.substring(index_and+5));
 		} else if( index_eq != -1 || index_ne != -1 || index_lt != -1 || index_gt != -1 || index_le != -1 || index_ge != -1 ) {
 			int priority = Collections.max(Arrays.asList( new Integer[] {index_eq, index_ne, index_lt, index_gt, index_le, index_ge}));
 			if( priority == index_eq ) {
-				return resolveStringVariable(mew, context, variable.substring(0, index_eq)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_eq+3)));
+				return resolveStringVariable(mew, context, variable.substring(0, index_eq)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_eq+4)));
 			} else if( priority == index_ne ) {
-				return !resolveStringVariable(mew, context, variable.substring(0, index_ne)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_ne+3)));
+				return !resolveStringVariable(mew, context, variable.substring(0, index_ne)).equalsIgnoreCase(resolveStringVariable(mew, context,variable.substring(index_ne+4)));
 			} else if( priority == index_lt ) {
-				return resolveNumberVariable(mew, context, variable.substring(0, index_lt)) < resolveNumberVariable(mew, context,variable.substring(index_lt+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index_lt)) < resolveNumberVariable(mew, context,variable.substring(index_lt+4));
 			} else if( priority == index_gt ) {
-				return resolveNumberVariable(mew, context, variable.substring(0, index_gt)) > resolveNumberVariable(mew, context,variable.substring(index_gt+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index_gt)) > resolveNumberVariable(mew, context,variable.substring(index_gt+4));
 			} else if( priority == index_le ) {
-				return resolveNumberVariable(mew, context, variable.substring(0, index_le)) <= resolveNumberVariable(mew, context,variable.substring(index_le+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index_le)) <= resolveNumberVariable(mew, context,variable.substring(index_le+4));
 			} else if( priority == index_ge ) {
-				return resolveNumberVariable(mew, context, variable.substring(0, index_ge)) <= resolveNumberVariable(mew, context,variable.substring(index_ge+3));				
+				return resolveNumberVariable(mew, context, variable.substring(0, index_ge)) <= resolveNumberVariable(mew, context,variable.substring(index_ge+4));				
 			}
 		}
 		
