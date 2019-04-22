@@ -93,16 +93,16 @@ ACCESSIBLE ITERATORS - Variables that can be used in Each control structures.
 	.@RoleMentioned				|	The iterable containing each role mention in the message content
 ---------------------------------------------------------------------------------------------------------------------------
 INTEGER EXPRESSIONS - Expressions that resolve to a numerical value. Numbers round down to nearest integer.
-	<A> / <B>					|	The quotient of <A> and <B>
-		$Quoted{} / 2			|		The number of quoted substrings in the message content divided by 2
-	<A> * <B>					|	The product of <A> and <B>
-		$Quoted{} * 2			|		The number of quoted substrings in the message content times 2
-	<A> - <B>					|	The difference of <A> and <B>
-		$Quoted{} - 2			|		The number of quoted substrings in the message content - 2
-	<A> + <B>					|	The sum of <A> and <B>
-		$Quoted{} + 2			|		The number of quoted substrings in the message content + 2
-	(<A> + <B>) * <C>			|	The sum of <A> and <B>, multiplied by <C>
-		(2 + 2) * 2				|		The product of 2 and the sum of 2 and 2
+	<A>/<B>						|	The quotient of <A> and <B>
+		$Quoted{}/2				|		The number of quoted substrings in the message content divided by 2
+	<A>*<B>						|	The product of <A> and <B>
+		$Quoted{}*2				|		The number of quoted substrings in the message content times 2
+	<A>-<B>						|	The difference of <A> and <B>
+		$Quoted{}-2				|		The number of quoted substrings in the message content - 2
+	<A>+<B>						|	The sum of <A> and <B>
+		$Quoted{}+2				|		The number of quoted substrings in the message content + 2
+	(<A>+<B>)*<C>				|	The sum of <A> and <B>, multiplied by <C>
+		(2+2)*2					|		The product of 2 and the sum of 2 and 2
 ---------------------------------------------------------------------------------------------------------------------------
 BOOLEAN EXPRESSIONS - Expressions that resolve as either true or false.
 	?Developer					|	Whether the author is a developer

@@ -269,21 +269,21 @@ public class ScriptCompiler {
 		}
 		
 		// Arithmetic Resolution
-		int index_div = variable.indexOf(" / ");
-		int index_mul = variable.indexOf(" * ");
-		int index_sub = variable.indexOf(" - ");
-		int index_add = variable.indexOf(" + ");
-		if( index_div != -1 && index_div + 3 == variable.length() || index_mul != -1 && index_mul + 3 == variable.length() || index_sub != -1 && index_sub + 3 == variable.length() || index_add != -1 && index_add + 3 == variable.length() ) {
+		int index_div = variable.indexOf("/");
+		int index_mul = variable.indexOf("*");
+		int index_sub = variable.indexOf("-");
+		int index_add = variable.indexOf("+");
+		if( index_div != -1 && index_div + 1 == variable.length() || index_mul != -1 && index_mul + 1 == variable.length() || index_sub != -1 && index_sub + 1 == variable.length() || index_add != -1 && index_add + 1 == variable.length() ) {
 			throw new ScriptExecutionException("Missing operand in Number expression \"" + variable + "\"!");
 		} else if( index_sub != -1 || index_sub != index_add ) {
 			int index = index_sub != -1 && (index_sub > index_add || index_add == -1) ? index_sub : index_add;
-			return resolveNumberVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveNumberVariable(mew, context,variable.substring(index+3));
+			return resolveNumberVariable(mew, context, variable.substring(0, index)) + (index == index_add ? 1 : -1) * resolveNumberVariable(mew, context,variable.substring(index+1));
 		} else if( index_div != -1 || index_mul != -1 ) {
 			int index = index_div != -1 && (index_div > index_mul || index_mul == -1) ? index_div : index_mul;
 			if( index == index_div ) {
-				return resolveNumberVariable(mew, context, variable.substring(0, index)) / resolveNumberVariable(mew, context,variable.substring(index+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index)) / resolveNumberVariable(mew, context,variable.substring(index+1));
 			} else {
-				return resolveNumberVariable(mew, context, variable.substring(0, index)) * resolveNumberVariable(mew, context,variable.substring(index+3));
+				return resolveNumberVariable(mew, context, variable.substring(0, index)) * resolveNumberVariable(mew, context,variable.substring(index+1));
 			}
 		}
 		
