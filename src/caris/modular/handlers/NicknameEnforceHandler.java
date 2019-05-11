@@ -37,9 +37,8 @@ public class NicknameEnforceHandler extends GeneralHandler<NicknameChangedEvent>
 	
 	@Override
 	public Reaction process(NicknameChangedEvent typedEvent) {
-		NicknameChangedEvent nicknameChangedEvent = (NicknameChangedEvent) typedEvent;
 		if( Brain.variables.getUserInfo(typedEvent.getGuild(), typedEvent.getUser()).userData.has("nickname-override") ) {
-			return new NicknameSetReaction(nicknameChangedEvent.getGuild(), nicknameChangedEvent.getUser(), (String) Brain.variables.getUserInfo(typedEvent.getGuild(), typedEvent.getUser()).userData.get("nickname-override"));
+			return new NicknameSetReaction(typedEvent.getGuild(), typedEvent.getUser(), (String) Brain.variables.getUserInfo(typedEvent.getGuild(), typedEvent.getUser()).userData.get("nickname-override"));
 		} else {
 			return null;
 		}
