@@ -19,7 +19,9 @@ import sx.blah.discord.handle.obj.IUser;
 		description = "Mutes people's messages, making it so that their messages are deleted immediately after they are sent.",
 		usage = {
 				Constants.NAME + ", mute @person in chat, please",
+				Constants.NAME + ", just chat mute anyone with the @annoying role, thanks.",
 				Constants.NAME + ", chat unmute @person now",
+				Constants.NAME + ", can you unmute @person1 and @person2 for good behavior?"
 		}
 	)
 public class ChatMuteHandler extends MessageHandler {
