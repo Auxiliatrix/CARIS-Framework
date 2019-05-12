@@ -39,7 +39,7 @@ public class ChatMuteHandler extends MessageHandler {
 	protected Reaction process(MessageEventWrapper mew) {
 		MultiReaction chatMute = new MultiReaction();
 		if( mew.getMessage().getMentions().size() > 0  ) {
-			boolean muteState = !mew.containsAnyWords("unmute", "chatunmute");
+			String muteState = mew.containsAnyWords("unmute", "chatunmute") ? "disabled" : "enabled";
 			for( IUser user : mew.getMessage().getMentions() ) {
 				if( getPosition(mew.getGuild(), mew.getAuthor()) <= getPosition(mew.getGuild(), user) ) {
 					chatMute.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "You don't have permission to chatmute the user\"" + user.getName() + "\"!")));
@@ -48,7 +48,7 @@ public class ChatMuteHandler extends MessageHandler {
 				chatMute.add(new UpdateUserReaction(mew.getGuild(), user, "chat-mute", muteState, true));
 			}
 		} else if( mew.getMessage().getRoleMentions().size() > 0 ) {
-			boolean muteState = !mew.containsAnyWords("unmute", "chatunmute");
+			String muteState = mew.containsAnyWords("unmute", "chatunmute") ? "disabled" : "enabled";
 			for( IRole role : mew.getMessage().getRoleMentions() ) {
 				if( getPosition(mew.getGuild(), mew.getAuthor()) <= role.getPosition() ) {
 					chatMute.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "You don't have permission to chatmute the role\"" + role.getName() + "\"!")));

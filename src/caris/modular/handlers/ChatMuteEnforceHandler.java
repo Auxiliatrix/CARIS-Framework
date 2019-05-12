@@ -23,13 +23,13 @@ public class ChatMuteEnforceHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
 		if( Brain.variables.getUserInfo(mew.getGuild(), mew.getAuthor()).userData.has("chat-mute") ) {
-			if( (boolean) Brain.variables.getUserInfo(mew.getGuild(), mew.getAuthor()).userData.get("chat-mute") ) {
+			if( ((String) Brain.variables.getUserInfo(mew.getGuild(), mew.getAuthor()).userData.get("chat-mute")).equals("enabled") ) {
 				return new MessageDeleteReaction(mew.getChannel(), mew.getMessage());
 			} else {
 				return null;
 			}
 		} else {
-			return new UpdateUserReaction(mew.getGuild(), mew.getAuthor(), "chat-mute", false, true);
+			return new UpdateUserReaction(mew.getGuild(), mew.getAuthor(), "chat-mute", "disabled", true);
 		}
 	}
 	
