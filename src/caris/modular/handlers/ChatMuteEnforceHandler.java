@@ -8,7 +8,7 @@ import caris.framework.main.Brain;
 import caris.framework.reactions.MessageDeleteReaction;
 import caris.framework.reactions.UpdateUserReaction;
 
-@Module(name = "ChatMuteEnforce")
+@Module(name = "ChatMuteEnforce", allowBots = true)
 public class ChatMuteEnforceHandler extends MessageHandler {
 
 	public ChatMuteEnforceHandler() {
@@ -23,7 +23,7 @@ public class ChatMuteEnforceHandler extends MessageHandler {
 	@Override
 	protected Reaction process(MessageEventWrapper mew) {
 		if( Brain.variables.getUserInfo(mew.getGuild(), mew.getAuthor()).userData.has("chat-mute") ) {
-			if( Brain.variables.getUserInfo(mew.getGuild(), mew.getAuthor()).userData.getBoolean("chat-mute") ) {
+			if( (boolean) Brain.variables.getUserInfo(mew.getGuild(), mew.getAuthor()).userData.get("chat-mute") ) {
 				return new MessageDeleteReaction(mew.getChannel(), mew.getMessage());
 			} else {
 				return null;
