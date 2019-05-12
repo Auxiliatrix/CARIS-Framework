@@ -8,6 +8,7 @@ import caris.framework.basereactions.Reaction;
 import caris.framework.embedbuilders.ErrorBuilder;
 import caris.framework.embedbuilders.HelpBuilder.Help;
 import caris.framework.events.MessageEventWrapper;
+import caris.framework.main.Brain;
 import caris.framework.reactions.MessageReaction;
 import caris.framework.reactions.UpdateUserReaction;
 import sx.blah.discord.handle.obj.IRole;
@@ -21,7 +22,7 @@ import sx.blah.discord.handle.obj.IUser;
 				Constants.NAME + ", mute @person in chat, please",
 				Constants.NAME + ", just chat mute anyone with the @annoying role, thanks.",
 				Constants.NAME + ", chat unmute @person now",
-				Constants.NAME + ", can you unmute @person1 and @person2 for good behavior?"
+				Constants.NAME + ", can you chat unmute @person1 and @person2 for good behavior?"
 		}
 	)
 public class ChatMuteHandler extends MessageHandler {
@@ -41,6 +42,10 @@ public class ChatMuteHandler extends MessageHandler {
 		if( mew.getMessage().getMentions().size() > 0  ) {
 			String muteState = mew.containsAnyWords("unmute", "chatunmute") ? "disabled" : "enabled";
 			for( IUser user : mew.getMessage().getMentions() ) {
+				if( user.equals(Brain.cli.getOurUser()) ) {
+					chatMute.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "I can't mute myself!")));
+					continue;
+				}
 				if( getPosition(mew.getGuild(), mew.getAuthor()) <= getPosition(mew.getGuild(), user) ) {
 					chatMute.add(new MessageReaction(mew.getChannel(), ErrorBuilder.getErrorEmbed(ErrorBuilder.ErrorType.PERMISSION, "You don't have permission to chatmute the user\"" + user.getName() + "\"!")));
 					continue;
@@ -55,6 +60,9 @@ public class ChatMuteHandler extends MessageHandler {
 					continue;
 				}
 				for( IUser user : mew.getGuild().getUsersByRole(role) ) {
+					if( user.equals(Brain.cli.getOurUser()) ) {
+						continue;
+					}
 					chatMute.add(new UpdateUserReaction(mew.getGuild(), user, "chat-mute", muteState, true));
 				}
 			}
