@@ -31,6 +31,10 @@ To use it, pass the the desired token as the first parameter.
 ```
 ./run.sh TOKEN
 ```
+
+If on a Windows system, it is possible to use the `.ps1` script instead.
+The two are quivalent.
+
 Alternatively, it is possible to store the token inside of the script itself, at the line: `declare TOKEN=""`
 This is not recommended, as it can lead to the easy mistake of committing the token value by accident.
 
@@ -44,14 +48,20 @@ Both methods of running Gradle are equivalent.
 
 To install dependencies for usage with Eclipse (to avoid import errors), use:
 ```
-gradle eclipse
+./gradlew eclipse
 ```
+
+or for IntelliJ:
+```
+./gradlew idea
+```
+
 This will download the required dependencies and configure your project file to properly point to the dependencies.
 
 To build a project, it is recommended (but not required) to also clean the build directory of the previous build.
 To both clean and then build the project:
 ```
-gradle clean build
+./gradlew clean build
 ```
 This will create a zipped file under `build/distributions`, one of which is a `.tar`, and one a `.zip`.
 The unpacked compressed folder will contain two sub-directories.
