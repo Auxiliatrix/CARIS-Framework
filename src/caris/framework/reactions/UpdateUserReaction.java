@@ -35,7 +35,7 @@ public class UpdateUserReaction extends Reaction {
 	
 	@Override
 	public void process() {
-		if( Brain.variables.getUserInfo(guild, user).userData.has(key) ) {
+		if( !Brain.variables.getUserInfo(guild, user).userData.has(key) || override ) {
 			if( value == null ) {
 				Brain.variables.getUserInfo(guild, user).userData.remove(key);
 			} else {
