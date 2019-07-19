@@ -56,7 +56,7 @@ public class SuperEvent {
 	@EventSubscriber public void onMessageEmbed( MessageEmbedEvent event ) {}
 	@EventSubscriber public void onMessage( MessageEvent event ) {}
 	@EventSubscriber public void onMessagePin( MessagePinEvent event ) {}
-	@EventSubscriber public void onMessageReceived( MessageReceivedEvent event ) {}
+	@EventSubscriber public void onMessageReceived( MessageReceivedEvent event ) {System.out.println("ping");}
 	@EventSubscriber public void onMessageSend( MessageSendEvent event ) {}
 	@EventSubscriber public void onMessageUnpin( MessageUnpinEvent event ) {}
 	@EventSubscriber public void onMessageUpdate( MessageUpdateEvent event ) {}

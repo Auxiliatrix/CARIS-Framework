@@ -3,12 +3,22 @@ package caris.framework.modules;
 import caris.framework.reactions.Reaction;
 import sx.blah.discord.api.events.Event;
 
-public interface Module<E extends Event> {
+public abstract class Module<E extends Event> {
 	
-	public String name = "";
-	public int priority = -1;
+	public Class<E> eventClass;
 	
-	public boolean triggered(E event);
-	public Reaction handle(E event);
+	public abstract String getName();
+	
+	public Module( Class<E> eventClass) {
+		this.eventClass = eventClass;
+	}
+	
+	public boolean triggered(E event) {
+		return false;
+	}
+	
+	public Reaction handle(E event) {
+		return null;
+	}
 	
 }
