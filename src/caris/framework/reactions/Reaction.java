@@ -1,6 +1,6 @@
 package caris.framework.reactions;
 
-public class Reaction implements Runnable {
+public abstract class Reaction implements Runnable {
 
 	public enum Tag {
 		DEFAULT,
@@ -23,9 +23,11 @@ public class Reaction implements Runnable {
 		return tag;
 	}
 	
+	public abstract void task();
+	
 	@Override
-	public void run() {
-		
+	public final void run() {
+		task();
 	}
 
 }

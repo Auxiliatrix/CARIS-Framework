@@ -56,8 +56,8 @@ public abstract class Listener<E extends Event> {
 			reactionMap.put(tag, new ArrayList<Reaction>());
 		}
 		for( Module<E> module : modules ) {
-			if( module.triggered(event) ) {
-				Reaction reaction = module.handle(event);
+			Reaction reaction = module.handle(event);
+			if( reaction != null ) {
 				reactionMap.get(reaction.getTag()).add(reaction);
 			}
 		}

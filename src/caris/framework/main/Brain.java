@@ -6,9 +6,7 @@ import java.util.List;
 import org.reflections.Reflections;
 
 import caris.configuration.calibration.Constants;
-import caris.framework.events.SuperEvent;
 import caris.framework.listeners.Listener;
-import caris.framework.listeners.ListenerMessageReceived;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;

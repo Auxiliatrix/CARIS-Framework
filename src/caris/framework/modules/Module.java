@@ -1,6 +1,7 @@
 package caris.framework.modules;
 
 import caris.framework.reactions.Reaction;
+import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
 
 public abstract class Module<E extends Event> {
@@ -9,16 +10,22 @@ public abstract class Module<E extends Event> {
 	
 	public abstract String getName();
 	
-	public Module( Class<E> eventClass) {
+	protected Logger logger;
+	
+	public Module( Class<E> eventClass ) {
 		this.eventClass = eventClass;
+		logger = new Logger().addOrigin(getName());
 	}
 	
-	public boolean triggered(E event) {
-		return false;
-	}
+	public abstract boolean triggered(E event);	
+	public abstract Reaction process(E event);
 	
 	public Reaction handle(E event) {
-		return null;
+		if( triggered(event) ) {
+			return process(event);
+		} else {
+			return null;
+		}
 	}
 	
 }
