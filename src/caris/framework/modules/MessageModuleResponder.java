@@ -5,7 +5,7 @@ import caris.framework.reactions.Reaction;
 import caris.framework.reactions.ReactionMessageSend;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
-public class ModuleResponder extends MessageModule<MessageReceivedEvent> {
+public class MessageModuleResponder extends MessageModule<MessageReceivedEvent> {
 
 	@Override
 	public String getName() {
@@ -22,7 +22,7 @@ public class ModuleResponder extends MessageModule<MessageReceivedEvent> {
 		return "Default";
 	}
 	
-	public ModuleResponder() {
+	public MessageModuleResponder() {
 		super(MessageReceivedEvent.class);
 	}
 	

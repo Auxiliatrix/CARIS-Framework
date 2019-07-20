@@ -13,7 +13,7 @@ public class ReactionMessageSend extends Reaction {
 	}
 	
 	@Override
-	public void task() {
+	protected void task() {
 		channel.sendMessage(message);
 	}
 	

@@ -18,8 +18,7 @@ public class Brain {
 	public static String prefix;
 	public static String name;
 	
-	public static Logger logger = new Logger()
-										.addOrigin("main");
+	public static Logger logger = new Logger().addOrigin("main");
 	
 	@SuppressWarnings("rawtypes")
 	public static List<Listener> listeners = new ArrayList<Listener>();
@@ -33,7 +32,6 @@ public class Brain {
 		} else if (!(args.length >= 2)) {
 			logger.report("No name passed as the second argument.");
 			logger.report("Inferring the default name of \"" + Constants.DEFAULT_NAME + "\".");
-			
 			name = Constants.DEFAULT_NAME;
 		} else {
 			name = args[1];
@@ -64,7 +62,6 @@ public class Brain {
 	
 	private static void login(String token) {
 		Logger loginLogger = logger.clone().addOrigin("Login");
-		
 		loginLogger.log("Logging in");
 		
 		cli = getBuiltDiscordClient(token);
@@ -81,7 +78,7 @@ public class Brain {
 		while( !cli.isReady() ) {}
 		loginLogger.log("Client ready!");
 		
-		cli.changePlayingText(Constants.INVOCATION_PREFIX + "Help");
+		cli.changePlayingText(prefix + "Help");
 		cli.changeUsername(name);
 		loginLogger.log("Login complete.");
 	}

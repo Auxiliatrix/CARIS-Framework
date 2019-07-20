@@ -75,7 +75,7 @@ public abstract class Listener<E extends Event> {
 		}
 		
 		for( Reaction reaction : reactionQueue ) {
-			reaction.run();
+			reaction.start();
 		}
 	}
 	
