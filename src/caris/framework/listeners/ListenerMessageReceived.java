@@ -1,5 +1,8 @@
 package caris.framework.listeners;
 
+import java.io.IOException;
+
+import caris.framework.utilities.NLPUtilities;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -23,6 +26,11 @@ public class ListenerMessageReceived extends Listener<MessageReceivedEvent> {
 			.addOrigin(event.getGuild().getName() + ":" + event.getChannel().getName())
 			.addOrigin(event.getAuthor().getName())
 			.log(event.getMessage().getContent());
+		try {
+			NLPUtilities.tag(event.getMessage().getContent());
+		} catch (ClassNotFoundException | IOException e) {
+			logger.report("Tagging error.");
+		}
 		super.onReceive(event);
 	}
 	
