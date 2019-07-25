@@ -20,7 +20,7 @@ public class QueueReaction extends Reaction {
 	@Override
 	protected void task() {
 		for( Reaction reaction : unpackedReactions() ) {
-			reaction.start();
+			reaction.run();
 		}
 	}
 	
