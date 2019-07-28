@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.reflections.Reflections;
 
-import caris.configuration.calibration.Constants;
+import caris.common.calibration.Constants;
 import caris.framework.listeners.Listener;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.ClientBuilder;

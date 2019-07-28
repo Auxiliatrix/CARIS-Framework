@@ -1,6 +1,6 @@
 package caris.framework.modules;
 
-import caris.configuration.calibration.Constants;
+import caris.common.calibration.Constants;
 import caris.framework.reactions.Reaction;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageEvent;

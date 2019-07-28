@@ -1,4 +1,7 @@
-package caris.framework.reactions;
+package caris.implementation.reactions;
+
+import caris.framework.reactions.Reaction;
+import caris.framework.reactions.Reaction.Tag;
 
 public class WaitReaction extends Reaction {
 

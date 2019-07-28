@@ -1,11 +1,12 @@
-package caris.framework.modules;
+package caris.implementation.modules;
 
 import caris.framework.main.Brain;
+import caris.framework.modules.MessageModule;
 import caris.framework.reactions.Reaction;
-import caris.framework.reactions.ReactionMessageSend;
+import caris.implementation.reactions.ReactionMessageSend;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
-public class MessageModuleResponder extends MessageModule<MessageReceivedEvent> {
+public class ModuleResponder extends MessageModule<MessageReceivedEvent> {
 
 	@Override
 	public String getName() {
@@ -22,7 +23,7 @@ public class MessageModuleResponder extends MessageModule<MessageReceivedEvent> 
 		return "Default";
 	}
 	
-	public MessageModuleResponder() {
+	public ModuleResponder() {
 		super(MessageReceivedEvent.class);
 	}
 	

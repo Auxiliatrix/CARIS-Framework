@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.reflections.Reflections;
 
-import caris.configuration.calibration.Constants;
+import caris.common.calibration.Constants;
 import caris.framework.modules.Module;
 import caris.framework.reactions.Reaction;
 import caris.framework.reactions.Reaction.Tag;

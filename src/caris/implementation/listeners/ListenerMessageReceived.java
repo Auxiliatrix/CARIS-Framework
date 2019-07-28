@@ -1,5 +1,6 @@
-package caris.framework.listeners;
+package caris.implementation.listeners;
 
+import caris.framework.listeners.Listener;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import caris.configuration.calibration.LoggerSettings;
+import caris.common.calibration.LoggerSettings;
 
 public class Logger {
 	

@@ -1,5 +1,6 @@
-package caris.framework.reactions;
+package caris.implementation.reactions;
 
+import caris.framework.reactions.Reaction;
 import sx.blah.discord.handle.obj.IChannel;
 
 public class ReactionMessageSend extends Reaction {

@@ -1,4 +1,4 @@
-package caris.configuration.calibration;
+package caris.common.calibration;
 
 public class LoggerSettings {
 
