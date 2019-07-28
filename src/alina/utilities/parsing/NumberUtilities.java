@@ -2,21 +2,21 @@ package alina.utilities.parsing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 
-public class StringUtilities {
+public class NumberUtilities {
 	
+	/*
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		while(true) {
 			System.out.println(numberToWord(sc.nextLong()));
 		}
 	}
+	*/
 	
 	@SuppressWarnings("serial")
 	public static final Map<String, Long> MULTIPLIERS = new LinkedHashMap<String, Long>() {{
@@ -82,6 +82,7 @@ public class StringUtilities {
 		}
 		return "";
 	}
+
 	/*
 	public static int wordToNumber(String input) {
 		input = input.toLowerCase().trim();
@@ -133,144 +134,6 @@ public class StringUtilities {
 		return total;
 	}
 	*/
-	public static boolean equalsAnyOfIgnoreCase( String a, String...b ) {
-		return equalsAnyOfIgnoreCase(a, Arrays.asList(b));
-	}
-	
-	public static boolean equalsAnyOfIgnoreCase( String a, Collection<String> b ) {
-		for( String token : b ) {
-			if( a.equalsIgnoreCase(token) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean hasIgnoreCase(String[] a, String b) {
-		return hasIgnoreCase(Arrays.asList(a), b);
-	}
-	
-	public static boolean hasIgnoreCase(Collection<String> a, String b) {
-		for( String token: a ) {
-			if( token.equalsIgnoreCase(b) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean hasAnyOfIgnoreCase(String[] a, String... b) {
-		return hasAnyOfIgnoreCase(Arrays.asList(a), b);
-	}
-	
-	public static boolean hasAnyOfIgnoreCase(String[] a, Collection<String> b) {
-		return hasAnyOfIgnoreCase(Arrays.asList(a), b);
-	}
-	
-	public static boolean hasAnyOfIgnoreCase(Collection<String> a, String... b) {
-		return hasAnyOfIgnoreCase(a, Arrays.asList(b));
-	}
-	
-	public static boolean hasAnyOfIgnoreCase(Collection<String> a, Collection<String> b) {
-		for( String token : b ) {
-			if( hasIgnoreCase(a, token) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static boolean hasAllOfIgnoreCase(String[] a, String... b) {
-		return hasAllOfIgnoreCase(Arrays.asList(a), b);
-	}
-	
-	public static boolean hasAllOfIgnoreCase(String[] a, Collection<String> b) {
-		return hasAllOfIgnoreCase(Arrays.asList(a), b);
-	}
-	
-	public static boolean hasAllOfIgnoreCase(Collection<String> a, String... b) {
-		return hasAllOfIgnoreCase(a, Arrays.asList(b));
-	}
-	
-	public static boolean hasAllOfIgnoreCase(Collection<String> a, Collection<String> b) {
-		for( String token : b ) {
-			if( !hasIgnoreCase(a, token) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	public static boolean containsIgnoreCase(String a, String b) {
-		return a.toLowerCase().contains(b.toLowerCase());
-	}
-
-	public static boolean containsIgnoreCase(String[] a, String b) {
-		return containsIgnoreCase(Arrays.asList(a), b);
-	}
-	
-	public static boolean containsIgnoreCase(Collection<String> a, String b) {
-		for( String token : a ) {
-			if( token.equalsIgnoreCase(b) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean containsAnyOfIgnoreCase(String a, String... b) {
-		return containsAnyOfIgnoreCase(a, Arrays.asList(b));
-	}
-	
-	public static boolean containsAnyOfIgnoreCase(String a, Collection<String> b) {
-		for( String token : b ) {
-			if( containsIgnoreCase(a, token) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static boolean containsAllOfIgnoreCase(String a, String... b) {
-		return containsAllOfIgnoreCase(a, Arrays.asList(b));
-	}
-
-	public static boolean containsAllOfIgnoreCase(String a, Collection<String> b) {
-		for( String token : b ) {
-			if( !containsIgnoreCase(a, token) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	public static String leftJustify(String string, int length) {
-		String result = string;
-		for( int f=0; f<length-string.length(); f++) {
-			result += " ";
-		}
-		return result;
-	}
-	
-	public static String rightJustify(String string, int length) {
-		String result = "";
-		for( int f=0; f<length-string.length(); f++) {
-			result += " ";
-		}
-		return result + string;
-	}
-	
-	public static String centerJustify(String string, int length) {
-		String result = "";
-		for( int f=0; f<(length-string.length())/2 + (length-string.length())%2; f++) {
-			result += " ";
-		}
-		result += string;
-		for( int f=0; f<(length-string.length())/2; f++ ) {
-			result += " ";
-		}
-		return result;
-	}
 	
 	public static List<String> tokenizeAlphaNum( String input ) {
 		input = input.toLowerCase().trim();
@@ -280,7 +143,7 @@ public class StringUtilities {
 		List<String> tokens = new ArrayList<String>();
 		for( String word : words ) {
 			if( word.matches("(0|[1-9]\\d*)") ) {
-				String conversion = StringUtilities.numberToWord(Integer.parseInt(word));
+				String conversion = NumberUtilities.numberToWord(Integer.parseInt(word));
 				tokens.addAll(Arrays.asList(conversion.split(" ")));
 			} else {
 				tokens.add(word);
@@ -289,15 +152,4 @@ public class StringUtilities {
 		return tokens;
 	}
 	
-	public static String trim(String input, int size, boolean elipses) {
-		if( input.length() > size ) {
-			if( elipses && size > 3) {
-				return input.substring(0, size-3) + "...";
-			} else {
-				return input.substring(0, size);
-			}
-		} else {
-			return input;
-		}
-	}
 }
