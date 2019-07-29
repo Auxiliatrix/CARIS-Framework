@@ -3,7 +3,7 @@ package caris.common.references;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 
-public class EmojiSet {
+public class EmojiReferences {
 
 	/**
 	 * Emojis that represent numbers.

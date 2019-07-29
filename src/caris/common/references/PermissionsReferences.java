@@ -5,7 +5,7 @@ import java.util.Map;
 
 import sx.blah.discord.handle.obj.Permissions;
 
-public class PermissionsStrings {
+public class PermissionsReferences {
 
 	/**
 	 * A map that maps {@link sx.blah.discord.handle.obj.Permissions} elements to their String representations. 

@@ -2,7 +2,7 @@ package caris.common.references;
 
 import alina.utilities.parsing.TokenUtilities;
 
-public class Keywords {
+public class KeywordReferences {
 	
 	/**
 	 * The keywords that represent creation.
