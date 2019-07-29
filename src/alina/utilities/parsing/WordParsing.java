@@ -7,7 +7,7 @@ import java.util.List;
 import caris.common.references.UnicodeReferences;
 
 public class WordParsing {
-
+	
 	private static final char[] PUNCTUATION = new char[] {
 			'.',
 			',',
@@ -18,12 +18,23 @@ public class WordParsing {
 			'\'',
 	};
 	
+	public static List<String> removePunctuation(List<String> strings) {
+		List<String> removed = new ArrayList<String>();
+		for( String string : strings ) {
+			removed.add(removePunctuation(string));
+		}
+		return removed;
+	}
+	
+	public static String removePunctuation(String string) {
+		for( char p : PUNCTUATION ) {
+			string = string.replace(p, ' ');
+		}
+		return string;
+	}
+	
 	public static String sanitize(String original) {
 		String sanitized = "";
-		
-		for( char p : PUNCTUATION ) {
-			original = original.replace(p, ' ');
-		}
 		
 		for( char c : original.toCharArray() ) {
 			String conversion = Integer.toHexString(c | 0x10000).substring(1);
@@ -49,11 +60,11 @@ public class WordParsing {
 		line = sanitize(line);
 		
 		int quoteIndexOpen = line.indexOf(boundary);
-		int quoteIndexClose = (quoteIndexOpen < line.length()-boundary.length()) ? line.substring(quoteIndexOpen+boundary.length()).indexOf(boundary) : -1;
+		int quoteIndexClose = (quoteIndexOpen < line.length()-boundary.length()) ? quoteIndexOpen + boundary.length() + line.substring(quoteIndexOpen+boundary.length()).indexOf(boundary) : -1;
 		if( quoteIndexOpen == -1 ) {
-			tokens.addAll(Arrays.asList(line.split(" ")));
+			tokens.addAll(removePunctuation(Arrays.asList(line.split(" "))));
 		} else if( quoteIndexClose == -1 ) {
-			tokens.addAll(Arrays.asList(line.replace(boundary, "").split(" ")));
+			tokens.addAll(removePunctuation(Arrays.asList(line.replace(boundary, "").split(" "))));
 		} else {
 			if( quoteIndexOpen > 0 ) {
 				tokens.addAll(parseTokens(line.substring(0, quoteIndexOpen), boundary));
@@ -73,9 +84,9 @@ public class WordParsing {
 		List<String> tokens = new ArrayList<String>();
 		
 		line = sanitize(line);
-		
+				
 		int quoteIndexOpen = line.indexOf(boundary);
-		int quoteIndexClose = (quoteIndexOpen < line.length()-boundary.length()) ? line.substring(quoteIndexOpen+boundary.length()).indexOf(boundary) : -1;
+		int quoteIndexClose = (quoteIndexOpen < line.length()-boundary.length()) ? quoteIndexOpen + boundary.length() + line.substring(quoteIndexOpen+boundary.length()).indexOf(boundary) : -1;
 		if( quoteIndexOpen != -1 && quoteIndexClose != -1 ) {
 			if( quoteIndexClose - quoteIndexOpen > 0 ) {
 				tokens.add(line.substring(quoteIndexOpen+boundary.length(), quoteIndexClose));
@@ -94,7 +105,7 @@ public class WordParsing {
 		line = sanitize(line);
 		
 		int quoteIndexOpen = line.indexOf(open);
-		int quoteIndexClose = (quoteIndexOpen < line.length()-open.length()) ? line.substring(quoteIndexOpen+open.length()).indexOf(close) : -1;
+		int quoteIndexClose = (quoteIndexOpen < line.length()-open.length()) ? quoteIndexOpen + open.length() + line.substring(quoteIndexOpen+open.length()).indexOf(close) : -1;
 		if( quoteIndexOpen != -1 && quoteIndexClose != -1 ) {
 			if( quoteIndexClose - quoteIndexOpen > 0 ) {
 				tokens.add(line.substring(quoteIndexOpen+open.length(), quoteIndexClose));

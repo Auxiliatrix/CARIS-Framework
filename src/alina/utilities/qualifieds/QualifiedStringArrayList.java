@@ -2,11 +2,20 @@ package alina.utilities.qualifieds;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("serial")
 public class QualifiedStringArrayList extends ArrayList<String> {
 	
+	public QualifiedStringArrayList() {
+		super();
+	}
+	
+	public QualifiedStringArrayList(Collection<String> strings) {
+		super(strings);
+	}
+
 	public boolean containsIgnoreCase(String token) {
 		for( String element : this ) {
 			if( token.equalsIgnoreCase(element) ) {
