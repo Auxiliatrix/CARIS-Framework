@@ -2,6 +2,7 @@ package alina.utilities.parsing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class QualifiedStringArrayList extends ArrayList<String> {
@@ -55,6 +56,26 @@ public class QualifiedStringArrayList extends ArrayList<String> {
 			}
 		}
 		return true;
+	}
+	
+	public List<Integer> getIntegerTokens() {
+		List<Integer> integers = new ArrayList<Integer>();
+		for( String token : this ) {
+			try {
+				integers.add(Integer.parseInt(token));
+			} catch (NumberFormatException e) {}
+		}
+		return integers;
+	}
+	
+	public List<Long> getLongTokens() {
+		List<Long> longs = new ArrayList<Long>();
+		for( String token : this ) {
+			try {
+				longs.add(Long.parseLong(token));
+			} catch (NumberFormatException e) {}
+		}
+		return longs;
 	}
 	
 }
