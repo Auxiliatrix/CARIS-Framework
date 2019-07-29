@@ -1,6 +1,6 @@
 package caris.common.references;
 
-import alina.utilities.parsing.TokenUtilities;
+import alina.utilities.parsing.WordParsing;
 
 public class KeywordReferences {
 	
@@ -49,7 +49,7 @@ public class KeywordReferences {
 	/**
 	 * The keywords that denote positive action.
 	 */
-	public static final String[] POSITIVE = TokenUtilities.combineStringArrays(CREATE, START, ENABLE);
+	public static final String[] POSITIVE = WordParsing.combineStringArrays(CREATE, START, ENABLE);
 	
 	/**
 	 * The keywords that represent destruction.
@@ -97,7 +97,7 @@ public class KeywordReferences {
 	/**
 	 * The keywords that denote negative action.
 	 */
-	public static final String[] NEGATIVE = TokenUtilities.combineStringArrays(DESTROY, END, DISABLE);
+	public static final String[] NEGATIVE = WordParsing.combineStringArrays(DESTROY, END, DISABLE);
 	
 	/**
 	 * The keywords that represent cancellation.
