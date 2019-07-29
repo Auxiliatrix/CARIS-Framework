@@ -14,7 +14,7 @@ import sx.blah.discord.api.IDiscordClient;
 public class Brain {
 
 	public static IDiscordClient cli = null;
-	
+		
 	public static String prefix;
 	public static String name;
 	
@@ -23,8 +23,7 @@ public class Brain {
 	@SuppressWarnings("rawtypes")
 	public static List<Listener> listeners = new ArrayList<Listener>();
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {	
 		if (!(args.length >= 1)) {
 			logger.report("Please pass the TOKEN as the first argument.");
 			logger.report("# java -jar CARIS.jar TOKEN");
