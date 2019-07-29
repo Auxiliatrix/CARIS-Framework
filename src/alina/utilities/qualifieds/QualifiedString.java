@@ -1,19 +1,42 @@
-package alina.utilities.parsing;
+package alina.utilities.qualifieds;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-@SuppressWarnings("serial")
-public class QualifiedStringArrayList extends ArrayList<String> {
+public class QualifiedString {
 	
-	public boolean containsIgnoreCase(String token) {
-		for( String element : this ) {
-			if( token.equalsIgnoreCase(element) ) {
+	private String string;
+	
+	public QualifiedString(String string) {
+		this.string = string;
+	}
+	
+	public String getString() {
+		return string;
+	}
+	
+	public boolean equalsAny(String...tokens) {
+		return equalsAny(false, tokens);
+	}
+	
+	public boolean equalsAny(boolean caseSensitive, String...tokens) {
+		return equalsAny(caseSensitive, Arrays.asList(tokens));
+	}
+	
+	public boolean equalsAny(Iterable<String> tokens) {
+		return equalsAny(false, tokens);
+	}
+	
+	public boolean equalsAny(boolean caseSensitive, Iterable<String> tokens) {
+		for( String token : tokens ) {
+			if( token.equals(token) || !caseSensitive && token.equalsIgnoreCase(token) ) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public boolean containsIgnoreCase(String token) {
+		return string.toLowerCase().contains(token.toLowerCase());
 	}
 	
 	public boolean containsAny(String...tokens) {
@@ -30,7 +53,7 @@ public class QualifiedStringArrayList extends ArrayList<String> {
 	
 	public boolean containsAny(boolean caseSensitive, Iterable<String> tokens) {
 		for( String token : tokens ) {
-			if( this.contains(token) || !caseSensitive && this.containsIgnoreCase(token) ) {
+			if( string.contains(token) || !caseSensitive && containsIgnoreCase(token) ) {
 				return true;
 			}
 		}
@@ -51,31 +74,11 @@ public class QualifiedStringArrayList extends ArrayList<String> {
 	
 	public boolean containsAll(boolean caseSensitive, Iterable<String> tokens) {
 		for( String token : tokens ) {
-			if( !(this.contains(token) || !caseSensitive && this.containsIgnoreCase(token) ) ) {
+			if( !(string.contains(token) || !caseSensitive && containsIgnoreCase(token) ) ) {
 				return false;
 			}
 		}
 		return true;
-	}
-	
-	public List<Integer> getIntegerTokens() {
-		List<Integer> integers = new ArrayList<Integer>();
-		for( String token : this ) {
-			try {
-				integers.add(Integer.parseInt(token));
-			} catch (NumberFormatException e) {}
-		}
-		return integers;
-	}
-	
-	public List<Long> getLongTokens() {
-		List<Long> longs = new ArrayList<Long>();
-		for( String token : this ) {
-			try {
-				longs.add(Long.parseLong(token));
-			} catch (NumberFormatException e) {}
-		}
-		return longs;
 	}
 	
 }

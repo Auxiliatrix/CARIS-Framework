@@ -6,7 +6,7 @@ import java.util.List;
 
 import caris.common.references.UnicodeReferences;
 
-public class TokenUtilities {
+public class WordParsing {
 
 	private static final char[] PUNCTUATION = new char[] {
 			'.',

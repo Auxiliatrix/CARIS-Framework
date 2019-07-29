@@ -1,6 +1,63 @@
 package alina.utilities.parsing;
 
+import java.util.List;
+
 public class Duration {
+	
+	@SuppressWarnings("serial")
+	public static class NumberOutOfBoundsException extends NumberFormatException {}
+	
+	public static Duration of( String input ) {
+		int days = 0;
+		int hours = 0;
+		int minutes = 0;
+		int seconds = 0;		
+		List<String> tokens = NumberParsing.replaceNumbersWithWords(input);
+		int lastIndex = -1;
+		for( int f=0; f<tokens.size(); f++ ) {
+			if( tokens.get(f).equals("weeks") || tokens.get(f).equals("week") ) {
+				long longDays = NumberParsing.wordsToNumber(tokens.subList(lastIndex+1, f)) * 7;
+				if( longDays <= Integer.MAX_VALUE ) {
+					days += longDays;
+				} else {
+					throw new NumberOutOfBoundsException();
+				}
+				lastIndex = f;
+			} else if( tokens.get(f).equals("days") || tokens.get(f).equals("day") ) {
+				long longDays = NumberParsing.wordsToNumber(tokens.subList(lastIndex+1, f));
+				if( longDays + days <= Integer.MAX_VALUE ) {
+					days += longDays;
+				} else {
+					throw new NumberOutOfBoundsException();
+				}
+				lastIndex = f;
+			} else if( tokens.get(f).equals("hours") || tokens.get(f).equals("hour") ) {
+				long longHours = NumberParsing.wordsToNumber(tokens.subList(lastIndex+1, f));
+				if( longHours <= Integer.MAX_VALUE ) {
+					hours += longHours;
+				} else {
+					throw new NumberOutOfBoundsException();
+				}
+				lastIndex = f;
+			} else if( tokens.get(f).equals("minutes") || tokens.get(f).equals("minute") ) {
+				long longMinutes = NumberParsing.wordsToNumber(tokens.subList(lastIndex+1, f));
+				if( longMinutes <= Integer.MAX_VALUE ) {
+					minutes += longMinutes;
+				} else {
+					throw new NumberOutOfBoundsException();
+				}
+			} else if( tokens.get(f).equals("seconds") || tokens.get(f).equals("second") ) {
+				long longSeconds = NumberParsing.wordsToNumber(tokens.subList(lastIndex+1, f));
+				if( longSeconds <= Integer.MAX_VALUE ) {
+					seconds += longSeconds;
+				} else {
+					throw new NumberOutOfBoundsException();
+				}
+				lastIndex = f;
+			}
+		}
+		return Duration.of(days, hours, minutes, seconds);
+	}
 	
 	public static Duration of( int days, int hours, int minutes, int seconds ) {
 		if( sanitary(days, hours, minutes, seconds) ) {
