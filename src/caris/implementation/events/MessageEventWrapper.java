@@ -5,17 +5,20 @@ import alina.utilities.qualifieds.QualifiedString;
 import alina.utilities.qualifieds.QualifiedStringArrayList;
 import caris.common.calibration.Constants;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.Permissions;
 
-public class MessageEventWrapper extends MessageEvent {
+public class MessageEventWrapper extends MessageReceivedEvent {
 	
 	private QualifiedString qualifiedMessage;
 	private QualifiedStringArrayList qualifiedWords;
+	private QualifiedStringArrayList qualifiedQuotes;
 	
 	public MessageEventWrapper(MessageEvent event) {
 		super(event.getMessage());
 		qualifiedMessage = new QualifiedString(getMessage().getContent());
-		qualifiedWords = (QualifiedStringArrayList) WordParsing.parseTokens(getMessage().getContent());
+		qualifiedWords = new QualifiedStringArrayList(WordParsing.parseTokens(getMessage().getContent()));
+		qualifiedQuotes = new QualifiedStringArrayList(WordParsing.parseQuoted(getMessage().getContent()));
 	}
 	
 	public QualifiedString getQualifiedMessage() {
@@ -24,6 +27,10 @@ public class MessageEventWrapper extends MessageEvent {
 	
 	public QualifiedStringArrayList getQualifiedWords() {
 		return qualifiedWords;
+	}
+	
+	public QualifiedStringArrayList getQualifiedQuotes() {
+		return qualifiedQuotes;
 	}
 	
 	public final boolean botAuthor() {

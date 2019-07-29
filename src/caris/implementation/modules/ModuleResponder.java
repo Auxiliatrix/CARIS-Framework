@@ -3,6 +3,8 @@ package caris.implementation.modules;
 import caris.framework.main.Brain;
 import caris.framework.modules.MessageModule;
 import caris.framework.reactions.Reaction;
+import caris.framework.reactions.Reaction.Tag;
+import caris.implementation.events.MessageEventWrapper;
 import caris.implementation.reactions.ReactionMessageSend;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -28,13 +30,15 @@ public class ModuleResponder extends MessageModule<MessageReceivedEvent> {
 	}
 	
 	@Override
-	public boolean triggered(MessageReceivedEvent event) {
-		return event.getMessage().getContent().contains(Brain.name);
+	public boolean preconditionsMet(MessageReceivedEvent event) {
+		MessageEventWrapper mew = new MessageEventWrapper(event);
+		return mew.getQualifiedWords().containsIgnoreCase(Brain.name);
 	}
 
 	@Override
 	public Reaction process(MessageReceivedEvent event) {
-		return new ReactionMessageSend(event.getChannel(), "That's me!");
+		MessageEventWrapper mew = new MessageEventWrapper(event);
+		return new ReactionMessageSend(Tag.RECESSIVE, mew.getChannel(), "That's me!");
 	}
 	
 }

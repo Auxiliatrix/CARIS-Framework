@@ -3,6 +3,7 @@ package caris.framework.modules;
 import caris.common.calibration.Constants;
 import caris.framework.reactions.Reaction;
 import caris.framework.utilities.Logger;
+import caris.implementation.events.MessageEventWrapper;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageEvent;
 import sx.blah.discord.handle.obj.Permissions;
 
@@ -22,13 +23,14 @@ public abstract class MessageModule<E extends MessageEvent> extends Module<E> {
 	public MessageModule(Class<E> eventClass) {
 		super(eventClass);
 	}
-
+	
 	@Override
 	public Reaction handle(E event) {
 		Logger verboseLogger = logger.clone().setVerbose(true);
-		if( triggered(event) ) {
-			if( allowBots() || !isBot(event ) ) {
-				if( requirementsMet(event) || developerAuthor(event) ) {
+		MessageEventWrapper mew = new MessageEventWrapper(event);
+		if( preconditionsMet(event) ) {
+			if( allowBots() || mew.botAuthor() ) {
+				if( mew.hasPermissions(getRequirements()) || mew.developerAuthor() ) {
 					logger.clone().setType("PROCESS").log("Success: Reaction generated");
 					return process(event);
 				}

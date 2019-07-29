@@ -24,6 +24,7 @@ public class ListenerMessageReceived extends Listener<MessageReceivedEvent> {
 			.addOrigin(event.getGuild().getName() + ":" + event.getChannel().getName())
 			.addOrigin(event.getAuthor().getName())
 			.log(event.getMessage().getContent());
+		
 		super.onReceive(event);
 	}
 	

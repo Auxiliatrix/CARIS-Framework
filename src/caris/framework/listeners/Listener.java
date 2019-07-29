@@ -49,6 +49,8 @@ public abstract class Listener<E extends Event> {
 		}
 	}
 	
+	// TODO: get messagereceived to work on messageeventwrapper modules
+	
 	@EventSubscriber
 	public void onReceive( E event ) {
 		Map<Tag, List<Reaction>> reactionMap = new HashMap<Tag, List<Reaction>>();

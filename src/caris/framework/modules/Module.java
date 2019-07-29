@@ -17,11 +17,11 @@ public abstract class Module<E extends Event> {
 		logger = new Logger().addOrigin(getName());
 	}
 	
-	public abstract boolean triggered(E event);	
+	public abstract boolean preconditionsMet(E event);	
 	public abstract Reaction process(E event);
 	
 	public Reaction handle(E event) {
-		if( triggered(event) ) {
+		if( preconditionsMet(event) ) {
 			return process(event);
 		} else {
 			return null;
