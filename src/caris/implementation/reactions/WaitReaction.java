@@ -11,7 +11,7 @@ public class WaitReaction extends Reaction {
 		this.millis = millis;
 	}
 	
-	public WaitReaction(int millis, Tag tag) {
+	public WaitReaction(Tag tag, int millis) {
 		super(tag);
 		this.millis = millis;
 	}
