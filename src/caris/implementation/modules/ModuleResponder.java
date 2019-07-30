@@ -6,9 +6,8 @@ import caris.framework.reactions.Reaction;
 import caris.framework.reactions.Reaction.Tag;
 import caris.implementation.events.MessageEventWrapper;
 import caris.implementation.reactions.ReactionMessageSend;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
-public class ModuleResponder extends MessageModule<MessageReceivedEvent> {
+public class ModuleResponder extends MessageModule<MessageEventWrapper> {
 
 	@Override
 	public String getName() {
@@ -26,19 +25,17 @@ public class ModuleResponder extends MessageModule<MessageReceivedEvent> {
 	}
 	
 	public ModuleResponder() {
-		super(MessageReceivedEvent.class);
+		super(MessageEventWrapper.class);
 	}
 	
 	@Override
-	public boolean preconditionsMet(MessageReceivedEvent event) {
-		MessageEventWrapper mew = new MessageEventWrapper(event);
-		return mew.getQualifiedWords().containsIgnoreCase(Brain.name);
+	public boolean preconditionsMet(MessageEventWrapper event) {
+		return event.getQualifiedWords().containsIgnoreCase(Brain.name);
 	}
 
 	@Override
-	public Reaction process(MessageReceivedEvent event) {
-		MessageEventWrapper mew = new MessageEventWrapper(event);
-		return new ReactionMessageSend(Tag.RECESSIVE, mew.getChannel(), "That's me!");
+	public Reaction process(MessageEventWrapper event) {
+		return new ReactionMessageSend(Tag.RECESSIVE, event.getChannel(), "That's me!");
 	}
 	
 }

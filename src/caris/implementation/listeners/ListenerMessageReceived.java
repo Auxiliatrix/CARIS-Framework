@@ -1,10 +1,26 @@
 package caris.implementation.listeners;
 
 import caris.framework.listeners.Listener;
+import caris.implementation.events.MessageEventWrapper;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class ListenerMessageReceived extends Listener<MessageReceivedEvent> {
+	
+	private class Wrapper extends Listener<MessageEventWrapper> {
+		
+		@Override
+		public String getName() {
+			return "Wrapper";
+		}
+		
+		public Wrapper() {
+			super(MessageEventWrapper.class);
+		}
+		
+	}
+	
+	private Wrapper wrapper;
 	
 	@Override
 	public String getName() {
@@ -13,6 +29,7 @@ public class ListenerMessageReceived extends Listener<MessageReceivedEvent> {
 	
 	public ListenerMessageReceived() {
 		super(MessageReceivedEvent.class);
+		wrapper = new Wrapper();
 	}
 	
 	@Override
@@ -26,6 +43,7 @@ public class ListenerMessageReceived extends Listener<MessageReceivedEvent> {
 			.log(event.getMessage().getContent());
 		
 		super.onReceive(event);
+		wrapper.onReceive(new MessageEventWrapper(event));
 	}
 	
 }

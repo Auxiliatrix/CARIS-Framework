@@ -8,9 +8,8 @@ import caris.framework.reactions.Reaction;
 import caris.framework.utilities.YoutubeAPIUtility;
 import caris.implementation.events.MessageEventWrapper;
 import caris.implementation.reactions.ReactionMessageSend;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
-public class ModuleYoutube extends MessageModule<MessageReceivedEvent> {
+public class ModuleYoutube extends MessageModule<MessageEventWrapper> {
 
 	@Override
 	public String getDescription() {
@@ -28,24 +27,22 @@ public class ModuleYoutube extends MessageModule<MessageReceivedEvent> {
 	}
 	
 	public ModuleYoutube() {
-		super(MessageReceivedEvent.class);
+		super(MessageEventWrapper.class);
 	}
 
 	@Override
-	public boolean preconditionsMet(MessageReceivedEvent event) {
-		MessageEventWrapper mew = new MessageEventWrapper(event);
-		return mew.getQualifiedWords().containsIgnoreCase(Brain.name) && (mew.getQualifiedWords().containsAny("search", "fetch", "get") && mew.getQualifiedWords().contains("video") || mew.getQualifiedWords().containsAny("youtube")) && !mew.getQualifiedQuotes().isEmpty();
+	public boolean preconditionsMet(MessageEventWrapper event) {
+		return event.getQualifiedWords().containsIgnoreCase(Brain.name) && (event.getQualifiedWords().containsAny("search", "fetch", "get") && event.getQualifiedWords().contains("video") || event.getQualifiedWords().containsAny("youtube")) && !event.getQualifiedQuotes().isEmpty();
 	}
 
 	@Override
-	public Reaction process(MessageReceivedEvent event) {
-		MessageEventWrapper mew = new MessageEventWrapper(event);
+	public Reaction process(MessageEventWrapper event) {
 		String query = "";
-		for( String quote : mew.getQualifiedQuotes() ) {
+		for( String quote : event.getQualifiedQuotes() ) {
 			query += quote + " ";
 		}
 		SearchResult video = YoutubeAPIUtility.search(query);
-		return new ReactionMessageSend(mew.getChannel(), "Found it!\nhttps://www.youtube.com/watch?v=" + video.getId().getVideoId());
+		return new ReactionMessageSend(event.getChannel(), "Found it!\nhttps://www.youtube.com/watch?v=" + video.getId().getVideoId());
 	}
 
 }
