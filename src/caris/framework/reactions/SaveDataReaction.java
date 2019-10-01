@@ -25,7 +25,7 @@ public class SaveDataReaction extends Reaction {
 		}
 		for( long key : Brain.globalUserDataMap.keySet() ) {
 			JSONObject value = Brain.globalUserDataMap.get(key).getJSONData();
-			SaveDataUtilities.JSONOut(Constants.FOLDER_MEMORY + File.separator + "global_users" + File.separator + key, value);
+			SaveDataUtilities.JSONOut(Constants.FOLDER_MEMORY + File.separator + Constants.SUBFOLDER_GLOBALUSERDATA + File.separator + key + ".json", value);
 		}
 		System.out.println("Saved!");
 	}

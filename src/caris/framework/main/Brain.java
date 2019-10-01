@@ -58,21 +58,27 @@ public class Brain {
 		Logger reloadLogger = logger.clone().addOrigin("Reload");
 		reloadLogger.log("Initializing");
 		
-		final String globalUserDataPath = Constants.FOLDER_MEMORY /* + File.Separator + Constants.SUBFOLDER_GLOBALUSERDATA */;
+		File memory = new File(Constants.FOLDER_MEMORY);
+		if( !memory.exists() ) {
+			reloadLogger.log("Memory Folder uninitialized");
+			memory.mkdir();
+			reloadLogger.log("New Memory Folder generated");
+		}
+		
+		final String globalUserDataPath = Constants.FOLDER_MEMORY + File.separator + Constants.SUBFOLDER_GLOBALUSERDATA;
 		
 		File directory = new File(globalUserDataPath);
 		if( !directory.exists() ) {
-			reloadLogger.log("Memory Folder uninitialized");
+			reloadLogger.log("GlobalUserData Folder uninitialized");
 			directory.mkdir();
-			reloadLogger.log("New Memory Folder generated");
+			reloadLogger.log("GlobalUserData Folder generated");
 		}
 		File[] files = directory.listFiles();
 		if( files != null ) {
 			for( File file : files ) {
 				JSONObject object = SaveDataUtilities.JSONIn(globalUserDataPath + File.separator + file.getName());
-				GlobalUserData globalUserData;
 				try {
-					globalUserData = new GlobalUserData(object);
+					GlobalUserData globalUserData = new GlobalUserData(object);
 					globalUserDataMap.put(globalUserData.getUserID(), globalUserData);
 				} catch (JSONReloadException e) {
 					reloadLogger.report("Corrupted GlobalUserData file: " + globalUserDataPath + File.separator + file.getName());
