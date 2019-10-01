@@ -10,6 +10,7 @@ import caris.common.calibration.Constants;
 import caris.framework.modules.Module;
 import caris.framework.reactions.Reaction;
 import caris.framework.reactions.Reaction.Tag;
+import caris.framework.reactions.SaveDataReaction;
 import caris.framework.utilities.Logger;
 import sx.blah.discord.api.events.Event;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -75,6 +76,8 @@ public abstract class Listener<E extends Event> {
 		} else {
 			reactionQueue.addAll(reactionMap.get(Tag.RECESSIVE));
 		}
+		
+		reactionQueue.add(new SaveDataReaction());
 		
 		for( Reaction reaction : reactionQueue ) {
 			reaction.start();

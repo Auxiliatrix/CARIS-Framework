@@ -1,13 +1,20 @@
 package caris.framework.main;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.reflections.Reflections;
 
 import caris.common.calibration.Constants;
+import caris.framework.data.GlobalUserData;
+import caris.framework.data.JSONable.JSONReloadException;
 import caris.framework.listeners.Listener;
 import caris.framework.utilities.Logger;
+import caris.framework.utilities.SaveDataUtilities;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 
@@ -22,6 +29,8 @@ public class Brain {
 	
 	@SuppressWarnings("rawtypes")
 	public static List<Listener> listeners = new ArrayList<Listener>();
+	
+	public static Map<Long, GlobalUserData> globalUserDataMap = new HashMap<Long, GlobalUserData>();
 	
 	public static void main(String[] args) {	
 		if (!(args.length >= 1)) {
@@ -38,11 +47,42 @@ public class Brain {
 		
 		prefix = Constants.INVOCATION_PREFIX;
 		
+		reload();
+		
 		startup();
 		
 		login(args[0]);
 	}
 
+	private static void reload() {
+		Logger reloadLogger = logger.clone().addOrigin("Reload");
+		reloadLogger.log("Initializing");
+		
+		final String globalUserDataPath = Constants.FOLDER_MEMORY /* + File.Separator + Constants.SUBFOLDER_GLOBALUSERDATA */;
+		
+		File directory = new File(globalUserDataPath);
+		if( !directory.exists() ) {
+			reloadLogger.log("Memory Folder uninitialized");
+			directory.mkdir();
+			reloadLogger.log("New Memory Folder generated");
+		}
+		File[] files = directory.listFiles();
+		if( files != null ) {
+			for( File file : files ) {
+				JSONObject object = SaveDataUtilities.JSONIn(globalUserDataPath + File.separator + file.getName());
+				GlobalUserData globalUserData;
+				try {
+					globalUserData = new GlobalUserData(object);
+					globalUserDataMap.put(globalUserData.getUserID(), globalUserData);
+				} catch (JSONReloadException e) {
+					reloadLogger.report("Corrupted GlobalUserData file: " + globalUserDataPath + File.separator + file.getName());
+				}
+			}
+		} else {
+			reloadLogger.report("The expected memory folder is a file instead.");
+		}
+	}
+	
 	private static void startup() {
 		Logger startupLogger = logger.clone().addOrigin("Startup");
 		startupLogger.log("Initializing");
