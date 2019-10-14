@@ -11,6 +11,7 @@ import org.reflections.Reflections;
 
 import caris.common.calibration.Constants;
 import caris.framework.data.GlobalUserData;
+import caris.framework.data.GuildData;
 import caris.framework.data.JSONable.JSONReloadException;
 import caris.framework.listeners.Listener;
 import caris.framework.utilities.Logger;
@@ -31,6 +32,7 @@ public class Brain {
 	public static List<Listener> listeners = new ArrayList<Listener>();
 	
 	public static Map<Long, GlobalUserData> globalUserDataMap = new HashMap<Long, GlobalUserData>();
+	public static Map<Long, GuildData> guildDataMap = new HashMap<Long, GuildData>();
 	
 	public static void main(String[] args) {	
 		if (!(args.length >= 1)) {
@@ -87,6 +89,30 @@ public class Brain {
 		} else {
 			reloadLogger.report("The expected memory folder is a file instead.");
 		}
+		
+		final String guildDataPath = Constants.FOLDER_MEMORY + File.separator + Constants.SUBFOLDER_GUILDDATA;
+		
+		directory = new File(guildDataPath);
+		if( !directory.exists() ) {
+			reloadLogger.log("GuildData Folder uninitialized");
+			directory.mkdir();
+			reloadLogger.log("GuildData Folder generated");
+		}
+		files = directory.listFiles();
+		if( files != null ) {
+			for( File file : files ) {
+				JSONObject object = SaveDataUtilities.JSONIn(guildDataPath + File.separator + file.getName() + File.separator + "_data.json");
+				try {
+					GuildData guildData = new GuildData(object);
+					guildDataMap.put(guildData.getGuildID(), guildData);
+				} catch (JSONReloadException e) {
+					reloadLogger.report("Corrupted GuildData file: " + guildDataPath + File.separator + file.getName()+ File.separator + "_data.json");
+				}
+			}
+		} else {
+			reloadLogger.report("The expected memory folder is a file instead.");
+		}
+		
 	}
 	
 	private static void startup() {

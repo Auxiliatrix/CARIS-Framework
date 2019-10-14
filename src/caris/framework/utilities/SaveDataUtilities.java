@@ -11,6 +11,20 @@ import org.json.JSONObject;
 
 public class SaveDataUtilities {
 	
+	public static String JSONCreateAndOut(String[] fileNames, JSONObject object) {
+		String filePath = "";
+		for( int f=0; f<fileNames.length-1; f++ ) {
+			filePath += fileNames[f];
+			File directory = new File(filePath);
+			if( !directory.exists() ) {
+				directory.mkdir();
+			}
+			filePath += File.separator;
+		}
+		filePath += fileNames[fileNames.length-1];
+		return JSONOut(filePath, object);
+	}
+	
 	public static String JSONOut(String fileName, JSONObject object) {
 		File filePath = new File(fileName);
 		try {

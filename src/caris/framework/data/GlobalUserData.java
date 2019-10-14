@@ -16,9 +16,7 @@ public class GlobalUserData implements JSONable {
 	}
 	
 	public GlobalUserData(IUser user) {
-		data = new JSONObject();
-		userID = user.getLongID();
-		data.put("userID", user.getLongID());
+		this(user.getLongID());
 	}
 
 	public GlobalUserData( JSONObject json ) throws JSONReloadException {
