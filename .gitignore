@@ -18,7 +18,6 @@ tmp/variables.json
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
